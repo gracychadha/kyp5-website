@@ -6,7 +6,7 @@ function Footer() {
       <div className="footer-callto-action-area bg-light-1">
 
         {/* CTA Section */}
-        <div className="container">
+        {/* <div className="container">
           <div className="row">
             <div className="col-lg-12">
 
@@ -41,7 +41,7 @@ function Footer() {
 
             </div>
           </div>
-        </div>
+        </div> */}
 
         {/* Footer Main */}
         <div className="container">
@@ -55,7 +55,7 @@ function Footer() {
 
                   <div className="head">
                     <a href="#">
-                      <img src="/assets/images/logo/logo-1.svg" alt="logo" />
+                      <img src="assets/images/logo/main-logo.png" alt="logo" />
                     </a>
                   </div>
 
@@ -175,7 +175,7 @@ function Footer() {
 
                 <div className="copyright-area-one">
 
-                  <p>Copyright © 2024 All Rights Reserved by Studyhub</p>
+                  <p>&copy; {new Date().getFullYear()} <a href="https://kyp5.com">KYP5</a> | Developed by <a href="https://vibrantick.in/" target="_blank"> Vibrantick Infotech Solutions</a></p>
 
                   <div className="social-copyright">
 

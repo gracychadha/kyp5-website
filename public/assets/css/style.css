@@ -51,7 +51,7 @@
 /* Default  */
 
 :root {
-  --color-primary: #553cdf;
+  --color-primary: #3098bb;
   --color-primary-gym: #b10d00;
   --color-primary-kitchen: #ff6d1c;
   --color-secondary: #1f1f25;
@@ -22843,7 +22843,7 @@ nav ul li a {
 }
 
 .bg-lighte-1 {
-  background: #f9f8ff;
+  background: #f2f7f8;
 }
 
 .single-students-feedback-5 {
@@ -24738,7 +24738,7 @@ nav ul li a {
 }
 
 .copyright-area-one-border {
-  border-top: 1px solid #ddd8f9;
+  border-top: 1px solid #3098bb;
 }
 
 .copyright-area-one {

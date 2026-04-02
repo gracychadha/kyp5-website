@@ -12,11 +12,11 @@ function Header() {
                 <div className="left-information">
                   <a href="mailto:someone@example.com" className="email">
                     <i className="fa-light fa-envelope" />
-                    info@studyhub.com
+                    info@kyp5.com
                   </a>
                   <a href="tel:+4733378901" className="email">
                     <i className="fa-light fa-phone" />
-                    +61 012 012 445
+                    +91 987 885 3633
                   </a>
                 </div>
                 <div className="right-information">
@@ -102,7 +102,7 @@ function Header() {
             <div className="header-one-wrapper">
               <div className="left-side-header">
                 <a href="/" className="logo-area">
-                  <img src="assets/images/logo/logo-1.svg" alt="logo" />
+                  <img src="assets/images/logo/main-logo.png" alt="logo" />
                 </a>
                 <div className="category-area">
                   <div className="category-btn">
@@ -264,12 +264,13 @@ function Header() {
                   </div>
                 </div>
                 <div className="buttons-area">
-                  <a href="log-in.html" className="rts-btn btn-border">
-                    Log In
-                  </a>
-                  <a href="registration.html" className="rts-btn btn-primary">
+                  <Link className="rts-btn btn-border" to="/login">
+                    Login
+                  </Link>
+
+                  <Link className="rts-btn btn-primary" to="/sign-up">
                     Sign Up
-                  </a>
+                  </Link>
                 </div>
                 <div className="menu-btn" id="menu-btn">
                   <svg

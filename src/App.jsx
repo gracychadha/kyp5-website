@@ -12,7 +12,9 @@ import Blogs from "./pages/our-blogs/Blogs";
 import Gallery from "./pages/gallery/Gallery";
 import Login from "./pages/login/Login";
 import SignUp from "./pages/sign-up/SignUp";
-
+import Course from "./pages/course/Course";
+import PrivacyPolicy from "./pages/privacy-policy/PrivacyPolicy";
+import TermsCondition from "./pages/terms-conditions/TermsCondition";
 function App() {
   return (
     <Router>
@@ -23,8 +25,12 @@ function App() {
           <Route path="/about-us" element={<AboutUs />} />
           <Route path="/our-team" element={<Instructor />} />
           <Route path="/contact-us" element={<Contact />} />
+          <Route path="/courses" element={<Course />} />
           <Route path="/our-blogs" element={<Blogs />} />
           <Route path="/gallery" element={<Gallery />} />
+          <Route path="/courses" element={<Course />} />
+          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+          <Route path="/terms-conditions" element={<TermsCondition />} />
         </Route>
         <Route element={<AuthLayout />}>
           <Route path="/login" element={<Login />} />

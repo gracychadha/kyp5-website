@@ -91,11 +91,10 @@ function Footer() {
 
                   <div className="body">
                     <ul className="menu">
-                      <li><a href="#">Latest Courses</a></li>
-                      <li><a href="#">Mission & Vision</a></li>
-                      <li><a href="#">Join a Career</a></li>
-                      <li><a href="#">Zoom Meeting</a></li>
-                      <li><a href="#">Pricing Plan</a></li>
+                      <li><a href="#">About Us</a></li>
+                      <li><a href="#">Our Team</a></li>
+                      <li><a href="#">Gallery</a></li>
+                      <li><a href="#">Our Blogs</a></li>
                     </ul>
                   </div>
 
@@ -110,11 +109,9 @@ function Footer() {
 
                   <div className="body">
                     <ul className="menu">
-                      <li><a href="#">Course One</a></li>
-                      <li><a href="#">Course Two</a></li>
-                      <li><a href="#">Create Course</a></li>
-                      <li><a href="#">Lesson Details</a></li>
-                      <li><a href="#">Instructor</a></li>
+                      <li><a href="#">Contact Us</a></li>
+                      <li><a href="/privacy-policy">Privacy Policy</a></li>
+                      <li><a href="/terms-conditions">Terms &amp; Conditions</a></li>
                     </ul>
                   </div>
 

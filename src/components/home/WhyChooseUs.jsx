@@ -123,7 +123,7 @@ function WhyChooseUs() {
               </div>
 
               <a
-                href="single-course.html"
+                href="/courses"
                 className="rts-btn btn-primary-white with-arrow"
               >
                 View All Course

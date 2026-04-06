@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-
+import logo from "../../../public/assets/images/logo/main-logo.png";
 function Header() {
   return (
     <header className="header-one header--sticky">
@@ -102,7 +102,7 @@ function Header() {
             <div className="header-one-wrapper">
               <div className="left-side-header">
                 <a href="/" className="logo-area">
-                  <img src="assets/images/logo/main-logo.png" alt="logo" />
+                  <img src={logo} alt="logo" />
                 </a>
                 <div className="category-area">
                   <div className="category-btn">

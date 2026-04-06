@@ -1,5 +1,5 @@
 import React from "react";
-
+import logo from "../../../public/assets/images/logo/main-logo.png";
 function Footer() {
   return (
     <>
@@ -54,8 +54,8 @@ function Footer() {
                 <div className="footer-singl-wized left-logo">
 
                   <div className="head">
-                    <a href="#">
-                      <img src="assets/images/logo/main-logo.png" alt="logo" />
+                    <a href="/">
+                      <img src={logo} alt="logo" />
                     </a>
                   </div>
 

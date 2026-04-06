@@ -657,16 +657,16 @@ ol ul {
 }
 
 .rts-section-gap {
-  padding: 120px 0;
+  padding: 50px 0;
 }
 @media only screen and (min-width: 768px) and (max-width: 991px) {
   .rts-section-gap {
-    padding: 80px 0;
+    padding: 50px 0;
   }
 }
 @media only screen and (max-width: 767px) {
   .rts-section-gap {
-    padding: 60px 0;
+    padding: 50px 0;
   }
 }
 
@@ -17860,6 +17860,7 @@ nav ul li a {
 
 .rts-bread-crumbarea-1 {
   background-image: url(../images/breadcrumb/01.jpg);
+  padding:120px 0;
 }
 
 .breadcrumb-main-wrapper .title {
@@ -23051,6 +23052,7 @@ nav ul li a {
   border-radius: 6px;
   border: 1px solid #ddd8f9;
   height: 100%;
+      box-shadow: 0px 0px 6px #ddd8f9;
 }
 @media (max-width: 1200px) and (min-width: 991px) {
   .single-blog-style-one {
@@ -23637,6 +23639,7 @@ nav ul li a {
   align-items: center;
   margin-bottom: 15px;
   flex-wrap: wrap;
+  justify-content:space-between;
 }
 .blog-single-post-listing .blog-listing-content .user-info .single {
   margin-right: 30px;

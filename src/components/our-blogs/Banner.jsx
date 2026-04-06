@@ -3,7 +3,7 @@ import React from "react";
 export default function Banner() {
   return (
     <>
-      <div className="rts-bread-crumbarea-1 rts-section-gap bg_image">
+      <div className="rts-bread-crumbarea-1  bg_image">
         <div className="container">
           <div className="row">
             <div className="col-lg-12">

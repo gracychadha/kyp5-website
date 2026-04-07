@@ -2,10 +2,12 @@ import React from "react";
 
 import BlogSidebar from "../../components/our-blogs/blog-details/BlogSidebar";
 import BlogOverview from "../../components/our-blogs/blog-details/BlogOverview";
+import Banner from "../../components/our-blogs/blog-details/Banner";
 
 function BlogDetails() {
   return (
     <>
+      <Banner />
       <div className="rts-blog-list-area rts-section-gap">
         <div className="container">
           <div className="row g-5">

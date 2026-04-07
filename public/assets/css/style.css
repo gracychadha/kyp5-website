@@ -22555,8 +22555,10 @@ nav ul li a {
 }
 .single-students-feedback .left-image img {
   border-radius: 6px;
-  min-width: max-content;
+  /* min-width: max-content; */
   display: block;
+  max-width: 400px;
+  max-height: 400px;
 }
 @media only screen and (max-width: 767px) {
   .single-students-feedback {

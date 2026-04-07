@@ -81,7 +81,7 @@ function BlogOverview() {
               <div className="col-lg-6 col-md-12">
                 {/* tags details */}
                 <div className="details-tag">
-                  <h6>Tags:</h6>
+                  <h6>Category:</h6>
 
                   {blog?.categories?.length ? (
                     blog.categories.map((cat) => (

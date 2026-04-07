@@ -1,6 +1,21 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import axios from "axios";
 
 function Feedback() {
+  const [testimonials, setTestimonials] = useState([]);
+
+  useEffect(() => {
+    axios
+      .get(import.meta.env.VITE_BASE_URL + "testimonials")
+      .then((response) => {
+        setTestimonials(response.data.data.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
+
   return (
     <>
       <div className="rts-feedback-area rts-section-gap bg-light-1 shape-move">
@@ -10,10 +25,10 @@ function Feedback() {
               <div className="title-area-center-style">
                 <div className="pre-title">
                   <img src="/assets/images/banner/bulb.png" alt="icon" />
-                  <span>Student Review</span>
+                  <span>Student's Reviews</span>
                 </div>
 
-                <h2 className="title">Our Students Feedback</h2>
+                <h2 className="title">Our Student's Feedback</h2>
 
                 <p className="post-title">
                   You'll find something to spark your curiosity and enhance
@@ -28,151 +43,63 @@ function Feedback() {
                 <div className="swiper mySwiper-testimonials-1">
                   <div className="swiper-wrapper">
                     {/* Testimonial 1 */}
-                    <div className="swiper-slide">
-                      <div className="single-students-feedback">
-                        <div className="left-image">
-                          <img
-                            src="/assets/images/students-feedback/01.jpg"
-                            alt="feedback"
-                          />
-                        </div>
+                    {testimonials.map((testimonial) => (
+                      <div className="swiper-slide" key={testimonial.id}>
+                        <div className="single-students-feedback">
+                          <div className="left-image">
+                            <img
+                              src={testimonial.avatar
+                                ? import.meta.env.VITE_BASE_URL.replace("/api/public/", "") +
+                                  testimonial.avatar
+                                : "/assets/images/students-feedback/01.png"}
+                              alt="feedback"
+                            />
+                          </div>
 
-                        <div className="right-content">
-                          <img
-                            src="/assets/images/students-feedback/01.png"
-                            alt="quote"
-                          />
+                          <div className="right-content">
+                            <img
+                              src="/assets/images/students-feedback/01.png"
+                              alt="quote"
+                            />
 
-                          <p className="disc">
-                            I can't recommend The Gourmet Haven enough. It's a
-                            place for special occasions, date nights, or
-                            whenever you're in the mood for a culinary
-                            adventure.
-                          </p>
+                            <p className="disc">
+                             {testimonial.content ? testimonial.content : "we have a good experience with KYP5. They are very helpful and supportive. I am very happy to join KYP5."}
+                            </p>
 
-                          <div className="author-area">
-                            <ul className="stars">
-                              <li>
-                                <i className="fa-solid fa-star"></i>
-                              </li>
-                              <li>
-                                <i className="fa-solid fa-star"></i>
-                              </li>
-                              <li>
-                                <i className="fa-solid fa-star"></i>
-                              </li>
-                              <li>
-                                <i className="fa-solid fa-star"></i>
-                              </li>
-                              <li>
-                                <i className="fa-regular fa-star"></i>
-                              </li>
-                            </ul>
+                            <div className="author-area">
+                              <ul className="stars">
+                                {testimonial.rating ? (
+                                  Array.from({ length: testimonial.rating }).map(
+                                    (_, index) => (
+                                      <li key={index}>
+                                        <i className="fa-solid fa-star"></i>
+                                      </li>
+                                    )
+                                  )
+                                ) : (
+                                  <>
+                                    <li>
+                                      <i className="fa-solid fa-star"></i>
+                                    </li>
+                                    <li>
+                                      <i className="fa-solid fa-star"></i>
+                                    </li>
+                                    <li>
+                                      <i className="fa-regular fa-star"></i>
+                                    </li>
+                                  </>
+                                )}
 
-                            <h5 className="title">Emma Elizabeth</h5>
-                            <span>Assistant Teacher</span>
+                              </ul>
+
+                              <h5 className="title">{testimonial.name ? testimonial.name : "Admin"}</h5>
+                              <span>{testimonial.designation ? testimonial.designation : "Student"}</span>
+                            </div>
                           </div>
                         </div>
                       </div>
-                    </div>
-
-                    {/* Testimonial 2 */}
-                    <div className="swiper-slide">
-                      <div className="single-students-feedback">
-                        <div className="left-image">
-                          <img
-                            src="/assets/images/students-feedback/02.jpg"
-                            alt="feedback"
-                          />
-                        </div>
-
-                        <div className="right-content">
-                          <img
-                            src="/assets/images/students-feedback/01.png"
-                            alt="quote"
-                          />
-
-                          <p className="disc">
-                            I can't recommend The Gourmet Haven enough. It's a
-                            place for special occasions, date nights, or
-                            whenever you're in the mood for a culinary
-                            adventure.
-                          </p>
-
-                          <div className="author-area">
-                            <ul className="stars">
-                              <li>
-                                <i className="fa-solid fa-star"></i>
-                              </li>
-                              <li>
-                                <i className="fa-solid fa-star"></i>
-                              </li>
-                              <li>
-                                <i className="fa-solid fa-star"></i>
-                              </li>
-                              <li>
-                                <i className="fa-solid fa-star"></i>
-                              </li>
-                              <li>
-                                <i className="fa-regular fa-star"></i>
-                              </li>
-                            </ul>
-
-                            <h5 className="title">Emma Elizabeth</h5>
-                            <span>Assistant Teacher</span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Testimonial 3 */}
-                    <div className="swiper-slide">
-                      <div className="single-students-feedback">
-                        <div className="left-image">
-                          <img
-                            src="/assets/images/students-feedback/01.jpg"
-                            alt="feedback"
-                          />
-                        </div>
-
-                        <div className="right-content">
-                          <img
-                            src="/assets/images/students-feedback/01.png"
-                            alt="quote"
-                          />
-
-                          <p className="disc">
-                            I can't recommend The Gourmet Haven enough. It's a
-                            place for special occasions, date nights, or
-                            whenever you're in the mood for a culinary
-                            adventure.
-                          </p>
-
-                          <div className="author-area">
-                            <ul className="stars">
-                              <li>
-                                <i className="fa-solid fa-star"></i>
-                              </li>
-                              <li>
-                                <i className="fa-solid fa-star"></i>
-                              </li>
-                              <li>
-                                <i className="fa-solid fa-star"></i>
-                              </li>
-                              <li>
-                                <i className="fa-solid fa-star"></i>
-                              </li>
-                              <li>
-                                <i className="fa-regular fa-star"></i>
-                              </li>
-                            </ul>
-
-                            <h5 className="title">Emma Elizabeth</h5>
-                            <span>Assistant Teacher</span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
+                    ))}
+                    
                   </div>
 
                   <div className="swiper-button-next">

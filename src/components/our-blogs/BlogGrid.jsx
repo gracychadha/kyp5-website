@@ -22,7 +22,7 @@ function BlogGrid() {
         <div className="container ">
           <div className="row g-5 mt--20">
             {blogs.map((blog) => (
-              <div className="col-lg-4">
+              <div className="col-lg-6">
                 <div className="single-blog-style-one">
                   <a href={`/our-blogs/${blog.id}`} className="thumbnail">
                     <img

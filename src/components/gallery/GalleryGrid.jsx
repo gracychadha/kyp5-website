@@ -1,42 +1,48 @@
-import React, { useState } from "react";
-
-const galleryImages = [
-  { id: 1, img: "/assets/images/course/01.jpg" },
-  { id: 2, img: "/assets/images/course/02.jpg" },
-  { id: 3, img: "/assets/images/course/03.jpg" },
-  { id: 4, img: "/assets/images/course/04.jpg" },
-  { id: 5, img: "/assets/images/course/05.jpg" },
-  { id: 6, img: "/assets/images/course/06.jpg" },
-];
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 
 function Gallery() {
+  const [gallery, setGallery] = useState([]);
   const [selectedImage, setSelectedImage] = useState(null);
+
+  useEffect(() => {
+    axios
+      .get(import.meta.env.VITE_BASE_URL + "gallery")
+      .then((response) => {
+        setGallery(response.data.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
+
+  const BASE_URL = import.meta.env.VITE_BASE_URL.replace("/api/public/", "");
 
   return (
     <section className="gallery-section">
       <div className="container">
-
         <div className="section-title">
           <h2>Gallery</h2>
         </div>
 
         <div className="gallery-grid">
-
-          {galleryImages.map((item) => (
+          {gallery.map((item) => (
             <div className="gallery-item" key={item.id}>
-              <img src={item.img} alt="gallery" />
+              <img
+                src={item.image ? BASE_URL + item.image : "/assets/images/gallery/default.jpg"}
+                alt={item.title || "gallery"}
+              />
 
               <div className="gallery-overlay">
                 <button
                   className="view-btn"
-                  onClick={() => setSelectedImage(item.img)}
+                  onClick={() => setSelectedImage(BASE_URL + item.image)}
                 >
                   View
                 </button>
               </div>
             </div>
           ))}
-
         </div>
       </div>
 

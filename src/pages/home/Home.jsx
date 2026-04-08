@@ -19,10 +19,11 @@ function Home() {
     <About/>
     <Category />
     <Course />
-    <WhyChooseUs />
-    <UpcomingEvents />
     <FunFacts />
-    <Instructor />
+    {/* <WhyChooseUs /> */}
+    <UpcomingEvents />
+    
+    {/* <Instructor /> */}
     <Feedback />
     <BlogSection />
     

@@ -16,6 +16,7 @@ import SignUp from "./pages/sign-up/SignUp";
 import Course from "./pages/course/Course";
 import PrivacyPolicy from "./pages/privacy-policy/PrivacyPolicy";
 import TermsCondition from "./pages/terms-conditions/TermsCondition";
+import Events from "./pages/upcoming-events/Events";
 function App() {
   return (
     <Router>
@@ -33,6 +34,7 @@ function App() {
           <Route path="/courses" element={<Course />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/terms-conditions" element={<TermsCondition />} />
+          <Route path="/events" element={<Events />} />
         </Route>
         <Route element={<AuthLayout />}>
           <Route path="/login" element={<Login />} />

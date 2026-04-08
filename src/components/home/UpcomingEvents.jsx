@@ -1,11 +1,26 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 
 function UpcomingEvents() {
+  const [events, setEvents] = useState([]);
+
+  useEffect(() => {
+    axios
+      .get(import.meta.env.VITE_BASE_URL + "events?limit=3&sort=desc")
+      .then((response) => {
+        setEvents(response.data?.data || []);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
+
+  const baseURL = import.meta.env.VITE_BASE_URL.replace("/api/public/", "");
+
   return (
     <>
       <div className="up-coming-events rts-section-gap">
         <div className="container">
-
           <div className="row">
             <div className="col-lg-12">
               <div className="title-area-center-style">
@@ -23,143 +38,86 @@ function UpcomingEvents() {
 
           <div className="row mt--50">
             <div className="col-lg-12">
-
               <div className="upcoming-events-main-wrapper-1">
 
-                {/* Event 1 */}
-                <div className="single-upcoming-events">
-                  <div className="img-information">
+                {events.length > 0 ? (
+                  events.map((event) => {
+                    const image =
+                      event.thumbnail
+                        ? baseURL + event.thumbnail
+                        : "/assets/images/events/01.jpg";
 
-                    <a href="#" className="thumbnail">
-                      <img src="/assets/images/events/01.jpg" alt="events" />
-                    </a>
+                    const title = event.title || "Upcoming Event";
 
-                    <div className="information">
-                      <div className="date-details">
+                    const date = event.eventDate
+                      ? new Date(event.eventDate).toLocaleDateString("en-US", {
+                          year: "numeric",
+                          month: "long",
+                          day: "numeric",
+                        })
+                      : "March 25, 2026";
 
-                        <div className="date">
-                          <i className="fa-thin fa-calendar-days"></i>
-                          <p>December 26, 2023</p>
+                    const time = event.eventTime || "10:30 PM";
+
+                    const venue = event.venue || "Event Location";
+
+                    const buttonText = event.buttonText || "View Event";
+
+                    const buttonLink = event.buttonLink || "#";
+
+                    return (
+                      <div
+                        className="single-upcoming-events"
+                        key={event.id || Math.random()}
+                      >
+                        <div className="img-information">
+                          <a href={buttonLink} className="thumbnail">
+                            <img src={image} alt={title} />
+                          </a>
+
+                          <div className="information">
+                            <div className="date-details">
+                              <div className="date">
+                                <i className="fa-thin fa-calendar-days"></i>
+                                <p>{date}</p>
+                              </div>
+
+                              <div className="time">
+                                <i className="fa-regular fa-clock"></i>
+                                <p>{time}</p>
+                              </div>
+
+                              <div className="location">
+                                <i className="fa-thin fa-location-dot"></i>
+                                <p>{venue}</p>
+                              </div>
+                            </div>
+
+                            <a href={buttonLink}>
+                              <h5 className="title">{title}</h5>
+                            </a>
+                          </div>
                         </div>
 
-                        <div className="time">
-                          <i className="fa-regular fa-clock"></i>
-                          <p>10:30 am</p>
-                        </div>
-
-                        <div className="location">
-                          <i className="fa-thin fa-location-dot"></i>
-                          <p>Yarra Park, Melbourne</p>
-                        </div>
-
+                        <a
+                          href="/events"
+                          className="rts-btn btn-primary with-arrow"
+                        >
+                         View All Events
+                          <i className="fa-light fa-arrow-right"></i>
+                        </a>
                       </div>
-
-                      <a href="#">
-                        <h5 className="title">
-                          EduFest 2023: Igniting Minds, Transforming Lives
-                        </h5>
-                      </a>
-
-                    </div>
-                  </div>
-
-                  <a href="#" className="rts-btn btn-primary with-arrow">
-                    Get Ticket
-                    <i className="fa-light fa-arrow-right"></i>
-                  </a>
-                </div>
-
-                {/* Event 2 */}
-                <div className="single-upcoming-events">
-                  <div className="img-information">
-
-                    <a href="#" className="thumbnail">
-                      <img src="/assets/images/events/02.jpg" alt="events" />
-                    </a>
-
-                    <div className="information">
-                      <div className="date-details">
-
-                        <div className="date">
-                          <i className="fa-thin fa-calendar-days"></i>
-                          <p>December 26, 2023</p>
-                        </div>
-
-                        <div className="time">
-                          <i className="fa-regular fa-clock"></i>
-                          <p>10:30 am</p>
-                        </div>
-
-                        <div className="location">
-                          <i className="fa-thin fa-location-dot"></i>
-                          <p>Yarra Park, Melbourne</p>
-                        </div>
-
-                      </div>
-
-                      <a href="#">
-                        <h5 className="title">
-                          EdTech Summit: Revolutionizing Learning
-                        </h5>
-                      </a>
-
-                    </div>
-                  </div>
-
-                  <a href="#" className="rts-btn btn-primary with-arrow">
-                    Get Ticket
-                    <i className="fa-light fa-arrow-right"></i>
-                  </a>
-                </div>
-
-                {/* Event 3 */}
-                <div className="single-upcoming-events">
-                  <div className="img-information">
-
-                    <a href="#" className="thumbnail">
-                      <img src="/assets/images/events/03.jpg" alt="events" />
-                    </a>
-
-                    <div className="information">
-                      <div className="date-details">
-
-                        <div className="date">
-                          <i className="fa-thin fa-calendar-days"></i>
-                          <p>December 26, 2023</p>
-                        </div>
-
-                        <div className="time">
-                          <i className="fa-regular fa-clock"></i>
-                          <p>10:30 am</p>
-                        </div>
-
-                        <div className="location">
-                          <i className="fa-thin fa-location-dot"></i>
-                          <p>Yarra Park, Melbourne</p>
-                        </div>
-
-                      </div>
-
-                      <a href="#">
-                        <h5 className="title">
-                          Teaching Tomorrow: A Symposium on Modern
-                        </h5>
-                      </a>
-
-                    </div>
-                  </div>
-
-                  <a href="#" className="rts-btn btn-primary with-arrow">
-                    Get Ticket
-                    <i className="fa-light fa-arrow-right"></i>
-                  </a>
-                </div>
+                    );
+                  })
+                ) : (
+                  <p style={{ textAlign: "center" }}>
+                    No upcoming events available.
+                  </p>
+                )}
 
               </div>
-
             </div>
           </div>
-
         </div>
       </div>
     </>

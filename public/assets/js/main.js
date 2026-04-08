@@ -75,6 +75,51 @@
         swiperActivation: function () {
 
             $(document).ready(function () {
+                var swiper = new Swiper(".mySwiper-category-5", {
+                    slidesPerView: 6,
+                    spaceBetween: 24,
+                    loop: true,
+                    navigation: {
+                        nextEl: ".swiper-button-next",
+                        prevEl: ".swiper-button-prev",
+                        clickable: true
+                    },
+                    pagination: {
+                        el: ".swiper-pagination",
+                        clickable: true
+                    },
+                    breakpoints: {
+                        1700: {
+                          slidesPerView: 6,
+                        },
+                        1500: {
+                          slidesPerView: 6,
+                        },
+                        1324: {
+                          slidesPerView: 6,
+                        },
+                        1100: {
+                          slidesPerView: 4,
+                        },
+                        800: {
+                          slidesPerView: 3,
+                        },
+                        768: {
+                          slidesPerView: 2,
+                        },
+                        640: {
+                          slidesPerView: 2,
+                        },
+                        440: {
+                          slidesPerView: 2,
+                        },
+                        320: {
+                          slidesPerView: 1,
+                        }
+                    }
+                });
+            });
+            $(document).ready(function () {
                 var swiper = new Swiper(".mySwiper-category-1", {
                     slidesPerView: 6,
                     spaceBetween: 24,

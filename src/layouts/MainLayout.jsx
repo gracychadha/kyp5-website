@@ -2,6 +2,7 @@ import React from "react";
 import { Outlet } from "react-router-dom";
 import Header from "../components/common/Header";
 import Footer from "../components/common/Footer";
+import ScrollToTop from "../components/common/ScrollToTop";
 
 function MainLayout() {
   return (
@@ -11,6 +12,7 @@ function MainLayout() {
         <Outlet />
       </main>
       <Footer />
+      <ScrollToTop />
     </>
   );
 }

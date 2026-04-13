@@ -9,7 +9,6 @@ export default function Course() {
       <div className="rts-course-default-area rts-section-gap">
         <div className="container">
           <div className="row g-5">
-            <CourseSidebar />
             <CourseGrid />
           </div>
         </div>

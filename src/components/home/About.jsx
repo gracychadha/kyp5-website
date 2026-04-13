@@ -1,6 +1,20 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 
 function About() {
+  const [aboutContent, setAboutContent] = useState(null);
+  const BASE_URL = import.meta.env.VITE_BASE_URL.replace("/api/public/", "");
+  useEffect(() => {
+    axios
+      .get(import.meta.env.VITE_BASE_URL + "settings/site-config")
+      .then((response) => {
+        setAboutContent(response.data.data.about);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
+
   return (
     <>
       <div className="about-area-start rts-section-gapBottom">
@@ -15,7 +29,10 @@ function About() {
                     <div className="information">
                       <div className="left">
                         <h3 className="title">
-                          <span className="counter">2.4</span>k
+                          <span className="counter">
+                            {aboutContent.experienceYears || "0"}
+                          </span>
+                          k
                         </h3>
                         <span className="review">Positive Review</span>
                       </div>
@@ -39,14 +56,28 @@ function About() {
                   </div>
 
                   <div className="thumb-bottom">
-                    <img src="/assets/images/about/02.jpg" alt="about" />
+                    <img
+                      src={`${BASE_URL}${aboutContent.image1}`}
+                      alt="about"
+                      onError={(e) => {
+                        e.target.onerror = null;
+                        e.target.src = "/assets/images/about/03.jpg";
+                      }}
+                    />
                   </div>
                 </div>
 
                 <div className="second-order">
-                  <img src="/assets/images/about/01.jpg" alt="about" />
+                  <img
+                    src={`${BASE_URL}${aboutContent.image2}`}
+                    alt="about"
+                    onError={(e) => {
+                      e.target.onerror = null;
+                      e.target.src = "/assets/images/about/02.jpg";
+                    }}
+                  />
 
-                  <div className="vedio-icone">
+                  {/* <div className="vedio-icone">
                     <a
                       className="video-play-button play-video popup-video"
                       href="https://www.youtube.com/watch?v=ezbJwaLmOeM"
@@ -57,7 +88,7 @@ function About() {
                     <div className="video-overlay">
                       <a className="video-overlay-close">×</a>
                     </div>
-                  </div>
+                  </div> */}
                 </div>
               </div>
             </div>
@@ -69,53 +100,15 @@ function About() {
                   <span>Gateway to Lifelong Learning</span>
                 </div>
 
-                <h2 className="title">
-                  Know Studyhub Empowering Learners Worldwide
-                </h2>
+                <h2 className="title">{aboutContent.title}</h2>
 
-                <p className="post-title">
-                  We are passionate about education and dedicated to providing
-                  high-quality learning resources for learners of all
-                  backgrounds.
-                </p>
+                <p className="post-title">{aboutContent.summary}</p>
+                <p>{aboutContent.content}</p>
               </div>
 
               <div className="about-inner-right-one">
-                <div className="what-you-get">
-                  <div className="single-facilityes">
-                    <div className="icon">
-                      <img src="/assets/images/about/icon/01.png" alt="icon" />
-                    </div>
-                    <div className="information">
-                      <h5 className="title">Learn with Expert</h5>
-                      <p>We are passionate about education.</p>
-                    </div>
-                  </div>
-
-                  <div className="single-facilityes">
-                    <div className="icon">
-                      <img src="/assets/images/about/icon/02.png" alt="icon" />
-                    </div>
-                    <div className="information">
-                      <h5 className="title">Expert Instructors</h5>
-                      <p>We are passionate about education</p>
-                    </div>
-                  </div>
-                </div>
-
                 <div className="author-area">
-                  <div className="single-author-and-info">
-                    <img src="/assets/images/about/01.png" alt="author" />
-
-                    <div className="information">
-                      <a href="#">
-                        <h6 className="title">William James</h6>
-                      </a>
-                      <p className="desig">CEO, Studyhub Online Education</p>
-                    </div>
-                  </div>
-
-                  <a href="#" className="rts-btn btn-primary">
+                  <a href="/about-us" className="rts-btn btn-primary">
                     About Us
                   </a>
                 </div>

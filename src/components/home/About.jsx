@@ -1,25 +1,38 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
-function About() {
+const About = () => {
   const [aboutContent, setAboutContent] = useState(null);
+
   const BASE_URL = import.meta.env.VITE_BASE_URL.replace("/api/public/", "");
+  const API_URL = `${BASE_URL}/api/public/settings/site-config`;
+
   useEffect(() => {
-    axios
-      .get(import.meta.env.VITE_BASE_URL + "settings/site-config")
-      .then((response) => {
-        setAboutContent(response.data.data.about);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    const fetchAbout = async () => {
+      try {
+        const res = await axios.get(API_URL);
+
+        //  correct path from your response
+        setAboutContent(res.data.data.about);
+      } catch (error) {
+        console.error("Error fetching about data:", error);
+      }
+    };
+
+    fetchAbout();
   }, []);
+
+  //  Loader
+  if (!aboutContent) {
+    return <p style={{ textAlign: "center" }}>Loading...</p>;
+  }
 
   return (
     <>
       <div className="about-area-start rts-section-gapBottom">
         <div className="container">
           <div className="row align-items-center">
+            {/* LEFT SIDE */}
             <div className="col-xl-6 col-lg-12">
               <div className="about-one-left-image">
                 <div className="first-order">
@@ -30,15 +43,15 @@ function About() {
                       <div className="left">
                         <h3 className="title">
                           <span className="counter">
-                            {aboutContent.experienceYears || "0"}
+                            {aboutContent.experienceYears
+                              ? `${aboutContent.experienceYears} +`
+                              : "0 +"}
                           </span>
-                          k
                         </h3>
-                        <span className="review">Positive Review</span>
+                        {/* <span className="review">Positive Review</span> */}
                       </div>
 
                       <div className="right">
-                        {/* SVG kept same */}
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           width={49}
@@ -55,9 +68,10 @@ function About() {
                     </div>
                   </div>
 
+                  {/* IMAGE 1 */}
                   <div className="thumb-bottom">
                     <img
-                      src={`${BASE_URL}${aboutContent.image1}`}
+                      src={`${BASE_URL}${aboutContent?.image2}`}
                       alt="about"
                       onError={(e) => {
                         e.target.onerror = null;
@@ -67,43 +81,47 @@ function About() {
                   </div>
                 </div>
 
+                {/* IMAGE 2 */}
                 <div className="second-order">
                   <img
-                    src={`${BASE_URL}${aboutContent.image2}`}
+                    src={`${BASE_URL}${aboutContent?.image1}`}
                     alt="about"
                     onError={(e) => {
                       e.target.onerror = null;
                       e.target.src = "/assets/images/about/02.jpg";
                     }}
                   />
-
-                  {/* <div className="vedio-icone">
-                    <a
-                      className="video-play-button play-video popup-video"
-                      href="https://www.youtube.com/watch?v=ezbJwaLmOeM"
-                    >
-                      <span></span>
-                    </a>
-
-                    <div className="video-overlay">
-                      <a className="video-overlay-close">×</a>
-                    </div>
-                  </div> */}
                 </div>
               </div>
             </div>
 
+            {/* RIGHT SIDE */}
             <div className="col-xl-6 col-lg-12 pl--60 pl_lg--15 pl_md--10 pl_sm--10 pt_lg--50 pt_md--50 pt_sm--50">
               <div className="title-area-left-style">
                 <div className="pre-title">
                   <img src="/assets/images/banner/bulb.png" alt="icon" />
-                  <span>Gateway to Lifelong Learning</span>
+                  <span>
+                    {aboutContent.subtitle
+                      ? aboutContent.subtitle
+                      : "Who we Are??"}
+                  </span>
                 </div>
 
-                <h2 className="title">{aboutContent.title}</h2>
+                <h2 className="title">
+                  {aboutContent.title ? aboutContent.title : "About Us"}
+                </h2>
 
-                <p className="post-title">{aboutContent.summary}</p>
-                <p>{aboutContent.content}</p>
+                <p className="post-title">
+                  {aboutContent.summary ? aboutContent.summary : "Summary"}
+                </p>
+
+                <p>
+                  <div
+                    dangerouslySetInnerHTML={{
+                      __html: aboutContent.content || "Content",
+                    }}
+                  />
+                </p>
               </div>
 
               <div className="about-inner-right-one">
@@ -119,6 +137,6 @@ function About() {
       </div>
     </>
   );
-}
+};
 
 export default About;

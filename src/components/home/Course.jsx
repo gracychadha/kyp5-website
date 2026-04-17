@@ -50,7 +50,7 @@ function Course() {
                       src={
                         course.thumbnail
                           ? `${BASE_URL}${course.thumbnail}`
-                          : "/assets/images/course/default.jpg"
+                          : "/assets/images/course/01.jpg"
                       }
                       alt={course.title}
                       onError={(e) => {

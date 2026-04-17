@@ -5,10 +5,10 @@ import BlogSection from "../../components/home/BlogSection";
 import Brand from "../../components/home/Brand";
 import Category from "../../components/home/Category";
 import Course from "../../components/home/Course";
-import WhyChooseUs from "../../components/home/WhyChooseUs"
+// import WhyChooseUs from "../../components/home/WhyChooseUs"
 import UpcomingEvents from "../../components/home/UpcomingEvents"
 import FunFacts from "../../components/home/FunFacts"
-import Instructor from "../../components/common/Instructor"
+// import Instructor from "../../components/common/Instructor"
 import Feedback from "../../components/home/Feedback"
 
 function Home() {
@@ -17,7 +17,7 @@ function Home() {
     <Banner />
     <Brand />
     <About/>
-    <Category />
+    {/* <Category /> */}
     <Course />
     <FunFacts />
     {/* <WhyChooseUs /> */}

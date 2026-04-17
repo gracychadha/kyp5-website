@@ -109,11 +109,15 @@ function AboutSection() {
                 </h2>
 
                 <p className="post-title">
-                  {aboutContent?.summary}
+                  dangerouslySetInnerHTML={{
+                      __html: aboutContent.content || "Content",
+                    }}
                 </p>
 
                 <p>
-                  {aboutContent?.content}
+                 dangerouslySetInnerHTML={{
+                      __html: aboutContent.content || "Content",
+                    }}
                 </p>
 
               </div>

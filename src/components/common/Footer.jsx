@@ -179,9 +179,6 @@ function Footer() {
                     <ul>
                       <li><a href="#"><i className="fa-brands fa-facebook-f"></i></a></li>
                       <li><a href="#"><i className="fa-brands fa-instagram"></i></a></li>
-                      <li><a href="#"><i className="fa-brands fa-linkedin"></i></a></li>
-                      <li><a href="#"><i className="fa-brands fa-pinterest"></i></a></li>
-                      <li><a href="#"><i className="fa-brands fa-youtube"></i></a></li>
                     </ul>
 
                   </div>

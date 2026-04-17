@@ -18,6 +18,10 @@ function Header() {
                     <i className="fa-light fa-phone" />
                     +91 987 885 3633
                   </a>
+                  <a href="https://kyp5.com/assets/upload/msme.pdf" className="email" target="_blank">
+                    <i className="fa-light fa-handshake"></i>
+                    MSME
+                  </a>
                 </div>
                 <div className="right-information">
                   <ul className="rts-dropdown-menu switcher-language">

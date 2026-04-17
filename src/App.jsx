@@ -35,10 +35,7 @@ function App() {
           <Route path="/terms-conditions" element={<TermsCondition />} />
           <Route path="/events" element={<Events />} />
         </Route>
-        <Route element={<AuthLayout />}>
-          <Route path="/login" element={<Login />} />
-          <Route path="/sign-up" element={<SignUp />} />
-        </Route>
+       
       </Routes>
     </Router>
   );

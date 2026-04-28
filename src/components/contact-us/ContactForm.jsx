@@ -1,6 +1,55 @@
-import React from "react";
+import React, { useState } from "react";
+import axios from "axios";
 
 function ContactForm() {
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    subject: "",
+    message: "",
+  });
+
+  const [loading, setLoading] = useState(false);
+
+  // handle input
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  // submit form
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      setLoading(true);
+
+      const res = await axios.post(
+        "https://api.kyp5.vibrantick.org/api/public/contact",
+        formData,
+      );
+
+      if (res.data.success) {
+        alert(res.data.message);
+
+        // reset form
+        setFormData({
+          name: "",
+          email: "",
+          subject: "",
+          message: "",
+        });
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Something went wrong");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <>
       <div className="rts-contact-area rts-section-gapTop">
@@ -19,44 +68,65 @@ function ContactForm() {
                     <span>Get in touch!</span>
                   </h2>
                 </div>
-                <form
-                  action="mailer.php"
-                  method="post"
-                  className="contact-page-form"
-                  id="contact-form"
-                >
+
+                {/* FORM START */}
+                <form className="contact-page-form" onSubmit={handleSubmit}>
                   <div className="single-input">
-                    <label htmlFor="name">Your Name*</label>
+                    <label>Your Name*</label>
                     <input
-                      id="name"
                       name="name"
                       type="text"
+                      value={formData.name}
+                      onChange={handleChange}
                       placeholder="Andrew Davis ...."
                       required
                     />
                   </div>
+
                   <div className="single-input">
-                    <label htmlFor="email">Your Email*</label>
+                    <label>Your Email*</label>
                     <input
-                      id="email"
                       name="email"
                       type="email"
+                      value={formData.email}
+                      onChange={handleChange}
                       placeholder="info@studyhub.net"
+                      required
                     />
                   </div>
+
+                  {/* 👉 added subject (your API expects it) */}
                   <div className="single-input">
-                    <label htmlFor="message">Message*</label>
-                    <textarea
-                      id="message"
-                      name="message"
-                      placeholder="Let tell us about your projects"
-                      defaultValue={""}
+                    <label>Subject</label>
+                    <input
+                      name="subject"
+                      type="text"
+                      value={formData.subject}
+                      onChange={handleChange}
+                      placeholder="Subject"
                     />
                   </div>
-                  <button className="rts-btn btn-primary mt--30">
-                    Send Message
+
+                  <div className="single-input">
+                    <label>Message*</label>
+                    <textarea
+                      name="message"
+                      value={formData.message}
+                      onChange={handleChange}
+                      placeholder="Tell us about your query"
+                      required
+                    />
+                  </div>
+
+                  <button
+                    type="submit"
+                    className="rts-btn btn-primary mt--30"
+                    disabled={loading}
+                  >
+                    {loading ? "Sending..." : "Send Message"}
                   </button>
                 </form>
+                {/* FORM END */}
                 <div id="form-messages" className="mt--20" />
               </div>
               {/* contact left area end */}

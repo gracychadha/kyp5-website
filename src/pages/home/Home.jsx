@@ -4,7 +4,7 @@ import About from "../../components/home/About";
 import BlogSection from "../../components/home/BlogSection";
 import Brand from "../../components/home/Brand";
 import Category from "../../components/home/Category";
-import Course from "../../components/home/Course";
+// import Course from "../../components/home/Course";
 // import WhyChooseUs from "../../components/home/WhyChooseUs"
 import UpcomingEvents from "../../components/home/UpcomingEvents"
 import FunFacts from "../../components/home/FunFacts"
@@ -18,7 +18,7 @@ function Home() {
     <Brand />
     <About/>
     {/* <Category /> */}
-    <Course />
+    {/* <Course /> */}
     <FunFacts />
     {/* <WhyChooseUs /> */}
     <UpcomingEvents />

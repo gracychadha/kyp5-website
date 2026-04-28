@@ -15376,6 +15376,7 @@ nav ul li a {
 }
 .main-nav-one ul li {
   position: relative;
+  margin-right: 20px;
 }
 .main-nav-one ul li > a {
   padding: 19px 15px;
@@ -30597,7 +30598,9 @@ header.header-three .sub-dropdown .submenu.third-lvl.base {
   font-style: normal;
   font-weight: 600;
   line-height: 30px;
-  margin-bottom: 40px;
+}
+.login-page-form-area .sub-title{
+  margin-bottom: 20px;
 }
 .login-page-form-area .single-input-wrapper {
   margin-bottom: 20px;

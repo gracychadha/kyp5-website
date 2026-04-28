@@ -62,7 +62,7 @@ function BlogOverview() {
             <h3 className="title animated fadeIn">
               {blog.title ? blog.title : "Title not available"}
             </h3>
-            <p className="disc para-1">
+            <p className="disc para-1" align="justify">
               {blog.content ? blog.content : "Description not available"}
             </p>
 

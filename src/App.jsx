@@ -1,8 +1,8 @@
-// src/App.jsx
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 import MainLayout from "./layouts/MainLayout";
+
 import Home from "./pages/home/Home";
 import AboutUs from "./pages/about-us/AboutUs";
 import Instructor from "./pages/instructor/Instructor";
@@ -16,13 +16,16 @@ import Course from "./pages/course/Course";
 import PrivacyPolicy from "./pages/privacy-policy/PrivacyPolicy";
 import TermsCondition from "./pages/terms-conditions/TermsCondition";
 import Events from "./pages/upcoming-events/Events";
+import Question from "./pages/question/Question";
+
 import Test from "./pages/test/Test";
 import Instruction from "./pages/instructions/Instruction";
+import TestLayout from "./layouts/TestLayout";
 function App() {
   return (
     <Router>
       <Routes>
-        {/*  Public Website with MainLayout */}
+        {/* Website Pages (WITH Header/Footer) */}
         <Route element={<MainLayout />}>
           <Route path="/" element={<Home />} />
           <Route path="/about-us" element={<AboutUs />} />
@@ -37,9 +40,14 @@ function App() {
           <Route path="/terms-conditions" element={<TermsCondition />} />
           <Route path="/events" element={<Events />} />
           <Route path="/test" element={<Test />} />
-          <Route path="/instruction" element={<Instruction />} />
         </Route>
-       
+        {/*  Test Flow (NO Header/Footer) */}
+
+        <Route element={<TestLayout />}>
+          <Route path="/instruction" element={<Instruction />} />
+          <Route path="/question" element={<Question />} />
+         
+        </Route>
       </Routes>
     </Router>
   );

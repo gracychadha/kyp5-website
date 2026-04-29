@@ -133,13 +133,13 @@ function Header() {
                       </a>
                       <ul className="submenu">
                         <li>
-                          <Link className="submenu-link" to="">
+                          <Link className="submenu-link" to="/test">
                             Psychometric Test
                           </Link>
-                          <Link className="submenu-link" to="">
+                          <Link className="submenu-link" to="#">
                             Talent Hub Test
                           </Link>
-                          <Link className="submenu-link" to="">
+                          <Link className="submenu-link" to="#">
                             Join Now
                           </Link>
                         </li>

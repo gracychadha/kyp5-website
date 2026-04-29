@@ -13,7 +13,7 @@ function TestComponent() {
                   <p className="sub-title">
                     Create your account in seconds and begin your assessment
                   </p>
-                  <form action="#">
+                  <form action="">
                     <div className="half-input-wrapper">
                       <div className="single-input-wrapper">
                         <label htmlFor="username">
@@ -91,7 +91,7 @@ function TestComponent() {
                         <br />
                       </div>
                     </div>
-                    <button className="rts-btn btn-primary">Sign Up</button>
+                   <a href="/instruction" className="rts-btn btn-primary">Sign Up</a>
                     
                   </form>
                 </div>

@@ -1,153 +1,142 @@
-
-import React, { useState } from "react";
+import React from "react";
 import userImage from "../../../public/assets/images/auser.jpg";
-const questionsData = [
-  {
-    id: 1,
-    question: "What is your favorite color?",
-    options: ["Red", "Blue", "Green", "Yellow"],
-  },
-  {
-    id: 2,
-    question: "Which environment do you prefer?",
-    options: ["Quiet", "Social", "Adventurous", "Organized"],
-  },
-  {
-    id: 3,
-    question: "How do you make decisions?",
-    options: ["Logic", "Emotion", "Advice", "Instinct"],
-  },
-];
 function QuestionComponent() {
-     const [currentIndex, setCurrentIndex] = useState(0);
-  const [answers, setAnswers] = useState({});
-
-  const currentQuestion = questionsData[currentIndex];
-
-  // handle option select
-  const handleOptionChange = (option) => {
-    setAnswers({
-      ...answers,
-      [currentQuestion.id]: option,
-    });
-  };
-
-  // next
-  const handleNext = () => {
-    if (currentIndex < questionsData.length - 1) {
-      setCurrentIndex(currentIndex + 1);
-    }
-  };
-
-  // previous
-  const handlePrev = () => {
-    if (currentIndex > 0) {
-      setCurrentIndex(currentIndex - 1);
-    }
-  };
-
-  // submit
-  const handleSubmit = () => {
-    console.log("Answers:", answers);
-    alert("Test Submitted!");
-  };
-
-  const [accepted, setAccepted] = useState(false);
-
-  const handleStart = () => {
-    if (!accepted) return;
-
-    window.location.href = "/question";
-  };
-
   return (
-    <section className="test-wrapper">
-      <div className="test-container">
-        <div className="user-panel">
-          <div className="user-card">
-            <div className="d-flex">
-              <div className="img-user">
-                <img src={userImage} className="user-img" />
+    <>
+      <section className="test-wrapper">
+        <div className="test-container ">
+          <div className="user-panel">
+            <div className="user-card">
+              <div className="d-flex">
+                <div className="img-user">
+                  <img src={userImage} className="user-img" />
+                </div>
+                <div className="user-data">
+                  <h4 className="user-name">John Doe</h4>
+                  <p className="user-email">john@example.com</p>
+                </div>
               </div>
-              <div className="user-data">
-                <h4 className="user-name">John Doe</h4>
-                <p className="user-email">john@example.com</p>
+
+              <div className="qp-legend-wrapper">
+                <div className="qp-legend-item">
+                  <span className="qp-box qp-attempted">0</span>
+                  <p className="qp-label">Attempted</p>
+                </div>
+
+                <div className="qp-legend-item">
+                  <span className="qp-box qp-marked">0</span>
+                  <p className="qp-label">Marked</p>
+                </div>
+
+                <div className="qp-legend-item">
+                  <span className="qp-box qp-not-visited">99</span>
+                  <p className="qp-label">Not Visited</p>
+                </div>
+
+                <div className="qp-legend-item">
+                  <span className="qp-box qp-not-answered">1</span>
+                  <p className="qp-label">Not Answered</p>
+                </div>
+
+                <div className="qp-legend-item w-100">
+                  <span className="qp-box qp-marked-answered">
+                    0 <i className="fa-solid fa-check"></i>
+                  </span>
+                  <p className="qp-label">Marked & Answered</p>
+                </div>
               </div>
             </div>
             <hr />
-            <div className="user-details">
-              <p>
-                <strong>Test:</strong> Personality Test
-              </p>
-              <p>
-                <strong>Duration:</strong> 30 mins
-              </p>
-              <p>
-                <strong>Questions:</strong> 25
-              </p>
+            <div className="user-data">
+              <h5 className="question-palette__title">
+                <strong>Test:</strong> Psychemetric Test
+              </h5>
+            </div>
+            <div className="user-card">
+              <div className="question-palette">
+                <div className="question-palette__grid scrollable-grid">
+                  {[...Array(100)].map((_, index) => (
+                    <div
+                      key={index}
+                      className={`question-palette__item ${
+                        index === 0 ? "question-palette__item--active" : ""
+                      }`}
+                    >
+                      {index + 1}
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <button className="rts-btn btn-primary mt-4 w-100">
+                Submit Test
+              </button>
+            </div>
+          </div>
+
+          <div className="question-main-container">
+            <div className="title-section">
+              <h6 className="title">
+                <strong>Test:</strong> Psychemetric Test
+              </h6>
+            </div>
+            <div className="main-container-q">
+              <div className="q-header d-flex justify-content-between align-items-center mb-5">
+                <h5 class="title mb-0">Question 1:</h5>
+
+                <span class="timer  text-dark">Time: 00:32</span>
+              </div>
+              <div className="q-main-section">
+                <div className="question-card border rounded p-4">
+                  <h5 className="question-text  mb-4">
+                    Which one of the following Indian States has no
+                    international boundary?
+                  </h5>
+
+                  <div className="options-container d-flex flex-column gap-3">
+                    <label className="option-box">
+                      <input type="radio" name="q1" />
+                      <span>Bihar</span>
+                    </label>
+
+                    <label className="option-box">
+                      <input type="radio" name="q1" />
+                      <span>Chhattisgarh</span>
+                    </label>
+
+                    <label className="option-box">
+                      <input type="radio" name="q1" />
+                      <span>Uttarakhand</span>
+                    </label>
+
+                    <label className="option-box">
+                      <input type="radio" name="q1" />
+                      <span>Meghalaya</span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+              <div className="q-button-container d-flex justify-content-between">
+                <div className="left-btns d-flex gap-2">
+                  <button className="rts-btn text-white btn-secondary mt-4">
+                    Mark for Review & Next
+                  </button>
+                  <button className="rts-btn text-white btn-danger mt-4">
+                    Clear response
+                  </button>
+                </div>
+
+                <div className="right-btn">
+                  <button className="rts-btn btn-primary mt-4">
+                    Save & Next
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
         </div>
-        {/* RIGHT SIDE (QuestionComponent) */}
-        <div className="instruction-panel">
-           <section className="testq-wrapper">
-      <div className="testq-container">
-
-        {/* Header */}
-        <div className="testq-header">
-          <h3>Question {currentIndex + 1} / {questionsData.length}</h3>
-        </div>
-
-        {/* Question Card */}
-        <div className="testq-card">
-          <h4 className="testq-question">
-            {currentQuestion.question}
-          </h4>
-
-          {/* Options */}
-          <div className="testq-options">
-            {currentQuestion.options.map((opt, index) => (
-              <label key={index} className="testq-option">
-                <input
-                  type="radio"
-                  name="answer"
-                  checked={answers[currentQuestion.id] === opt}
-                  onChange={() => handleOptionChange(opt)}
-                />
-                <span>{opt}</span>
-              </label>
-            ))}
-          </div>
-        </div>
-
-        {/* Navigation */}
-        <div className="testq-actions">
-          <button
-            className="testq-btn prev-btn"
-            onClick={handlePrev}
-            disabled={currentIndex === 0}
-          >
-            ← Previous
-          </button>
-
-          {currentIndex === questionsData.length - 1 ? (
-            <button className="testq-btn submit-btn" onClick={handleSubmit}>
-              Submit Test
-            </button>
-          ) : (
-            <button className="testq-btn next-btn" onClick={handleNext}>
-              Next →
-            </button>
-          )}
-        </div>
-
-      </div>
-    </section>
-        </div>
-      </div>
-    </section>
+      </section>
+    </>
   );
 }
 
 export default QuestionComponent;
-

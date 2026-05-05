@@ -41,7 +41,7 @@ function Instructions() {
         {/* RIGHT SIDE (INSTRUCTIONS) */}
         <div className="instruction-panel">
           <div className="instruction-card">
-            <h2 className="inst-title">Test Instructions</h2>
+            <h2 className="inst-title">INSTRUCTION</h2>
             <p className="inst-subtitle">
               Please read the following instructions carefully before starting
               the test.

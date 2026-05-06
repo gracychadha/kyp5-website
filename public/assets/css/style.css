@@ -33846,3 +33846,12 @@ header.header-three .sub-dropdown .submenu.third-lvl.base {
   margin-top: auto; 
   padding-top: 20px;
 }
+.grecaptcha-badge {
+  visibility: hidden;
+}
+#main-logo{
+  max-height:60px;
+}
+#footer-logo{
+  max-height:60px;
+}

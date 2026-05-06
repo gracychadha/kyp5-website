@@ -38,7 +38,7 @@ function BlogSection() {
           <div className="row g-5 mt--20">
             {/* Blog 1 */}
             {blogs.map((blog) => (
-              <div className="col-lg-4 col-md-6 col-sm-12">
+              <div className="col-lg-4 col-md-6 col-sm-12"   key={blog.id}>
                 <div className="single-blog-style-one">
                   <a href={`/our-blogs/${blog.id}`} className="thumbnail">
                     <img
@@ -54,7 +54,7 @@ function BlogSection() {
                     />
                     {blog?.categories?.length ? (
                       blog.categories.map((cat) => (
-                        <div className="tags-area">
+                        <div className="tags-area"  key={cat.id}>
                           <span key={cat.id}>{cat.name}</span>
                         </div>
                       ))

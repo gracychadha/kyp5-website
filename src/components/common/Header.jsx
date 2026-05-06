@@ -1,7 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { useSite } from "../../context/SiteContext";
 import logo from "../../../public/assets/images/logo/main-logo.png";
 function Header() {
+  const { siteData } = useSite();
   return (
     <header className="header-one header--sticky">
       <div className="header-top-one-wrapper">
@@ -12,11 +14,11 @@ function Header() {
                 <div className="left-information">
                   <a href="mailto:someone@example.com" className="email">
                     <i className="fa-light fa-envelope" />
-                    info@kyp5.com
+                    { siteData?.data?.contact?.email ? siteData.data.contact.email : 'info@kyp5.com' }
                   </a>
-                  <a href="tel:+4733378901" className="email">
+                  <a href="tel: { siteData?.data?.contact?.phone ? siteData.data.contact.phone : '+91 83528 03233' }" className="email">
                     <i className="fa-light fa-phone" />
-                    +91 987 885 3633
+                   { siteData?.data?.contact?.phone ? siteData.data.contact.phone : '+91 83528 03233' }
                   </a>
                   <a
                     href="https://kyp5.com/assets/upload/msme.pdf"
@@ -110,7 +112,17 @@ function Header() {
             <div className="header-one-wrapper">
               <div className="left-side-header">
                 <a href="/" className="logo-area">
-                  <img src={logo} alt="logo" />
+                  <img id="main-logo"
+                    src={
+                      siteData?.data?.branding?.logoUrl
+                        ? import.meta.env.VITE_BASE_URL.replace(
+                            "/api/public/",
+                            "",
+                          ) + siteData.data.branding.logoUrl
+                        : logo
+                    }
+                    alt="logo"
+                  />
                 </a>
               </div>
               <div className="main-nav-one">
@@ -163,9 +175,8 @@ function Header() {
                   </ul>
                 </nav>
               </div>
-             
+
               <div className="header-right-area-one d-lg-none">
-               
                 <div className="menu-btn" id="menu-btn">
                   <svg
                     width={20}

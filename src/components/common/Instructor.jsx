@@ -49,14 +49,14 @@ function Instructor() {
                     <a href="#" className="thumbnail">
                       <img
                         src={
-                          instructor.avatar
-                            ? import.meta.env.VITE_BASE_URL.replace(
+                          siteData?.logo
+                            ? `${import.meta.env.VITE_BASE_URL.replace(
                                 "/api/public/",
                                 "",
-                              ) + instructor.avatar
-                            : "/assets/images/instructor/01.jpg"
+                              )}${siteData.logo}`
+                            : logo
                         }
-                        alt="instructor"
+                        alt="logo"
                       />
                     </a>
 

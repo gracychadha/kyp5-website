@@ -78,7 +78,11 @@ function Course() {
 
                   <h5 className="title">{course.title}</h5>
 
-                  <p dangerouslySetInnerHTML={{ __html: course.description.slice(0, 20) + "..." }} />
+                  <div
+                    dangerouslySetInnerHTML={{
+                      __html: course.description.slice(0, 20) + "...",
+                    }}
+                  />
                 </div>
               </div>
             ))}

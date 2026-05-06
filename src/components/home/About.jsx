@@ -115,13 +115,11 @@ const About = () => {
                   {aboutContent.summary ? aboutContent.summary : "Summary"}
                 </p>
 
-                <p>
-                  <div
-                    dangerouslySetInnerHTML={{
-                      __html: aboutContent.content || "Content",
-                    }}
-                  />
-                </p>
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html: aboutContent.content || "Content",
+                  }}
+                />
               </div>
 
               <div className="about-inner-right-one">

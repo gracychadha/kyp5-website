@@ -111,15 +111,16 @@ const About = () => {
                   {aboutContent.title ? aboutContent.title : "About Us"}
                 </h2>
 
-                <p className="post-title">
+                <p className="post-title justify-content">
                   {aboutContent.summary ? aboutContent.summary : "Summary"}
                 </p>
 
-                <div
+                <p
+                  className="justify-content"
                   dangerouslySetInnerHTML={{
                     __html: aboutContent.content || "Content",
                   }}
-                />
+                ></p>
               </div>
 
               <div className="about-inner-right-one">

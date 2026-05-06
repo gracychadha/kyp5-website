@@ -102,13 +102,16 @@ function AboutSection() {
 
                 <h2 className="title">{aboutContent?.title}</h2>
 
-                <p className="post-title">{aboutContent?.summary}</p>
+                <p className="post-title justify-content">
+                  {aboutContent?.summary}
+                </p>
 
-                <div
+                <p
+                  className="justify-content"
                   dangerouslySetInnerHTML={{
                     __html: aboutContent.content || "Content",
                   }}
-                />
+                ></p>
               </div>
 
               <div className="about-inner-right-one">

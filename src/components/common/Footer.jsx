@@ -1,8 +1,47 @@
-import React from "react";
+import React, { useState } from "react";
 import { useSite } from "../../context/SiteContext";
 import logo from "../../../public/assets/images/logo/main-logo.png";
 function Footer() {
   const { siteData } = useSite();
+  const [email, setEmail] = useState("");
+  const [checked, setChecked] = useState(false);
+  const [message, setMessage] = useState("");
+  const [messageType, setMessageType] = useState("");
+  const API = import.meta.env.VITE_BASE_URL;
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    // Validation
+    if (!checked) {
+      setMessage("Please accept terms and privacy policy.");
+      setMessageType("error");
+      return;
+    }
+
+    try {
+      const response = await fetch(`${API}newsletter`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email }),
+      });
+
+      if (response.ok) {
+        setMessage("Subscribed successfully!");
+        setMessageType("success");
+        setEmail("");
+        setChecked(false);
+      } else {
+        setMessage("Something went wrong.");
+        setMessageType("error");
+      }
+    } catch (error) {
+      setMessage("Server error.");
+      setMessageType("error");
+    }
+  };
+
   return (
     <>
       <div className="footer-callto-action-area bg-light-1">
@@ -47,7 +86,13 @@ function Footer() {
 
                       <li>
                         <i className="fa-regular fa-phone"></i>
-                        <a href="tel:{ siteData?.data?.contact?.phone ? siteData.data.contact.phone : '+91 83528 03233' }">
+                        <a
+                          href={`tel:${
+                            siteData?.data?.contact?.phone
+                              ? siteData.data.contact.phone
+                              : "+91 83528 03233"
+                          }`}
+                        >
                           {siteData?.data?.contact?.phone
                             ? siteData.data.contact.phone
                             : "+91 83528 03233"}
@@ -72,16 +117,16 @@ function Footer() {
                   <div className="body">
                     <ul className="menu">
                       <li>
-                        <a href="#">About Us</a>
+                        <a href="/about-us">About Us</a>
                       </li>
                       <li>
-                        <a href="#">Our Team</a>
+                        <a href="/our-team">Our Team</a>
                       </li>
                       <li>
-                        <a href="#">Gallery</a>
+                        <a href="/gallery">Gallery</a>
                       </li>
                       <li>
-                        <a href="#">Our Blogs</a>
+                        <a href="/our-blogs">Our Blogs</a>
                       </li>
                     </ul>
                   </div>
@@ -96,7 +141,7 @@ function Footer() {
                   <div className="body">
                     <ul className="menu">
                       <li>
-                        <a href="#">Contact Us</a>
+                        <a href="/contact-us">Contact Us</a>
                       </li>
                       <li>
                         <a href="/privacy-policy">Privacy Policy</a>
@@ -107,36 +152,52 @@ function Footer() {
                     </ul>
                   </div>
                 </div>
-
-                {/* Newsletter */}
                 <div className="footer-singl-wized input-area">
                   <div className="head">
                     <h6 className="title">Newsletter</h6>
                   </div>
-
                   <div className="body">
                     <p className="disc">
-                      Subscribe to our newsletter and get updates on new courses
+                      Subscribe Our newsletter get update our new course
                     </p>
 
-                    <form>
+                    <form onSubmit={handleSubmit}>
                       <div className="input-area-fill">
                         <input
                           type="email"
                           placeholder="Enter Your Email"
                           required
+                          value={email}
+                          onChange={(e) => setEmail(e.target.value)}
                         />
 
                         <button type="submit">Subscribe</button>
                       </div>
 
-                      <div className="d-flex align-items-center">
-                        <input type="checkbox" id="exampleCheck1" />
+                      <div className="d-flex align-items-center gap-2 mt-2">
+                        <input
+                          type="checkbox"
+                          id="exampleCheck1"
+                          checked={checked}
+                          onChange={(e) => setChecked(e.target.checked)}
+                        />
 
                         <label htmlFor="exampleCheck1">
                           I agree to the terms of use and privacy policy.
                         </label>
                       </div>
+
+                      {message && (
+                        <p
+                          className={`mt-2 ${
+                            messageType === "success"
+                              ? "text-success"
+                              : "text-danger"
+                          }`}
+                        >
+                          {message}
+                        </p>
+                      )}
                     </form>
                   </div>
                 </div>

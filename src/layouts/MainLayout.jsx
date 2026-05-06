@@ -3,7 +3,7 @@ import { Outlet } from "react-router-dom";
 import Header from "../components/common/Header";
 import Footer from "../components/common/Footer";
 import ScrollToTop from "../components/common/ScrollToTop";
-
+import MenuHeader from "../components/common/MenuHeader";
 function MainLayout() {
   return (
     <>
@@ -13,6 +13,7 @@ function MainLayout() {
       </main>
       <Footer />
       <ScrollToTop />
+      <MenuHeader />
     </>
   );
 }

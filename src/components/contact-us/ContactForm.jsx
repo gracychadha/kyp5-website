@@ -9,6 +9,7 @@ function ContactForm() {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
+    contactNumber :"",
     subject: "",
     message: "",
   });
@@ -58,6 +59,7 @@ function ContactForm() {
           name: "",
           email: "",
           subject: "",
+          contactNumber: "",
           message: "",
         });
       }
@@ -127,6 +129,16 @@ function ContactForm() {
                       value={formData.subject}
                       onChange={handleChange}
                       placeholder="Subject"
+                    />
+                  </div>
+                  <div className="single-input">
+                    <label>Phone</label>
+                    <input
+                      name="contactNumber"
+                      type="text"
+                      value={formData.phone}
+                      onChange={handleChange}
+                      placeholder="Phone Number"
                     />
                   </div>
 

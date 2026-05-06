@@ -31,12 +31,10 @@ function AboutSection() {
       <div className="about-area-start rts-section-gap">
         <div className="container">
           <div className="row align-items-center">
-
             {/* LEFT SIDE */}
             <div className="col-xl-6 col-lg-12">
               <div className="about-one-left-image">
                 <div className="first-order">
-
                   <div className="thumb-one">
                     <img src="/assets/images/about/03.jpg" alt="about" />
 
@@ -46,7 +44,6 @@ function AboutSection() {
                           <span className="counter">
                             {aboutContent?.experienceYears || "0"} +
                           </span>
-                          
                         </h3>
                         {/* <span className="review">Positive Review</span> */}
                       </div>
@@ -98,28 +95,20 @@ function AboutSection() {
             {/* RIGHT SIDE */}
             <div className="col-xl-6 col-lg-12 pl--60 pl_lg--15 pl_md--10 pl_sm--10 pt_lg--50 pt_md--50 pt_sm--50">
               <div className="title-area-left-style">
-
                 <div className="pre-title">
                   <img src="/assets/images/banner/bulb.png" alt="icon" />
                   <span>{aboutContent?.subtitle}</span>
                 </div>
 
-                <h2 className="title">
-                  {aboutContent?.title}
-                </h2>
+                <h2 className="title">{aboutContent?.title}</h2>
 
-                <p className="post-title">
-                  {aboutContent?.summary}
-                </p>
+                <p className="post-title">{aboutContent?.summary}</p>
 
-                  <p>
-                  <div
-                    dangerouslySetInnerHTML={{
-                      __html: aboutContent.content || "Content",
-                    }}
-                  />
-                </p>
-
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html: aboutContent.content || "Content",
+                  }}
+                />
               </div>
 
               <div className="about-inner-right-one">
@@ -129,9 +118,7 @@ function AboutSection() {
                   </a>
                 </div>
               </div>
-
             </div>
-
           </div>
         </div>
       </div>

@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 function TestComponent() {
-  const STUDENT_URL = import.meta.env.VITE_BASE_URL;
+  const STUDENT_URL = import.meta.env.VITE_BASE_URL.replace("api/public","student");
   const navigate = useNavigate();
 
   const [isOtpScreen, setIsOtpScreen] = useState(false);

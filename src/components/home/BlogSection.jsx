@@ -37,7 +37,7 @@ function BlogSection() {
 
           <div className="row g-5 mt--20">
             {/* Blog 1 */}
-            {blogs.map((blog) => (
+           {blogs.slice(0, 3).map((blog) => (
               <div className="col-lg-4 col-md-6 col-sm-12"   key={blog.id}>
                 <div className="single-blog-style-one">
                   <a href={`/our-blogs/${blog.id}`} className="thumbnail">

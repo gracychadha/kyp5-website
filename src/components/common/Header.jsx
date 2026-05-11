@@ -2,8 +2,24 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { useSite } from "../../context/SiteContext";
 import logo from "../../../public/assets/images/logo/main-logo.png";
+import axios from "axios";
 function Header() {
   const { siteData } = useSite();
+  const [tests, setTests] = React.useState([]);
+
+  React.useEffect(() => {
+    const fetchTests = async () => {
+      try {
+        const response = await axios.get(import.meta.env.VITE_BASE_URL + "/tests");
+        if (response.data.success) {
+          setTests(response.data.data.data);
+        }
+      } catch (error) {
+        console.error("Error fetching tests:", error);
+      }
+    };
+    fetchTests();
+  }, []);
   return (
     <header className="header-one header--sticky">
       <div className="header-top-one-wrapper">
@@ -14,11 +30,11 @@ function Header() {
                 <div className="left-information">
                   <a href="mailto:someone@example.com" className="email">
                     <i className="fa-light fa-envelope" />
-                    { siteData?.data?.contact?.email ? siteData.data.contact.email : 'info@kyp5.com' }
+                    {siteData?.data?.contact?.email ? siteData.data.contact.email : 'info@kyp5.com'}
                   </a>
                   <a href="tel: { siteData?.data?.contact?.phone ? siteData.data.contact.phone : '+91 83528 03233' }" className="email">
                     <i className="fa-light fa-phone" />
-                   { siteData?.data?.contact?.phone ? siteData.data.contact.phone : '+91 83528 03233' }
+                    {siteData?.data?.contact?.phone ? siteData.data.contact.phone : '+91 83528 03233'}
                   </a>
                   <a
                     href="https://kyp5.com/assets/upload/msme.pdf"
@@ -116,9 +132,9 @@ function Header() {
                     src={
                       siteData?.data?.branding?.logoUrl
                         ? import.meta.env.VITE_BASE_URL.replace(
-                            "/api/public/",
-                            "",
-                          ) + siteData.data.branding.logoUrl
+                          "/api/public/",
+                          "",
+                        ) + siteData.data.branding.logoUrl
                         : logo
                     }
                     alt="logo"
@@ -144,17 +160,16 @@ function Header() {
                         Services
                       </a>
                       <ul className="submenu">
-                        <li>
-                          <Link className="submenu-link" to="/test">
-                            Psychometric Test
-                          </Link>
-                          <Link className="submenu-link" to="#">
-                            Talent Hub Test
-                          </Link>
-                          <Link className="submenu-link" to="#">
-                            Join Now
-                          </Link>
-                        </li>
+                        {tests.map((test) => (
+                          <li key={test.id}>
+                            <Link
+                              className="submenu-link"
+                              to={`/test?testId=${test.id}`}
+                            >
+                              {test.title}
+                            </Link>
+                          </li>
+                        ))}
                       </ul>
                     </li>
                     <li className="" style={{ position: "static" }}>

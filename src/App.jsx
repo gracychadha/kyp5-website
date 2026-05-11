@@ -21,6 +21,8 @@ import Question from "./pages/question/Question";
 import Test from "./pages/test/Test";
 import Instruction from "./pages/instructions/Instruction";
 import TestLayout from "./layouts/TestLayout";
+import ProtectedRoute from "./components/auth/ProtectedRoute";
+
 function App() {
   return (
     <Router>
@@ -41,12 +43,12 @@ function App() {
           <Route path="/events" element={<Events />} />
           <Route path="/test" element={<Test />} />
         </Route>
-        {/*  Test Flow (NO Header/Footer) */}
-
-        <Route element={<TestLayout />}>
-          <Route path="/instruction" element={<Instruction />} />
-          <Route path="/question" element={<Question />} />
-         
+        {/*  Test Flow (NO Header/Footer) - Protected */}
+        <Route element={<ProtectedRoute />}>
+          <Route element={<TestLayout />}>
+            <Route path="/instruction" element={<Instruction />} />
+            <Route path="/question" element={<Question />} />
+          </Route>
         </Route>
       </Routes>
     </Router>

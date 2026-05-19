@@ -1,11 +1,15 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useSite } from "../../context/SiteContext";
+import { useAuth } from "../../context/AuthContext";
 import logo from "../../../public/assets/images/logo/main-logo.png";
 import axios from "axios";
+
 function Header() {
   const { siteData } = useSite();
+  const { student, logout } = useAuth();
   const [tests, setTests] = React.useState([]);
+  const navigate = useNavigate();
 
   React.useEffect(() => {
     const fetchTests = async () => {
@@ -20,6 +24,11 @@ function Header() {
     };
     fetchTests();
   }, []);
+
+  const handleLogout = () => {
+    logout();
+    navigate("/");
+  };
   return (
     <header className="header-one header--sticky">
       <div className="header-top-one-wrapper">
@@ -182,11 +191,35 @@ function Header() {
                         Our Blogs
                       </Link>
                     </li>
-                    <div className="buttons-area">
-                      <Link className="rts-btn btn-primary" to="/contact-us">
-                        Contact Us
-                      </Link>
-                    </div>
+                    {student ? (
+                      <li className="has-dropdown" style={{ marginLeft: "20px" }}>
+                        <a className="nav-link" href="#" onClick={(e) => e.preventDefault()} style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                          <img 
+                            src={student.avatar || "/assets/images/auser.jpg"} 
+                            alt="User" 
+                            style={{ width: "35px", height: "35px", borderRadius: "50%", objectFit: "cover", border: "2px solid var(--color-primary)" }} 
+                          />
+                          <span>{student.name.split(' ')[0]}</span>
+                        </a>
+                        <ul className="submenu">
+                          <li>
+                            <button 
+                              className="submenu-link" 
+                              onClick={handleLogout}
+                              style={{ border: "none", background: "none", width: "100%", textAlign: "left", cursor: "pointer", display: "flex", alignItems: "center", gap: "10px" }}
+                            >
+                              <i className="fa-light fa-right-from-bracket"></i> Logout
+                            </button>
+                          </li>
+                        </ul>
+                      </li>
+                    ) : (
+                      <div className="buttons-area">
+                        <Link className="rts-btn btn-primary" to="/contact-us">
+                          Contact Us
+                        </Link>
+                      </div>
+                    )}
                   </ul>
                 </nav>
               </div>

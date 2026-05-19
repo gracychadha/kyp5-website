@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useAuth } from "../../context/AuthContext";
 import userImage from "../../../public/assets/images/auser.jpg";
 
 function Instructions() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const testId = searchParams.get("testId");
+  const { student } = useAuth();
   const [accepted, setAccepted] = useState(false);
   const [testData, setTestData] = useState(null);
-  const [student, setStudent] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
@@ -37,11 +38,6 @@ function Instructions() {
         setLoading(false);
       }
     };
-
-    const storedUser = localStorage.getItem("studentData");
-    if (storedUser) {
-      setStudent(JSON.parse(storedUser));
-    }
 
     fetchTestDetails();
   }, [testId, STUDENT_URL]);
@@ -96,6 +92,18 @@ function Instructions() {
               <div className="user-data ms-3">
                 <h4 className="user-name mb-0">{student?.name || "Student"}</h4>
                 <p className="user-email text-muted small mb-0">{student?.email}</p>
+                <button 
+                  onClick={() => {
+                    if (window.confirm("Are you sure you want to logout?")) {
+                      logout();
+                      navigate("/");
+                    }
+                  }}
+                  className="btn btn-link p-0 text-danger text-decoration-none small mt-1"
+                  style={{ fontSize: "12px" }}
+                >
+                  <i className="fa-light fa-right-from-bracket me-1"></i> Logout
+                </button>
               </div>
             </div>
             <hr />
@@ -171,13 +179,23 @@ function Instructions() {
 
                   {error && <p className="text-danger mt-2">{error}</p>}
 
-                  <button
-                    className="start-btn mt-3"
-                    disabled={!accepted || loading}
-                    onClick={handleStart}
-                  >
-                    {loading ? "Starting..." : "Start Test →"}
-                  </button>
+                  <div className="d-flex gap-3 mt-3">
+                    <button
+                      className="rts-btn btn-secondary py-3 px-5"
+                      onClick={() => navigate(`/test?testId=${testId}`)}
+                      style={{ borderRadius: "10px" }}
+                    >
+                      ← Back
+                    </button>
+                    <button
+                      className="start-btn flex-grow-1"
+                      disabled={!accepted || loading}
+                      onClick={handleStart}
+                      style={{ marginTop: 0 }}
+                    >
+                      {loading ? "Starting..." : "Start Test →"}
+                    </button>
+                  </div>
                 </>
               ) : (
                 <div className="alert alert-warning mt-3">

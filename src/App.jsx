@@ -1,5 +1,6 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Toaster } from "react-hot-toast";
 
 import MainLayout from "./layouts/MainLayout";
 
@@ -22,36 +23,43 @@ import Test from "./pages/test/Test";
 import Instruction from "./pages/instructions/Instruction";
 import TestLayout from "./layouts/TestLayout";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
+import { AuthProvider } from "./context/AuthContext";
+import { SiteProvider } from "./context/SiteContext";
 
 function App() {
   return (
-    <Router>
-      <Routes>
-        {/* Website Pages (WITH Header/Footer) */}
-        <Route element={<MainLayout />}>
-          <Route path="/" element={<Home />} />
-          <Route path="/about-us" element={<AboutUs />} />
-          <Route path="/our-team" element={<Instructor />} />
-          <Route path="/contact-us" element={<Contact />} />
-          <Route path="/course" element={<Course />} />
-          <Route path="/our-blogs" element={<Blogs />} />
-          <Route path="/our-blogs/:id" element={<BlogDetails />} />
-          <Route path="/gallery" element={<Gallery />} />
-          <Route path="/courses" element={<Course />} />
-          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-          <Route path="/terms-conditions" element={<TermsCondition />} />
-          <Route path="/events" element={<Events />} />
-          <Route path="/test" element={<Test />} />
-        </Route>
-        {/*  Test Flow (NO Header/Footer) - Protected */}
-        <Route element={<ProtectedRoute />}>
-          <Route element={<TestLayout />}>
-            <Route path="/instruction" element={<Instruction />} />
-            <Route path="/question" element={<Question />} />
-          </Route>
-        </Route>
-      </Routes>
-    </Router>
+    <SiteProvider>
+      <AuthProvider>
+        <Router>
+          <Toaster position="top-right" />
+          <Routes>
+            {/* Website Pages (WITH Header/Footer) */}
+            <Route element={<MainLayout />}>
+              <Route path="/" element={<Home />} />
+              <Route path="/about-us" element={<AboutUs />} />
+              <Route path="/our-team" element={<Instructor />} />
+              <Route path="/contact-us" element={<Contact />} />
+              <Route path="/course" element={<Course />} />
+              <Route path="/our-blogs" element={<Blogs />} />
+              <Route path="/our-blogs/:id" element={<BlogDetails />} />
+              <Route path="/gallery" element={<Gallery />} />
+              <Route path="/courses" element={<Course />} />
+              <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+              <Route path="/terms-conditions" element={<TermsCondition />} />
+              <Route path="/events" element={<Events />} />
+              <Route path="/test" element={<Test />} />
+            </Route>
+            {/*  Test Flow (NO Header/Footer) - Protected */}
+            <Route element={<ProtectedRoute />}>
+              <Route element={<TestLayout />}>
+                <Route path="/instruction" element={<Instruction />} />
+                <Route path="/question" element={<Question />} />
+              </Route>
+            </Route>
+          </Routes>
+        </Router>
+      </AuthProvider>
+    </SiteProvider>
   );
 }
 

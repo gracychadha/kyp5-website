@@ -58,16 +58,23 @@ const QuestionComponent = () => {
     }
 
     try {
-      const response = await axios.get(`${STUDENT_URL}attempts/${attemptId}/questions`, {
-        headers: { Authorization: `Bearer ${studentToken}` },
-      });
+      const response = await axios.get(
+        `${STUDENT_URL}attempts/${attemptId}/questions`,
+        {
+          headers: { Authorization: `Bearer ${studentToken}` },
+        },
+      );
 
       if (response.data.success) {
-        const { questions: qData, test: tData, userAnswers } = response.data.data;
+        const {
+          questions: qData,
+          test: tData,
+          userAnswers,
+        } = response.data.data;
         setQuestions(qData);
         setTestData(tData);
         setLanguage(tData.selectedLanguage || "en");
-        
+
         // Calculate remaining time
         const expiresAt = new Date(tData.expiresAt).getTime();
         const now = new Date().getTime();
@@ -102,13 +109,13 @@ const QuestionComponent = () => {
     if (questions.length > 0 && questions[currentIndex]) {
       const qId = questions[currentIndex].id;
       if (!answers[qId]) {
-        setAnswers(prev => ({
+        setAnswers((prev) => ({
           ...prev,
-          [qId]: { 
-            selectedOptionId: null, 
-            selectedOptionIds: [], 
-            isMarkedForReview: false 
-          }
+          [qId]: {
+            selectedOptionId: null,
+            selectedOptionIds: [],
+            isMarkedForReview: false,
+          },
         }));
       }
     }
@@ -177,22 +184,26 @@ const QuestionComponent = () => {
     const updatedAns = {
       selectedOptionId: null,
       selectedOptionIds: [],
-      isMarkedForReview: false
+      isMarkedForReview: false,
     };
 
     setAnswers((prev) => ({
       ...prev,
-      [currentQuestion.id]: updatedAns
+      [currentQuestion.id]: updatedAns,
     }));
 
     try {
-      await axios.post(`${STUDENT_URL}attempts/${attemptId}/save`, {
-        questionId: currentQuestion.id,
-        ...updatedAns,
-        timeTakenSeconds: 0,
-      }, {
-        headers: { Authorization: `Bearer ${studentToken}` },
-      });
+      await axios.post(
+        `${STUDENT_URL}attempts/${attemptId}/save`,
+        {
+          questionId: currentQuestion.id,
+          ...updatedAns,
+          timeTakenSeconds: 0,
+        },
+        {
+          headers: { Authorization: `Bearer ${studentToken}` },
+        },
+      );
       toast.success("Response cleared");
     } catch (error) {
       toast.error("Failed to clear response");
@@ -201,13 +212,16 @@ const QuestionComponent = () => {
 
   const handleLanguageChange = async (newLang) => {
     try {
-      await axios.patch(`${STUDENT_URL}attempts/${attemptId}/language`, 
+      await axios.patch(
+        `${STUDENT_URL}attempts/${attemptId}/language`,
         { languageCode: newLang },
-        { headers: { Authorization: `Bearer ${studentToken}` } }
+        { headers: { Authorization: `Bearer ${studentToken}` } },
       );
       setLanguage(newLang);
       fetchAttemptData(); // Re-fetch to get translated questions
-      toast.success(`Language changed to ${newLang === "en" ? "English" : "Hindi"}`);
+      toast.success(
+        `Language changed to ${newLang === "en" ? "English" : "Hindi"}`,
+      );
     } catch (error) {
       toast.error("Failed to change language");
     }
@@ -218,10 +232,14 @@ const QuestionComponent = () => {
 
     try {
       setLoading(true);
-      const response = await axios.post(`${STUDENT_URL}attempts/${attemptId}/submit`, {}, {
-        headers: { Authorization: `Bearer ${studentToken}` },
-      });
-      
+      const response = await axios.post(
+        `${STUDENT_URL}attempts/${attemptId}/submit`,
+        {},
+        {
+          headers: { Authorization: `Bearer ${studentToken}` },
+        },
+      );
+
       if (response.data.success) {
         setTestResult(response.data.data);
         setShowResultModal(true);
@@ -229,7 +247,7 @@ const QuestionComponent = () => {
       }
     } catch (error) {
       console.error("Submission error:", error);
-      
+
       // Extract error message properly
       let errorMessage = "Failed to submit test";
       if (error.response && error.response.data) {
@@ -237,7 +255,7 @@ const QuestionComponent = () => {
       } else if (error.message) {
         errorMessage = error.message;
       }
-      
+
       toast.error(errorMessage);
     } finally {
       setLoading(false);
@@ -259,33 +277,33 @@ const QuestionComponent = () => {
   const onOptionSelect = (optionId) => {
     const currentQuestion = questions[currentIndex];
     setAnswers((prev) => {
-      const existing = prev[currentQuestion.id] || { 
-        selectedOptionId: null, 
-        selectedOptionIds: [], 
-        isMarkedForReview: false 
+      const existing = prev[currentQuestion.id] || {
+        selectedOptionId: null,
+        selectedOptionIds: [],
+        isMarkedForReview: false,
       };
-      
+
       let updatedAns;
       if (currentQuestion.type === "MULTI_SELECT") {
         const newIds = existing.selectedOptionIds.includes(optionId)
-          ? existing.selectedOptionIds.filter(id => id !== optionId)
+          ? existing.selectedOptionIds.filter((id) => id !== optionId)
           : [...existing.selectedOptionIds, optionId];
-        
+
         updatedAns = {
           ...existing,
-          selectedOptionIds: newIds
+          selectedOptionIds: newIds,
         };
       } else {
         updatedAns = {
           ...existing,
-          selectedOptionId: optionId
+          selectedOptionId: optionId,
         };
       }
 
       triggerAutoSave(currentQuestion.id, updatedAns);
       return {
         ...prev,
-        [currentQuestion.id]: updatedAns
+        [currentQuestion.id]: updatedAns,
       };
     });
   };
@@ -304,408 +322,537 @@ const QuestionComponent = () => {
     return false;
   };
 
-  const attemptedCount = Object.values(answers).filter(a => isAnswered(a) && !a.isMarkedForReview).length;
-  const markedCount = Object.values(answers).filter(a => a.isMarkedForReview && !isAnswered(a)).length;
-  const markedAnsweredCount = Object.values(answers).filter(a => a.isMarkedForReview && isAnswered(a)).length;
+  const attemptedCount = Object.values(answers).filter(
+    (a) => isAnswered(a) && !a.isMarkedForReview,
+  ).length;
+  const markedCount = Object.values(answers).filter(
+    (a) => a.isMarkedForReview && !isAnswered(a),
+  ).length;
+  const markedAnsweredCount = Object.values(answers).filter(
+    (a) => a.isMarkedForReview && isAnswered(a),
+  ).length;
   const notVisitedCount = questions.length - Object.keys(answers).length;
-  const notAnsweredCount = Object.values(answers).filter(a => !isAnswered(a) && !a.isMarkedForReview).length;
+  const notAnsweredCount = Object.values(answers).filter(
+    (a) => !isAnswered(a) && !a.isMarkedForReview,
+  ).length;
 
   return (
     <>
       <section className="test-wrapper">
-      <div className="test-container ">
-        <div className="user-panel">
-          <div className="user-card">
-            <div className="d-flex align-items-center gap-3">
-              <div className="img-user">
-                <img src={userImage} className="user-img" alt="User" />
-              </div>
-              <div className="user-data">
-                <h4 className="user-name mb-0">{student?.name || "Student"}</h4>
-                <p className="user-email mb-0 text-muted small">{student?.email}</p>
-                <button 
-                  onClick={() => {
-                    if (window.confirm("Are you sure you want to logout? This will exit the test.")) {
-                      logout();
-                      navigate("/");
-                    }
-                  }}
-                  className="btn btn-link p-0 text-danger text-decoration-none small"
-                  style={{ fontSize: "12px" }}
-                >
-                  <i className="fa-light fa-right-from-bracket me-1"></i> Logout
-                </button>
-                <button 
-                  onClick={() => {
-                    if (window.confirm("Are you sure you want to leave the test? Your progress might not be saved.")) {
-                      navigate(`/instruction?testId=${testId}`);
-                    }
-                  }}
-                  className="btn btn-link p-0 text-secondary text-decoration-none small d-block"
-                  style={{ fontSize: "12px" }}
-                >
-                  <i className="fa-light fa-arrow-left me-1"></i> Back to Instructions
-                </button>
-              </div>
-            </div>
-
-            <div className="qp-legend-wrapper mt-4">
-              <div className="qp-legend-item">
-                <span className="qp-box qp-attempted">{attemptedCount}</span>
-                <p className="qp-label">Answered</p>
+        <div className="test-container ">
+          <div className="user-panel">
+            <div className="user-card">
+              <div className="d-flex align-items-center gap-3">
+                <div className="img-user">
+                  <img src={userImage} className="user-img" alt="User" />
+                </div>
+                <div className="user-data">
+                  <h4 className="user-name mb-0">
+                    {student?.name || "Student"}
+                  </h4>
+                  <p className="user-email mb-0 text-muted small">
+                    {student?.email}
+                  </p>
+                  {/*                  
+                  <button
+                    onClick={() => {
+                      if (
+                        window.confirm(
+                          "Are you sure you want to leave the test? Your progress might not be saved.",
+                        )
+                      ) {
+                        navigate(`/instruction?testId=${testId}`);
+                      }
+                    }}
+                    className="btn btn-link p-0 text-secondary text-decoration-none small d-block"
+                    style={{ fontSize: "12px" }}
+                  >
+                    <i className="fa-light fa-arrow-left me-1"></i> Back to
+                    Instructions
+                  </button> */}
+                </div>
               </div>
 
-              <div className="qp-legend-item">
-                <span className="qp-box qp-marked">{markedCount}</span>
-                <p className="qp-label">Marked</p>
-              </div>
+              <div className="qp-legend-wrapper mt-4">
+                <div className="qp-legend-item">
+                  <span className="qp-box qp-attempted">{attemptedCount}</span>
+                  <p className="qp-label">Answered</p>
+                </div>
 
-              <div className="qp-legend-item">
-                <span className="qp-box qp-not-visited">{notVisitedCount}</span>
-                <p className="qp-label">Not Visited</p>
-              </div>
+                <div className="qp-legend-item">
+                  <span className="qp-box qp-marked">{markedCount}</span>
+                  <p className="qp-label">Marked</p>
+                </div>
 
-              <div className="qp-legend-item">
-                <span className="qp-box qp-not-answered">{notAnsweredCount}</span>
-                <p className="qp-label">Not Answered</p>
-              </div>
+                <div className="qp-legend-item">
+                  <span className="qp-box qp-not-visited">
+                    {notVisitedCount}
+                  </span>
+                  <p className="qp-label">Not Visited</p>
+                </div>
 
-              <div className="qp-legend-item w-100">
-                <span className="qp-box qp-marked-answered">
-                  {markedAnsweredCount} <i className="fa-solid fa-check text-white"></i>
-                </span>
-                <p className="qp-label">Marked & Answered</p>
-              </div>
-            </div>
-          </div>
-          <hr />
-          <div className="user-data px-3">
-            <h5 className="question-palette__title">
-              <strong>Test:</strong> {testData?.title}
-            </h5>
-          </div>
-          <div className="user-card">
-            <div className="question-palette">
-              <div className="question-palette__grid scrollable-grid">
-                {questions.map((q, index) => {
-                  const ans = answers[q.id];
-                  const isActive = index === currentIndex;
-                  let statusClass = "";
+                <div className="qp-legend-item">
+                  <span className="qp-box qp-not-answered">
+                    {notAnsweredCount}
+                  </span>
+                  <p className="qp-label">Not Answered</p>
+                </div>
 
-                  if (ans?.isMarkedForReview && isAnswered(ans)) statusClass = "qp-marked-answered";
-                  else if (ans?.isMarkedForReview) statusClass = "qp-marked";
-                  else if (ans && isAnswered(ans)) statusClass = "qp-attempted";
-                  else if (ans) statusClass = "qp-not-answered";
-                  else statusClass = "qp-not-visited";
-                  
-                  return (
-                    <div
-                      key={q.id}
-                      onClick={() => setCurrentIndex(index)}
-                      className={`question-palette__item ${statusClass} ${isActive ? "question-palette__item--active" : ""}`}
-                    >
-                      {index + 1}
-                      {statusClass === "qp-marked-answered" && <i className="fa-solid fa-check"></i>}
-                    </div>
-                  );
-                })}
+                <div className="qp-legend-item w-100">
+                  <span className="qp-box qp-marked-answered">
+                    {markedAnsweredCount}{" "}
+                    <i className="fa-solid fa-check text-white"></i>
+                  </span>
+                  <p className="qp-label">Marked & Answered</p>
+                </div>
               </div>
             </div>
-            <button onClick={() => setShowConfirmSubmitModal(true)} className="rts-btn btn-primary mt-4 w-100">
-              Submit Test
-            </button>
-          </div>
-        </div>
-
-        <div className="question-main-container">
-          <div className="title-section d-flex justify-content-between align-items-center">
-            <h6 className="title mb-0">
-              <strong>Section:</strong> {currentQuestion?.section?.name || "General Awareness"}
-            </h6>
-            <div className="lang-switcher d-flex align-items-center gap-2">
-              <span className="small fw-bold">Language:</span>
-              <select 
-                value={language} 
-                onChange={(e) => handleLanguageChange(e.target.value)}
-                className="form-select form-select-sm"
-                style={{ width: "100px" }}
-              >
-                <option value="en">English</option>
-                <option value="hi">Hindi</option>
-              </select>
+            <hr />
+            <div className="user-data px-3">
+              <h5 className="question-palette__title">
+                <strong>Test:</strong> {testData?.title}
+              </h5>
             </div>
-          </div>
-          <div className="main-container-q">
-            <div className="q-header d-flex justify-content-between align-items-center mb-4">
-              <h5 className="title mb-0 text-primary">Question {currentIndex + 1}:</h5>
-              <div className="timer-box d-flex align-items-center gap-2">
-                <i className="fa-regular fa-clock text-danger"></i>
-                <span className="timer fw-bold text-dark">{formatTime(timeLeft)}</span>
-              </div>
-            </div>
+            <div className="user-card">
+              <div className="question-palette">
+                <div className="question-palette__grid scrollable-grid">
+                  {questions.map((q, index) => {
+                    const ans = answers[q.id];
+                    const isActive = index === currentIndex;
+                    let statusClass = "";
 
-            <div className="q-main-section">
-              <div className="question-card border-0 shadow-sm rounded-4 p-4 bg-white">
-                <h5 className="question-text mb-4 lh-base">
-                  {currentQuestion?.text}
-                </h5>
-
-                {currentQuestion?.imageUrl && (
-                  <div className="question-image mb-4">
-                    <img src={currentQuestion?.imageUrl} alt="Question" className="img-fluid rounded" />
-                  </div>
-                )}
-
-                <div className="options-container d-flex flex-column gap-3">
-                  {currentQuestion?.options?.map((option) => {
-                    const isSelected = currentQuestion.type === "MULTI_SELECT" 
-                      ? currentAnswer.selectedOptionIds?.includes(option.id)
-                      : currentAnswer.selectedOptionId === option.id;
+                    if (ans?.isMarkedForReview && isAnswered(ans))
+                      statusClass = "qp-marked-answered";
+                    else if (ans?.isMarkedForReview) statusClass = "qp-marked";
+                    else if (ans && isAnswered(ans))
+                      statusClass = "qp-attempted";
+                    else if (ans) statusClass = "qp-not-answered";
+                    else statusClass = "qp-not-visited";
 
                     return (
-                      <label key={option.id} className={`option-box p-3 rounded-3 border ${isSelected ? "border-primary bg-light" : ""}`} style={{ cursor: "pointer" }}>
-                        <div className="d-flex align-items-center gap-3">
-                          <input
-                            type={currentQuestion.type === "MULTI_SELECT" ? "checkbox" : "radio"}
-                            name={`q-${currentQuestion.id}`}
-                            checked={isSelected}
-                            onChange={() => onOptionSelect(option.id)}
-                            className="form-check-input mt-0"
-                          />
-                          <div className="option-content-wrapper d-flex flex-column gap-2">
-                            <span className="option-text">
-                              {option.text}
-                            </span>
-                            {option.imageUrl && (
-                              <img src={option.imageUrl} alt="Option" className="option-image img-fluid rounded" style={{ maxHeight: "150px", objectFit: "contain" }} />
-                            )}
-                          </div>
-                        </div>
-                      </label>
+                      <div
+                        key={q.id}
+                        onClick={() => setCurrentIndex(index)}
+                        className={`question-palette__item ${statusClass} ${isActive ? "question-palette__item--active" : ""}`}
+                      >
+                        {index + 1}
+                        {statusClass === "qp-marked-answered" && (
+                          <i className="fa-solid fa-check"></i>
+                        )}
+                      </div>
                     );
                   })}
                 </div>
               </div>
+              <button
+                onClick={() => setShowConfirmSubmitModal(true)}
+                className="rts-btn btn-primary mt-4 w-100"
+              >
+                Submit Test
+              </button>
             </div>
+          </div>
 
-            <div className="q-button-container d-flex justify-content-between mt-5">
-              <div className="left-btns d-flex gap-3">
-                <button 
-                  onClick={() => handleSaveAnswer(true)} 
-                  className="rts-btn btn-warning text-white px-4"
+          <div className="question-main-container">
+            <div className="title-section d-flex justify-content-between align-items-center">
+              <h6 className="title mb-0">
+                <strong>Section:</strong>{" "}
+                {currentQuestion?.section?.name || "General Awareness"}
+              </h6>
+              <div className="lang-switcher d-flex align-items-center gap-2">
+                <span className="small fw-bold">Language:</span>
+                <select
+                  value={language}
+                  onChange={(e) => handleLanguageChange(e.target.value)}
+                  className="form-select form-select-sm"
+                  style={{ width: "100px" }}
                 >
-                  Mark for Review & Next
-                </button>
-                <button 
-                  onClick={handleClearResponse} 
-                  className="rts-btn btn-outline-danger px-4"
-                >
-                  Clear response
-                </button>
+                  <option value="en">English</option>
+                  <option value="hi">Hindi</option>
+                </select>
+              </div>
+            </div>
+            <div className="main-container-q">
+              <div className="q-header d-flex justify-content-between align-items-center mb-4">
+                <h5 className="title mb-0 ">Question {currentIndex + 1}:</h5>
+                <div className="timer-box d-flex align-items-center gap-2">
+                  <i className="fa-regular fa-clock text-danger"></i>
+                  <span className="timer fw-bold text-dark">
+                    {formatTime(timeLeft)}
+                  </span>
+                </div>
               </div>
 
-              <div className="right-btn d-flex gap-2">
-                <button 
-                  onClick={handlePrevious} 
-                  disabled={currentIndex === 0}
-                  className="rts-btn btn-secondary px-4"
-                >
-                  Previous
-                </button>
-                <button 
-                  onClick={() => handleSaveAnswer(false)} 
-                  className="rts-btn btn-primary px-4"
-                >
-                  Save & Next
-                </button>
+              <div className="q-main-section">
+                <div className="question-card border-0    bg-white">
+                  <h5 className="question-text mb-4 lh-base">
+                    {currentQuestion?.text}
+                  </h5>
+
+                  {currentQuestion?.imageUrl && (
+                    <div className="question-image mb-4">
+                      <img
+                        src={currentQuestion?.imageUrl}
+                        alt="Question"
+                        className="img-fluid rounded"
+                      />
+                    </div>
+                  )}
+
+                  <div className="options-container d-flex flex-column gap-3">
+                    {currentQuestion?.options?.map((option) => {
+                      const isSelected =
+                        currentQuestion.type === "MULTI_SELECT"
+                          ? currentAnswer.selectedOptionIds?.includes(option.id)
+                          : currentAnswer.selectedOptionId === option.id;
+
+                      return (
+                        <label
+                          key={option.id}
+                          className={`option-box p-3 rounded-3 border ${isSelected ? "border-primary bg-light" : ""}`}
+                          style={{ cursor: "pointer" }}
+                        >
+                          <div className="d-flex align-items-center gap-3">
+                            <input
+                              type={
+                                currentQuestion.type === "MULTI_SELECT"
+                                  ? "checkbox"
+                                  : "radio"
+                              }
+                              name={`q-${currentQuestion.id}`}
+                              checked={isSelected}
+                              onChange={() => onOptionSelect(option.id)}
+                              className="form-check-input mt-0"
+                            />
+                            <div className="option-content-wrapper d-flex flex-column gap-2">
+                              <span className="option-text">{option.text}</span>
+                              {option.imageUrl && (
+                                <img
+                                  src={option.imageUrl}
+                                  alt="Option"
+                                  className="option-image img-fluid rounded"
+                                  style={{
+                                    maxHeight: "150px",
+                                    objectFit: "contain",
+                                  }}
+                                />
+                              )}
+                            </div>
+                          </div>
+                        </label>
+                      );
+                    })}
+                  </div>
+                </div>
+              </div>
+
+              <div className="q-button-container d-flex justify-content-between mt-5">
+                <div className="left-btns d-flex gap-3">
+                  <button
+                    onClick={() => handleSaveAnswer(true)}
+                    className="review-next-btn"
+                  >
+                    <i className="fa-light fa-bookmark"></i>
+                    Mark for Review & Next
+                  </button>
+                  <button
+                    onClick={handleClearResponse}
+                    className="clear-response-btn"
+                  >
+                    <i className="fa-light fa-eraser"></i>
+                    Clear Response
+                  </button>
+                </div>
+
+                <div className="right-btn d-flex gap-2">
+                  <button
+                    onClick={handlePrevious}
+                    disabled={currentIndex === 0}
+                    className="rts-btn btn-secondary px-4"
+                  >
+                    Previous
+                  </button>
+                  <button
+                    onClick={() => handleSaveAnswer(false)}
+                    className="rts-btn btn-primary px-4"
+                  >
+                    Save & Next
+                  </button>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
 
-    {/* Result Modal */}
-    {showResultModal && testResult && (
-      <div className="modal-overlay d-flex align-items-center justify-content-center" style={{
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        width: '100%',
-        height: '100%',
-        backgroundColor: 'rgba(0,0,0,0.7)',
-        zIndex: 1000,
-        backdropFilter: 'blur(5px)'
-      }}>
-        <div className="result-modal-content bg-white rounded-5 shadow-lg p-5 text-center animate__animated animate__zoomIn" style={{
-          maxWidth: '500px',
-          width: '90%',
-          border: '1px solid rgba(255,255,255,0.2)'
-        }}>
-          <div className="success-icon mb-4">
-            <div className="d-inline-flex align-items-center justify-content-center bg-success text-white rounded-circle shadow-sm" style={{ width: '80px', height: '80px', fontSize: '40px' }}>
-              <i className="fa-solid fa-check"></i>
-            </div>
-          </div>
-          
-          <h2 className="fw-bold mb-2">Test Submitted!</h2>
-          <p className="text-muted mb-4">{testResult.submissionMessage}</p>
-
-          {testResult.showResult ? (
-            <div className="result-stats-container">
-              <div className="score-display mb-4 p-4 rounded-4 bg-light">
-                <h1 className="display-4 fw-bold text-primary mb-0">{testResult.result?.score}</h1>
-                <p className="text-muted fw-bold mb-0">Total Score</p>
-                <div className="mt-2 badge rounded-pill bg-primary px-3 py-2">
-                  {testResult.result?.percentage}% Accuracy
-                </div>
-              </div>
-
-              <div className="stats-grid d-grid gap-3" style={{ gridTemplateColumns: 'repeat(3, 1fr)' }}>
-                <div className="stat-item p-3 rounded-4 border bg-white">
-                  <h5 className="mb-0 text-success fw-bold">{testResult.result?.correctCount}</h5>
-                  <small className="text-muted">Correct</small>
-                </div>
-                <div className="stat-item p-3 rounded-4 border bg-white">
-                  <h5 className="mb-0 text-danger fw-bold">{testResult.result?.wrongCount}</h5>
-                  <small className="text-muted">Wrong</small>
-                </div>
-                <div className="stat-item p-3 rounded-4 border bg-white">
-                  <h5 className="mb-0 text-secondary fw-bold">{testResult.result?.skippedCount}</h5>
-                  <small className="text-muted">Skipped</small>
-                </div>
-              </div>
-
-              <div className={`mt-4 py-3 rounded-4 fw-bold ${testResult.result?.isPassed ? 'text-success bg-success-subtle' : 'text-danger bg-danger-subtle'}`} style={{
-                backgroundColor: testResult.result?.isPassed ? 'rgba(25, 135, 84, 0.1)' : 'rgba(220, 53, 69, 0.1)'
-              }}>
-                {testResult.result?.isPassed ? '🎉 YOU PASSED' : '❌ NEEDS IMPROVEMENT'}
-              </div>
-            </div>
-          ) : (
-            <div className="no-result-message p-4 rounded-4 bg-light text-muted">
-              Result will be declared soon after review.
-            </div>
-          )}
-
-          <button 
-            onClick={() => {
-              localStorage.removeItem("attemptId");
-              navigate("/dashboard");
-            }} 
-            className="rts-btn btn-primary w-100 mt-5 py-3 rounded-4 shadow-sm fw-bold"
+      {/* Result Modal */}
+      {showResultModal && testResult && (
+        <div
+          className="modal-overlay d-flex align-items-center justify-content-center"
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            backgroundColor: "rgba(0,0,0,0.7)",
+            zIndex: 1000,
+            backdropFilter: "blur(5px)",
+          }}
+        >
+          <div
+            className="result-modal-content bg-white rounded-5 shadow-lg p-5 text-center animate__animated animate__zoomIn"
+            style={{
+              maxWidth: "500px",
+              width: "90%",
+              border: "1px solid rgba(255,255,255,0.2)",
+            }}
           >
-            Back to Dashboard
-          </button>
-        </div>
-      </div>
-    )}
-
-    {/* Submit Confirmation Modal */}
-    {showConfirmSubmitModal && (
-      <div className="modal-overlay d-flex align-items-center justify-content-center" style={{
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        width: '100%',
-        height: '100%',
-        backgroundColor: 'rgba(0,0,0,0.7)',
-        zIndex: 1000,
-        backdropFilter: 'blur(5px)'
-      }}>
-        <div className="submit-modal-content bg-white rounded-5 shadow-lg p-5 text-center animate__animated animate__zoomIn" style={{
-          maxWidth: '550px',
-          width: '90%',
-          border: '1px solid rgba(255,255,255,0.2)'
-        }}>
-          <div className="warning-icon mb-4">
-            <div className="d-inline-flex align-items-center justify-content-center bg-warning text-white rounded-circle shadow-sm animate__animated animate__pulse animate__infinite" style={{ width: '80px', height: '80px', fontSize: '40px', backgroundColor: '#ff9800' }}>
-              <i className="fa-solid fa-triangle-exclamation"></i>
-            </div>
-          </div>
-          
-          <h2 className="fw-bold mb-2 text-dark">Submit Your Test?</h2>
-          <p className="text-muted mb-4">You are about to submit your test. Please review your attempt summary below. Once submitted, you cannot modify your answers.</p>
-
-          <div className="progress-summary mb-4 p-4 rounded-4 bg-light text-start">
-            <h5 className="fw-bold text-dark mb-3 border-bottom pb-2">
-              <i className="fa-solid fa-list-check me-2 text-primary"></i> Attempt Summary
-            </h5>
-            <div className="stats-grid d-grid gap-3" style={{ gridTemplateColumns: 'repeat(2, 1fr)' }}>
-              <div className="stat-item p-3 rounded-4 border bg-white d-flex align-items-center gap-3">
-                <span className="qp-box qp-attempted d-flex align-items-center justify-content-center m-0" style={{ width: '36px', height: '36px', borderRadius: '8px' }}>
-                  {attemptedCount}
-                </span>
-                <div>
-                  <h6 className="mb-0 fw-bold">{attemptedCount}</h6>
-                  <small className="text-muted">Answered</small>
-                </div>
-              </div>
-
-              <div className="stat-item p-3 rounded-4 border bg-white d-flex align-items-center gap-3">
-                <span className="qp-box qp-marked d-flex align-items-center justify-content-center m-0" style={{ width: '36px', height: '36px', borderRadius: '8px' }}>
-                  {markedCount}
-                </span>
-                <div>
-                  <h6 className="mb-0 fw-bold">{markedCount}</h6>
-                  <small className="text-muted">Marked for Review</small>
-                </div>
-              </div>
-
-              <div className="stat-item p-3 rounded-4 border bg-white d-flex align-items-center gap-3">
-                <span className="qp-box qp-marked-answered d-flex align-items-center justify-content-center m-0" style={{ width: '36px', height: '36px', borderRadius: '8px' }}>
-                  {markedAnsweredCount}
-                </span>
-                <div>
-                  <h6 className="mb-0 fw-bold">{markedAnsweredCount}</h6>
-                  <small className="text-muted">Marked & Answered</small>
-                </div>
-              </div>
-
-              <div className="stat-item p-3 rounded-4 border bg-white d-flex align-items-center gap-3">
-                <span className="qp-box qp-not-answered d-flex align-items-center justify-content-center m-0" style={{ width: '36px', height: '36px', borderRadius: '8px' }}>
-                  {notAnsweredCount}
-                </span>
-                <div>
-                  <h6 className="mb-0 fw-bold">{notAnsweredCount}</h6>
-                  <small className="text-muted">Not Answered</small>
-                </div>
-              </div>
-
-              <div className="stat-item p-3 rounded-4 border bg-white d-flex align-items-center gap-3" style={{ gridColumn: 'span 2' }}>
-                <span className="qp-box qp-not-visited d-flex align-items-center justify-content-center m-0" style={{ width: '36px', height: '36px', borderRadius: '8px' }}>
-                  {notVisitedCount}
-                </span>
-                <div>
-                  <h6 className="mb-0 fw-bold">{notVisitedCount}</h6>
-                  <small className="text-muted">Not Visited (Out of {questions.length} total questions)</small>
-                </div>
+            <div className="success-icon mb-4">
+              <div
+                className="d-inline-flex align-items-center justify-content-center bg-success text-white rounded-circle shadow-sm"
+                style={{ width: "80px", height: "80px", fontSize: "40px" }}
+              >
+                <i className="fa-solid fa-check"></i>
               </div>
             </div>
-          </div>
 
-          <div className="d-flex gap-3">
-            <button 
-              onClick={() => setShowConfirmSubmitModal(false)} 
-              className="rts-btn btn-secondary w-50 py-3 rounded-4 shadow-sm fw-bold border-0"
-              style={{ backgroundColor: '#e4e6eb', color: '#4b4f56' }}
+            <h2 className="fw-bold mb-2">Test Submitted!</h2>
+            <p className="text-muted mb-4">{testResult.submissionMessage}</p>
+
+            {testResult.showResult ? (
+              <div className="result-stats-container">
+                <div className="score-display mb-4 p-4 rounded-4 bg-light">
+                  <h1 className="display-4 fw-bold text-primary mb-0">
+                    {testResult.result?.score}
+                  </h1>
+                  <p className="text-muted fw-bold mb-0">Total Score</p>
+                  <div className="mt-2 badge rounded-pill bg-primary px-3 py-2">
+                    {testResult.result?.percentage}% Accuracy
+                  </div>
+                </div>
+
+                <div
+                  className="stats-grid d-grid gap-3"
+                  style={{ gridTemplateColumns: "repeat(3, 1fr)" }}
+                >
+                  <div className="stat-item p-3 rounded-4 border bg-white">
+                    <h5 className="mb-0 text-success fw-bold">
+                      {testResult.result?.correctCount}
+                    </h5>
+                    <small className="text-muted">Correct</small>
+                  </div>
+                  <div className="stat-item p-3 rounded-4 border bg-white">
+                    <h5 className="mb-0 text-danger fw-bold">
+                      {testResult.result?.wrongCount}
+                    </h5>
+                    <small className="text-muted">Wrong</small>
+                  </div>
+                  <div className="stat-item p-3 rounded-4 border bg-white">
+                    <h5 className="mb-0 text-secondary fw-bold">
+                      {testResult.result?.skippedCount}
+                    </h5>
+                    <small className="text-muted">Skipped</small>
+                  </div>
+                </div>
+
+                <div
+                  className={`mt-4 py-3 rounded-4 fw-bold ${testResult.result?.isPassed ? "text-success bg-success-subtle" : "text-danger bg-danger-subtle"}`}
+                  style={{
+                    backgroundColor: testResult.result?.isPassed
+                      ? "rgba(25, 135, 84, 0.1)"
+                      : "rgba(220, 53, 69, 0.1)",
+                  }}
+                >
+                  {testResult.result?.isPassed
+                    ? "🎉 YOU PASSED"
+                    : "❌ NEEDS IMPROVEMENT"}
+                </div>
+              </div>
+            ) : (
+              <div className="no-result-message p-4 rounded-4 bg-light text-muted">
+                Result will be declared soon after review.
+              </div>
+            )}
+
+            <button
+              onClick={() => {
+                localStorage.removeItem("attemptId");
+                navigate("/dashboard");
+              }}
+              className="rts-btn btn-primary w-100 mt-5 py-3 rounded-4 shadow-sm fw-bold"
             >
-              Cancel
-            </button>
-            <button 
-              onClick={handleSubmitTest} 
-              className="rts-btn btn-primary w-50 py-3 rounded-4 shadow-sm fw-bold border-0"
-              style={{ backgroundColor: '#0d6efd', color: '#fff' }}
-            >
-              Yes, Submit Test
+              Back to Dashboard
             </button>
           </div>
         </div>
-      </div>
-    )}
-  </>
+      )}
+
+      {/* Submit Confirmation Modal */}
+      {showConfirmSubmitModal && (
+        <div
+          className="modal-overlay d-flex align-items-center justify-content-center"
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            backgroundColor: "rgba(0,0,0,0.7)",
+            zIndex: 1000,
+            backdropFilter: "blur(5px)",
+          }}
+        >
+          <div
+            className="submit-modal-content bg-white rounded-5 shadow-lg p-5 text-center animate__animated animate__zoomIn"
+            style={{
+              maxWidth: "550px",
+              width: "90%",
+              border: "1px solid rgba(255,255,255,0.2)",
+            }}
+          >
+            <div className="warning-icon mb-4">
+              <div
+                className="d-inline-flex align-items-center justify-content-center bg-warning text-white rounded-circle shadow-sm animate__animated animate__pulse animate__infinite"
+                style={{
+                  width: "80px",
+                  height: "80px",
+                  fontSize: "40px",
+                  backgroundColor: "#ff9800",
+                }}
+              >
+                <i className="fa-solid fa-triangle-exclamation"></i>
+              </div>
+            </div>
+
+            <h2 className="fw-bold mb-2 text-dark">Submit Your Test?</h2>
+            <p className="text-muted mb-4">
+              You are about to submit your test. Please review your attempt
+              summary below. Once submitted, you cannot modify your answers.
+            </p>
+
+            <div className="progress-summary mb-4 p-4 rounded-4 bg-light text-start">
+              <h5 className="fw-bold text-dark mb-3 border-bottom pb-2">
+                <i className="fa-solid fa-list-check me-2 text-primary"></i>{" "}
+                Attempt Summary
+              </h5>
+              <div
+                className="stats-grid d-grid gap-3"
+                style={{ gridTemplateColumns: "repeat(2, 1fr)" }}
+              >
+                <div className="stat-item p-3 rounded-4 border bg-white d-flex align-items-center gap-3">
+                  <span
+                    className="qp-box qp-attempted d-flex align-items-center justify-content-center m-0"
+                    style={{
+                      width: "36px",
+                      height: "36px",
+                      borderRadius: "8px",
+                    }}
+                  >
+                    {attemptedCount}
+                  </span>
+                  <div>
+                    <h6 className="mb-0 fw-bold">{attemptedCount}</h6>
+                    <small className="text-muted">Answered</small>
+                  </div>
+                </div>
+
+                <div className="stat-item p-3 rounded-4 border bg-white d-flex align-items-center gap-3">
+                  <span
+                    className="qp-box qp-marked d-flex align-items-center justify-content-center m-0"
+                    style={{
+                      width: "36px",
+                      height: "36px",
+                      borderRadius: "8px",
+                    }}
+                  >
+                    {markedCount}
+                  </span>
+                  <div>
+                    <h6 className="mb-0 fw-bold">{markedCount}</h6>
+                    <small className="text-muted">Marked for Review</small>
+                  </div>
+                </div>
+
+                <div className="stat-item p-3 rounded-4 border bg-white d-flex align-items-center gap-3">
+                  <span
+                    className="qp-box qp-marked-answered d-flex align-items-center justify-content-center m-0"
+                    style={{
+                      width: "36px",
+                      height: "36px",
+                      borderRadius: "8px",
+                    }}
+                  >
+                    {markedAnsweredCount}
+                  </span>
+                  <div>
+                    <h6 className="mb-0 fw-bold">{markedAnsweredCount}</h6>
+                    <small className="text-muted">Marked & Answered</small>
+                  </div>
+                </div>
+
+                <div className="stat-item p-3 rounded-4 border bg-white d-flex align-items-center gap-3">
+                  <span
+                    className="qp-box qp-not-answered d-flex align-items-center justify-content-center m-0"
+                    style={{
+                      width: "36px",
+                      height: "36px",
+                      borderRadius: "8px",
+                    }}
+                  >
+                    {notAnsweredCount}
+                  </span>
+                  <div>
+                    <h6 className="mb-0 fw-bold">{notAnsweredCount}</h6>
+                    <small className="text-muted">Not Answered</small>
+                  </div>
+                </div>
+
+                <div
+                  className="stat-item p-3 rounded-4 border bg-white d-flex align-items-center gap-3"
+                  style={{ gridColumn: "span 2" }}
+                >
+                  <span
+                    className="qp-box qp-not-visited d-flex align-items-center justify-content-center m-0"
+                    style={{
+                      width: "36px",
+                      height: "36px",
+                      borderRadius: "8px",
+                    }}
+                  >
+                    {notVisitedCount}
+                  </span>
+                  <div>
+                    <h6 className="mb-0 fw-bold">{notVisitedCount}</h6>
+                    <small className="text-muted">
+                      Not Visited (Out of {questions.length} total questions)
+                    </small>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="d-flex gap-3">
+              <button
+                onClick={() => setShowConfirmSubmitModal(false)}
+                className="rts-btn btn-secondary w-50 py-3 rounded-4 shadow-sm fw-bold border-0"
+                style={{ backgroundColor: "#e4e6eb", color: "#4b4f56" }}
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleSubmitTest}
+                className="rts-btn btn-primary w-50 py-3 rounded-4 shadow-sm fw-bold border-0"
+                style={{ backgroundColor: "#0d6efd", color: "#fff" }}
+              >
+                Yes, Submit Test
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
   );
 };
 
 export default QuestionComponent;
-

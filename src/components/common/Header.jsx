@@ -14,7 +14,9 @@ function Header() {
   React.useEffect(() => {
     const fetchTests = async () => {
       try {
-        const response = await axios.get(import.meta.env.VITE_BASE_URL + "/tests");
+        const response = await axios.get(
+          import.meta.env.VITE_BASE_URL + "/tests",
+        );
         if (response.data.success) {
           setTests(response.data.data.data);
         }
@@ -39,11 +41,18 @@ function Header() {
                 <div className="left-information">
                   <a href="mailto:someone@example.com" className="email">
                     <i className="fa-light fa-envelope" />
-                    {siteData?.data?.contact?.email ? siteData.data.contact.email : 'info@kyp5.com'}
+                    {siteData?.data?.contact?.email
+                      ? siteData.data.contact.email
+                      : "info@kyp5.com"}
                   </a>
-                  <a href="tel: { siteData?.data?.contact?.phone ? siteData.data.contact.phone : '+91 83528 03233' }" className="email">
+                  <a
+                    href="tel: { siteData?.data?.contact?.phone ? siteData.data.contact.phone : '+91 83528 03233' }"
+                    className="email"
+                  >
                     <i className="fa-light fa-phone" />
-                    {siteData?.data?.contact?.phone ? siteData.data.contact.phone : '+91 83528 03233'}
+                    {siteData?.data?.contact?.phone
+                      ? siteData.data.contact.phone
+                      : "+91 83528 03233"}
                   </a>
                   <a
                     href="https://kyp5.com/assets/upload/msme.pdf"
@@ -137,13 +146,14 @@ function Header() {
             <div className="header-one-wrapper">
               <div className="left-side-header">
                 <a href="/" className="logo-area">
-                  <img id="main-logo"
+                  <img
+                    id="main-logo"
                     src={
                       siteData?.data?.branding?.logoUrl
                         ? import.meta.env.VITE_BASE_URL.replace(
-                          "/api/public/",
-                          "",
-                        ) + siteData.data.branding.logoUrl
+                            "/api/public/",
+                            "",
+                          ) + siteData.data.branding.logoUrl
                         : logo
                     }
                     alt="logo"
@@ -191,32 +201,65 @@ function Header() {
                         Our Blogs
                       </Link>
                     </li>
+                    <div className="buttons-area">
+                      <Link className="rts-btn btn-primary me-2" to="/contact-us">
+                        Contact Us
+                      </Link>
+                    </div>
                     {student ? (
-                      <li className="has-dropdown" style={{ marginLeft: "20px" }}>
-                        <a className="nav-link" href="#" onClick={(e) => e.preventDefault()} style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                          <img 
-                            src={student.avatar || "/assets/images/auser.jpg"} 
-                            alt="User" 
-                            style={{ width: "35px", height: "35px", borderRadius: "50%", objectFit: "cover", border: "2px solid var(--color-primary)" }} 
+                      <li
+                        className="has-dropdown"
+                        style={{ marginLeft: "20px" }}
+                      >
+                        <a
+                          className="nav-link"
+                          href="#"
+                          onClick={(e) => e.preventDefault()}
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: "10px",
+                          }}
+                        >
+                          <img
+                            src={student.avatar || "/assets/images/auser.jpg"}
+                            alt="User"
+                            style={{
+                              width: "35px",
+                              height: "35px",
+                              borderRadius: "50%",
+                              objectFit: "cover",
+                              border: "2px solid var(--color-primary)",
+                            }}
                           />
-                          <span>{student.name.split(' ')[0]}</span>
+                          <span>{student.name.split(" ")[0]}</span>
                         </a>
                         <ul className="submenu">
                           <li>
-                            <button 
-                              className="submenu-link" 
+                            <button
+                              className="submenu-link"
                               onClick={handleLogout}
-                              style={{ border: "none", background: "none", width: "100%", textAlign: "left", cursor: "pointer", display: "flex", alignItems: "center", gap: "10px" }}
+                              style={{
+                                border: "none",
+                                background: "none",
+                                width: "100%",
+                                textAlign: "left",
+                                cursor: "pointer",
+                                display: "flex",
+                                alignItems: "center",
+                                gap: "10px",
+                              }}
                             >
-                              <i className="fa-light fa-right-from-bracket"></i> Logout
+                              <i className="fa-light fa-right-from-bracket"></i>{" "}
+                              Logout
                             </button>
                           </li>
                         </ul>
                       </li>
                     ) : (
                       <div className="buttons-area">
-                        <Link className="rts-btn btn-primary" to="/contact-us">
-                          Contact Us
+                        <Link className="rts-btn btn-primary" to="/login">
+                          Login / Register
                         </Link>
                       </div>
                     )}

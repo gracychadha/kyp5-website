@@ -19,11 +19,14 @@ function EventGrid() {
 
   return (
     <div className="rts-section-gap rts-blog-area">
+     
       <div className="container">
+         <div className="section-title">
+        <h2>Upcoming Events</h2>
+      </div>
         <div className="row g-5 mt--20">
           {events.length > 0 ? (
             events.map((event) => {
-
               const image = event.thumbnail
                 ? BASE_URL + event.thumbnail
                 : "/assets/images/events/01.jpg";
@@ -47,7 +50,6 @@ function EventGrid() {
               return (
                 <div className="col-lg-6" key={event.id}>
                   <div className="single-blog-style-one">
-                    
                     <a href={buttonLink} className="thumbnail">
                       <img src={image} alt={title} />
                     </a>
@@ -68,15 +70,12 @@ function EventGrid() {
                         <p>{venue}</p>
                       </div>
                     </div>
-
                   </div>
                 </div>
               );
             })
           ) : (
-            <p style={{ textAlign: "center" }}>
-              No upcoming events available.
-            </p>
+            <p style={{ textAlign: "center" }}>No upcoming events available.</p>
           )}
         </div>
       </div>

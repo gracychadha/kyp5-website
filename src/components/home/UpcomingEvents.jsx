@@ -26,7 +26,7 @@ function UpcomingEvents() {
               <div className="title-area-center-style">
                 <div className="pre-title">
                   <img src="/assets/images/banner/bulb.png" alt="icon" />
-                  <span>Our Event</span>
+                  <span>Our Events</span>
                 </div>
                 <h2 className="title">Upcoming Events</h2>
                 <p className="post-title">

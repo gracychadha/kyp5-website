@@ -158,7 +158,7 @@ function Footer() {
                   </div>
                   <div className="body">
                     <p className="disc">
-                      Subscribe Our newsletter get update our new course
+                      Subscribe to Our Newsletter to get updates on our new courses
                     </p>
 
                     <form onSubmit={handleSubmit}>

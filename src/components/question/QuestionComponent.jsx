@@ -678,11 +678,11 @@ const QuestionComponent = () => {
             <button
               onClick={() => {
                 localStorage.removeItem("attemptId");
-                navigate("/dashboard");
+                navigate("/");
               }}
               className="rts-btn btn-primary w-100 mt-5 py-3 rounded-4 shadow-sm fw-bold"
             >
-              Back to Dashboard
+              Back to Home
             </button>
           </div>
         </div>

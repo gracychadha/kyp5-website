@@ -11,7 +11,7 @@ function Banner() {
                 <h1 className="title">Terms and Conditions</h1>
                 {/* breadcrumb pagination area */}
                 <div className="pagination-wrapper">
-                  <a href="index.html">Home</a>
+                  <a href="/">Home</a>
                   <i className="fa-regular fa-chevron-right" />
                   <a className="active" href="">
                     Terms and Conditions

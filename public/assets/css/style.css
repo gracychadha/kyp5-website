@@ -14329,7 +14329,7 @@ xclip
 /* Header */
 .header-top-one-wrapper {
   background: var(--color-primary);
-  padding: 0;
+  padding: 10px;
 }
 @media only screen and (max-width: 767px) {
   .header-top-one-wrapper {
@@ -23885,7 +23885,7 @@ nav ul li a {
   flex-basis: 50%;
 }
 .rts-single-wized .recent-post-single .thumbnail img {
-  min-width: 85px;
+  width: 100px;
   height: auto;
   transition: 0.3s;
 }
@@ -33786,16 +33786,15 @@ header.header-three .sub-dropdown .submenu.third-lvl.base {
 .question-main-container .main-container-q {
   padding: 15px;
 }
-.question-main-container .main-container-q .q-header .title{
+.question-main-container .main-container-q .q-header .title {
   color: #3099b7;
 }
 .question-main-container .main-container-q .timer {
-
   padding: 5px;
 }
-.question-main-container .main-container-q .timer-box{
-    padding: 0 5px;
-    border: 1px solid #bbbaba;
+.question-main-container .main-container-q .timer-box {
+  padding: 0 5px;
+  border: 1px solid #bbbaba;
 }
 .question-number {
   font-weight: 700;
@@ -34046,7 +34045,7 @@ header.header-three .sub-dropdown .submenu.third-lvl.base {
   align-items: center;
   gap: 10px;
   transition: 0.3s ease;
-  max-width :150px;
+  max-width: 150px;
 }
 
 .exam-back-btn:hover {
@@ -34089,4 +34088,63 @@ header.header-three .sub-dropdown .submenu.third-lvl.base {
 .review-next-btn:hover {
   background: #dda200;
   border-color: #dda200;
+}
+.top-social-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.follow-text {
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
+  margin-right: 5px;
+  letter-spacing: 0.5px;
+}
+
+.social-icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  color: #fff;
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+
+.social-icon:hover {
+  transform: translateY(-3px);
+  color: #fff;
+}
+
+/* Brand Colors */
+.facebook {
+  background: #1877f2;
+}
+
+.instagram {
+  background: linear-gradient(
+    45deg,
+    #f09433,
+    #e6683c,
+    #dc2743,
+    #cc2366,
+    #bc1888
+  );
+}
+
+.linkedin {
+  background: #0a66c2;
+}
+
+.twitter {
+  background: #000;
+}
+
+.youtube {
+  background: #ff0000;
 }

@@ -67,8 +67,8 @@ function Banner() {
                       </div>
 
                       <div className="info">
-                        <h6 className="title">2k students</h6>
-                        <span>Join our online Class</span>
+                        <h6 className="title">2K+ students</h6>
+                        <span>Have joined our online learning community</span>
                       </div>
                     </div>
                   </div>
@@ -93,7 +93,7 @@ function Banner() {
             <img src="assets/images/banner/03.png" alt="banner" />
             <div className="info-right">
               <h6 className="title">4.5</h6>
-              <span>(2.4k Review)</span>
+              <span>(2.4K Review)</span>
             </div>
           </div>
 

@@ -80,13 +80,7 @@ function WhyChooseUs() {
               ))}
             </div>
 
-            <a
-              href="/courses"
-              className="rts-btn btn-primary-white with-arrow"
-            >
-              View All Course
-              <i className="fa-regular fa-arrow-right"></i>
-            </a>
+           
 
           </div>
         </div>

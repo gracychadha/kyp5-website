@@ -64,76 +64,33 @@ function Header() {
                   </a>
                 </div>
                 <div className="right-information">
-                  <ul className="rts-dropdown-menu switcher-language">
-                    <li className="has-child-menu">
-                      <a href="#">
-                        <img
-                          className="left-image"
-                          src="assets/images/flag-01.svg"
-                          alt="Language Images"
-                        />
-                        <span className="menu-item">English</span>
-                        <i className="fa-regular fa-chevron-down" />
-                      </a>
-                      <ul className="sub-menu">
-                        <li>
-                          <a href="#">
-                            <img
-                              className="left-image"
-                              src="assets/images/flag-03.svg"
-                              alt="Language Images"
-                            />
-                            <span className="menu-item">Deutsch</span>
-                          </a>
-                        </li>
-                        <li>
-                          <a href="#">
-                            <img
-                              className="left-image"
-                              src="assets/images/flag-02.svg"
-                              alt="Language Images"
-                            />
-                            <span className="menu-item">Portuguese</span>
-                          </a>
-                        </li>
-                        <li>
-                          <a href="#">
-                            <img
-                              className="left-image"
-                              src="assets/images/flag-04.svg"
-                              alt="Language Images"
-                            />
-                            <span className="menu-item">Russian</span>
-                          </a>
-                        </li>
-                      </ul>
-                    </li>
-                  </ul>
-                  <ul className="rts-dropdown-menu switcher-currency">
-                    <li className="has-child-menu">
-                      <a href="#">
-                        <span className="menu-item">USD</span>
-                        <i className="fa-regular fa-chevron-down" />
-                      </a>
-                      <ul className="sub-menu">
-                        <li>
-                          <a href="#">
-                            <span className="menu-item">Euro</span>
-                          </a>
-                        </li>
-                        <li>
-                          <a href="#">
-                            <span className="menu-item">Real</span>
-                          </a>
-                        </li>
-                        <li>
-                          <a href="#">
-                            <span className="menu-item">Ruble</span>
-                          </a>
-                        </li>
-                      </ul>
-                    </li>
-                  </ul>
+                  {/* Top Header Social Follow Us */}
+                  <div className="top-social-bar">
+                    <span className="follow-text">Follow Us On :</span>
+                    <a
+                      href="https://www.facebook.com/KnowYourP5/"
+                      target="_blank"
+                      className="social-icon facebook"
+                    >
+                      <i className="fab fa-facebook-f" />
+                    </a>
+                    <a
+                      href="https://www.instagram.com/know_about_your_power"
+                      target="_blank"
+                      className="social-icon instagram"
+                    >
+                      <i className="fab fa-instagram" />
+                    </a>
+                    <a
+                      href="#"
+                      target="_blank"
+                      className="social-icon linkedin"
+                    >
+                      <i className="fab fa-linkedin-in" />
+                    </a>
+                   
+                    
+                  </div>
                 </div>
               </div>
             </div>

@@ -1,67 +1,235 @@
 import React from "react";
+import axios from "axios";
+import Swal from "sweetalert2";
+
+import { Link, useNavigate } from "react-router-dom";
+
 import { useSite } from "../../context/SiteContext";
+import { useAuth } from "../../context/AuthContext";
+
 function MenuHeader() {
+  const [servicesOpen, setServicesOpen] = React.useState(false);
   const { siteData } = useSite();
+  const { student, logout } = useAuth();
+  const [tests, setTests] = React.useState([]);
+  const navigate = useNavigate();
+
+  React.useEffect(() => {
+    const fetchTests = async () => {
+      try {
+        const response = await axios.get(
+          import.meta.env.VITE_BASE_URL + "/tests",
+        );
+
+        if (response.data.success) {
+          setTests(response.data.data.data);
+        }
+      } catch (error) {
+        console.error("Error fetching tests:", error);
+      }
+    };
+
+    fetchTests();
+  }, []);
+
   return (
     <>
-      {/* header style two */}
       <div id="side-bar" className="side-bar header-two">
         <button className="close-icon-menu">
           <i className="far fa-times" />
         </button>
-        {/* inner menu area desktop start */}
-        
-        {/* mobile menu area start */}
+
         <div className="mobile-menu-main">
           <nav className="nav-main mainmenu-nav mt--30">
             <ul className="mainmenu metismenu" id="mobile-menu-active">
-              <li className="">
-                <a href="/" className="main">
+              <li>
+                <Link to="/" className="main">
                   Home
-                </a>
+                </Link>
               </li>
-              <li className="">
-                <a href="/about-us" className="main">
+
+              <li>
+                <Link to="/about-us" className="main">
                   About Us
-                </a>
+                </Link>
               </li>
-              <li className="">
-                <a href="/our-team" className="main">
+
+              <li>
+                <Link to="/our-team" className="main">
                   Our Team
-                </a>
+                </Link>
               </li>
-              <li className="has-droupdown">
-                <a href="#" className="main">
-                  Services
+
+              <li className={`has-droupdown ${servicesOpen ? "active" : ""}`}>
+                <a
+                  href="#"
+                  className="main d-flex align-items-center justify-content-between"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setServicesOpen(!servicesOpen);
+                  }}
+                >
+                  <span>Services</span>
+
+                  <i
+                    className={`fa-light ${
+                      servicesOpen ? "fa-minus" : "fa-plus"
+                    }`}
+                  ></i>
                 </a>
-                <ul className="submenu mm-collapse">
-                  <li>
-                    <a href="#" className="tag">
-                      Test
-                    </a>
-                  </li>
+
+                <ul
+                  className="submenu"
+                  style={{
+                    display: servicesOpen ? "block" : "none",
+                    paddingLeft: "15px",
+                    marginTop: "10px",
+                  }}
+                >
+                  {tests.map((test) => (
+                    <li key={test.id}>
+                      <Link
+                        className="tag"
+                        to={`/test?testId=${test.id}`}
+                        onClick={() => setServicesOpen(false)}
+                      >
+                        {test.title}
+                      </Link>
+                    </li>
+                  ))}
                 </ul>
               </li>
-              <li className="">
-                <a href="/our-blogs" className="main">
-                  Our Blogs
-                </a>
+
+              <li>
+                <Link to="/gallery" className="main">
+                  Gallery
+                </Link>
               </li>
-              <li className="">
-                <a href="/contact-us" className="main">
+
+              <li>
+                <Link to="/our-blogs" className="main">
+                  Our Blogs
+                </Link>
+              </li>
+
+              <li>
+                <Link to="/contact-us" className="main">
                   Contact Us
-                </a>
+                </Link>
               </li>
             </ul>
           </nav>
-          <div className="buttons-area">
-            <a href="#" className="rts-btn btn-border">
-              Log In
-            </a>
-            <a href="#" className="rts-btn btn-primary">
-              Sign Up
-            </a>
-          </div>
+
+          {/* Login / Profile Button */}
+          {student ? (
+            <div className="buttons-area mt-4">
+              <div className="dropdown w-100">
+                <button
+                  className="rts-btn btn-primary dropdown-toggle d-flex align-items-center justify-content-between gap-2 w-100"
+                  type="button"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                  style={{
+                    borderRadius: "50px",
+                    padding: "12px 18px",
+                  }}
+                >
+                  <div className="d-flex align-items-center gap-2">
+                    <img
+                      src={student.avatar || "/assets/images/auser.jpg"}
+                      alt="User"
+                      style={{
+                        width: "36px",
+                        height: "36px",
+                        borderRadius: "50%",
+                        objectFit: "cover",
+                        border: "2px solid #fff",
+                      }}
+                    />
+
+                    <div className="text-start">
+                      <div
+                        style={{
+                          fontSize: "14px",
+                          fontWeight: "600",
+                          lineHeight: "18px",
+                        }}
+                      >
+                        {student.name}
+                      </div>
+
+                      <small
+                        style={{
+                          fontSize: "11px",
+                          opacity: 0.8,
+                        }}
+                      >
+                        {student.email}
+                      </small>
+                    </div>
+                  </div>
+                </button>
+
+                <ul
+                  className="dropdown-menu dropdown-menu-end shadow border-0 mt-2 w-100"
+                  style={{
+                    borderRadius: "12px",
+                    padding: "10px",
+                  }}
+                >
+                  <li>
+                    <button
+                      className="dropdown-item d-flex align-items-center gap-2"
+                      onClick={() => {
+                        Swal.fire({
+                          title: "Logout?",
+                          text: "Are you sure you want to logout?",
+                          icon: "warning",
+                          showCancelButton: true,
+                          confirmButtonText: "Yes, Logout",
+                          cancelButtonText: "Cancel",
+                          confirmButtonColor: "#d33",
+                          cancelButtonColor: "#3085d6",
+                        }).then((result) => {
+                          if (result.isConfirmed) {
+                            logout();
+
+                            Swal.fire({
+                              title: "Logged Out!",
+                              text: "You have been logged out successfully.",
+                              icon: "success",
+                              timer: 1500,
+                              showConfirmButton: false,
+                            });
+
+                            setTimeout(() => {
+                              navigate("/");
+                            }, 1500);
+                          }
+                        });
+                      }}
+                      style={{
+                        borderRadius: "8px",
+                        padding: "12px",
+                        fontWeight: "500",
+                      }}
+                    >
+                      <i className="fa-light fa-right-from-bracket"></i>
+                      Logout
+                    </button>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          ) : (
+            <div className="buttons-area mt-4">
+              <Link className="rts-btn btn-primary w-100" to="/login">
+                Login / Register
+              </Link>
+            </div>
+          )}
+
+          {/* Social Links */}
           <div className="rts-social-style-one pl--20 mt--50">
             <ul>
               {siteData?.data?.footer?.socialLinks?.facebook && (
@@ -114,9 +282,7 @@ function MenuHeader() {
             </ul>
           </div>
         </div>
-        {/* mobile menu area end */}
       </div>
-      {/* header style two End */}
     </>
   );
 }

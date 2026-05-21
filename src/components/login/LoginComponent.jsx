@@ -1,23 +1,24 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams, Link } from "react-router-dom";
 import axios from "axios";
-import { useAuth } from "../../../context/AuthContext";
+import { useAuth } from "../../context/AuthContext";
 
 function LoginComponent() {
   const STUDENT_URL = import.meta.env.VITE_BASE_URL.replace(
     "public",
     "student",
   );
-
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const testId = searchParams.get("testId");
   const { login } = useAuth();
 
   const [isLogin, setIsLogin] = useState(true);
   const [isOtpVerification, setIsOtpVerification] = useState(false);
-
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
   const [otpEmail, setOtpEmail] = useState("");
 
+  // form data
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -27,20 +28,25 @@ function LoginComponent() {
 
   const [confirmPassword, setConfirmPassword] = useState("");
 
+  // ui states
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
 
+  // password toggle
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   useEffect(() => {
-    const token = localStorage.getItem("studentToken");
-
-    if (token) {
+    if (!testId) {
       navigate("/");
+      return;
     }
-  }, [navigate]);
+    const token = localStorage.getItem("studentToken");
+    if (token) {
+      navigate(`/instruction?testId=${testId}`);
+    }
+  }, [navigate, testId]);
 
   const handleInput = (e) => {
     setFormData({
@@ -49,16 +55,13 @@ function LoginComponent() {
     });
   };
 
-  // LOGIN
   const handleLogin = async (e) => {
     e.preventDefault();
-
     setError("");
     setMessage("");
 
     try {
       setLoading(true);
-
       const response = await axios.post(`${STUDENT_URL}auth/login`, {
         email: formData.email,
         password: formData.password,
@@ -66,18 +69,14 @@ function LoginComponent() {
 
       if (response.data.success) {
         login(response.data.data.user, response.data.data.accessToken);
-
         setMessage("Login successful!");
-
         setTimeout(() => {
-          navigate("/");
+          navigate(`/instruction?testId=${testId}`);
         }, 1000);
       }
     } catch (err) {
       const errMsg = err.response?.data?.message || "Login failed";
-
       setError(errMsg);
-
       if (
         err.response?.status === 403 &&
         errMsg.toLowerCase().includes("verify your email")
@@ -85,9 +84,9 @@ function LoginComponent() {
         setOtpEmail(formData.email);
         setIsOtpVerification(true);
         setOtp(["", "", "", "", "", ""]);
-
+        setError("");
         setMessage(
-          "Please verify your email before logging in. OTP sent to your email."
+          "Please verify your email before logging in. An OTP has been sent to your email.",
         );
       }
     } finally {
@@ -95,10 +94,8 @@ function LoginComponent() {
     }
   };
 
-  // REGISTER
   const handleRegister = async (e) => {
     e.preventDefault();
-
     setError("");
     setMessage("");
 
@@ -109,19 +106,17 @@ function LoginComponent() {
 
     try {
       setLoading(true);
-
       const response = await axios.post(
         `${STUDENT_URL}auth/register`,
-        formData
+        formData,
       );
 
       if (response.data.success) {
         setOtpEmail(formData.email);
         setIsOtpVerification(true);
         setOtp(["", "", "", "", "", ""]);
-
         setMessage(
-          "Registration successful! Please verify OTP sent to your email."
+          "Registration successful! Please check your email for the OTP to verify your account.",
         );
       }
     } catch (err) {
@@ -131,21 +126,21 @@ function LoginComponent() {
     }
   };
 
-  // OTP INPUT
   const handleOtpChange = (value, index) => {
     if (!/^\d*$/.test(value)) return;
 
     const newOtp = [...otp];
     newOtp[index] = value.slice(-1);
-
     setOtp(newOtp);
 
+    // move to next input
     if (value && index < 5) {
       document.getElementById(`otp-${index + 1}`).focus();
     }
   };
 
   const handleOtpKeyDown = (e, index) => {
+    // move back on backspace
     if (e.key === "Backspace" && !otp[index] && index > 0) {
       document.getElementById(`otp-${index - 1}`).focus();
     }
@@ -159,37 +154,27 @@ function LoginComponent() {
     if (!/^\d{6}$/.test(pastedData)) return;
 
     const otpArray = pastedData.split("");
-
     setOtp(otpArray);
 
     document.getElementById("otp-5").focus();
   };
-
-  // VERIFY OTP
   const handleVerifyOtp = async (e) => {
     e.preventDefault();
-
     setError("");
     setMessage("");
 
     try {
       setLoading(true);
-
-      const response = await axios.post(
-        `${STUDENT_URL}auth/verify-otp`,
-        {
-          email: otpEmail,
-          otp: otp.join(""),
-        }
-      );
+      const response = await axios.post(`${STUDENT_URL}auth/verify-otp`, {
+        email: otpEmail,
+        otp: otp.join(""),
+      });
 
       if (response.data.success) {
         login(response.data.data.user, response.data.data.accessToken);
-
-        setMessage("Email verified successfully!");
-
+        setMessage("Email verified successfully! You are now logged in.");
         setTimeout(() => {
-          navigate("/");
+          navigate(`/instruction?testId=${testId}`);
         }, 1000);
       }
     } catch (err) {
@@ -199,20 +184,18 @@ function LoginComponent() {
     }
   };
 
-  // RESEND OTP
   const handleResendOtp = async () => {
+    setError("");
+    setMessage("");
+
     try {
       setLoading(true);
-
-      const response = await axios.post(
-        `${STUDENT_URL}auth/resend-otp`,
-        {
-          email: otpEmail,
-        }
-      );
+      const response = await axios.post(`${STUDENT_URL}auth/resend-otp`, {
+        email: otpEmail,
+      });
 
       if (response.data.success) {
-        setMessage("OTP resent successfully!");
+        setMessage("OTP has been resent successfully to your email.");
       }
     } catch (err) {
       setError(err.response?.data?.message || "Failed to resend OTP");
@@ -225,20 +208,16 @@ function LoginComponent() {
     <div className="login-registration-wrapper">
       <div className="container">
         <div className="row g-0">
-
           <div className="col-lg-6">
             <div className="login-page-form-area">
-
               {isOtpVerification ? (
                 <>
-                  <h4 className="title">Verify OTP</h4>
-
+                  <h4 className="title">Verify Your OTP</h4>
                   <p className="sub-title">
-                    Enter OTP sent to {otpEmail}
+                    Enter the 6-digit OTP sent to {otpEmail}
                   </p>
 
                   <form onSubmit={handleVerifyOtp}>
-
                     <div
                       className="d-flex justify-content-center gap-2 mb-4"
                       onPaste={handleOtpPaste}
@@ -254,9 +233,7 @@ function LoginComponent() {
                           onChange={(e) =>
                             handleOtpChange(e.target.value, index)
                           }
-                          onKeyDown={(e) =>
-                            handleOtpKeyDown(e, index)
-                          }
+                          onKeyDown={(e) => handleOtpKeyDown(e, index)}
                           required
                           style={{
                             width: "55px",
@@ -265,17 +242,21 @@ function LoginComponent() {
                             fontSize: "22px",
                             border: "1px solid #ccc",
                             borderRadius: "10px",
+                            outline: "none",
                           }}
                         />
                       ))}
                     </div>
 
                     {error && (
-                      <p style={{ color: "red" }}>{error}</p>
+                      <p style={{ color: "red", marginBottom: "10px" }}>
+                        {error}
+                      </p>
                     )}
-
                     {message && (
-                      <p style={{ color: "green" }}>{message}</p>
+                      <p style={{ color: "green", marginBottom: "10px" }}>
+                        {message}
+                      </p>
                     )}
 
                     <button
@@ -286,48 +267,57 @@ function LoginComponent() {
                       {loading ? "Verifying..." : "Verify OTP"}
                     </button>
 
-                    <div className="mt-4 d-flex justify-content-between">
+                    <div
+                      className="d-flex justify-content-between mt-4"
+                      style={{ gap: "10px" }}
+                    >
                       <span
                         style={{
-                          cursor: "pointer",
                           color: "var(--color-primary)",
+                          cursor: "pointer",
                           fontWeight: "600",
                         }}
                         onClick={handleResendOtp}
                       >
                         Resend OTP
                       </span>
-
                       <span
                         style={{
-                          cursor: "pointer",
                           color: "var(--color-primary)",
+                          cursor: "pointer",
                           fontWeight: "600",
                         }}
                         onClick={() => {
                           setIsOtpVerification(false);
+                          setError("");
+                          setMessage("");
                         }}
                       >
-                        Back
+                        Back to {isLogin ? "Login" : "Sign Up"}
                       </span>
                     </div>
-
                   </form>
                 </>
               ) : (
                 <>
                   <h4 className="title">
-                    {isLogin ? "Login" : "Create Account"}
+                    {isLogin
+                      ? "Login to Start Your Test"
+                      : "Sign Up to Start Your Test"}
                   </h4>
+                  <p className="sub-title">
+                    {isLogin
+                      ? "Welcome back! Please login to continue"
+                      : "Create your account in seconds"}
+                  </p>
 
                   <form onSubmit={isLogin ? handleLogin : handleRegister}>
-
                     {!isLogin && (
                       <div className="single-input-wrapper">
                         <input
                           type="text"
                           name="name"
-                          placeholder="Full Name"
+                          placeholder="Enter Your Name"
                           value={formData.name}
                           onChange={handleInput}
                           required
@@ -339,7 +329,7 @@ function LoginComponent() {
                       <input
                         type="email"
                         name="email"
-                        placeholder="Email Address"
+                        placeholder="Enter Your Email"
                         value={formData.email}
                         onChange={handleInput}
                         required
@@ -351,7 +341,7 @@ function LoginComponent() {
                         <input
                           type="text"
                           name="phone"
-                          placeholder="Phone Number"
+                          placeholder="Enter Phone Number"
                           value={formData.phone}
                           onChange={handleInput}
                           required
@@ -371,16 +361,9 @@ function LoginComponent() {
                         onChange={handleInput}
                         required
                       />
-
                       <i
-                        className={`fa-light ${
-                          showPassword
-                            ? "fa-eye-slash"
-                            : "fa-eye"
-                        }`}
-                        onClick={() =>
-                          setShowPassword(!showPassword)
-                        }
+                        className={`fa-light ${showPassword ? "fa-eye-slash" : "fa-eye"}`}
+                        onClick={() => setShowPassword(!showPassword)}
                         style={{
                           position: "absolute",
                           right: "15px",
@@ -397,29 +380,16 @@ function LoginComponent() {
                         style={{ position: "relative" }}
                       >
                         <input
-                          type={
-                            showConfirmPassword
-                              ? "text"
-                              : "password"
-                          }
+                          type={showConfirmPassword ? "text" : "password"}
                           placeholder="Confirm Password"
                           value={confirmPassword}
-                          onChange={(e) =>
-                            setConfirmPassword(e.target.value)
-                          }
+                          onChange={(e) => setConfirmPassword(e.target.value)}
                           required
                         />
-
                         <i
-                          className={`fa-light ${
-                            showConfirmPassword
-                              ? "fa-eye-slash"
-                              : "fa-eye"
-                          }`}
+                          className={`fa-light ${showConfirmPassword ? "fa-eye-slash" : "fa-eye"}`}
                           onClick={() =>
-                            setShowConfirmPassword(
-                              !showConfirmPassword
-                            )
+                            setShowConfirmPassword(!showConfirmPassword)
                           }
                           style={{
                             position: "absolute",
@@ -433,11 +403,14 @@ function LoginComponent() {
                     )}
 
                     {error && (
-                      <p style={{ color: "red" }}>{error}</p>
+                      <p style={{ color: "red", marginBottom: "10px" }}>
+                        {error}
+                      </p>
                     )}
-
                     {message && (
-                      <p style={{ color: "green" }}>{message}</p>
+                      <p style={{ color: "green", marginBottom: "10px" }}>
+                        {message}
+                      </p>
                     )}
 
                     <button
@@ -448,36 +421,32 @@ function LoginComponent() {
                       {loading
                         ? "Please Wait..."
                         : isLogin
-                        ? "Login"
-                        : "Sign Up"}
+                          ? "Login"
+                          : "Sign Up"}
                     </button>
 
                     <p className="mt-4">
                       {isLogin
                         ? "Don't have an account?"
-                        : "Already have an account?"}
-
+                        : "Already have an account?"}{" "}
                       <span
+                        style={{
+                          color: "var(--color-primary)",
+                          cursor: "pointer",
+                          fontWeight: "600",
+                        }}
                         onClick={() => {
                           setIsLogin(!isLogin);
                           setError("");
                           setMessage("");
                         }}
-                        style={{
-                          cursor: "pointer",
-                          color: "var(--color-primary)",
-                          fontWeight: "600",
-                          marginLeft: "5px",
-                        }}
                       >
                         {isLogin ? "Sign Up" : "Login"}
                       </span>
                     </p>
-
                   </form>
                 </>
               )}
-
             </div>
           </div>
 
@@ -487,15 +456,14 @@ function LoginComponent() {
                 src="/assets/images/banner/login-bg.png"
                 width={600}
                 height={495}
-                alt="login"
+                alt="login-form"
               />
             </div>
           </div>
-
         </div>
       </div>
     </div>
   );
 }
 
-export default LoginComponent;
+export default TestComponent;

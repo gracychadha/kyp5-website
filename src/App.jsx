@@ -48,7 +48,7 @@ function App() {
               <Route path="/terms-conditions" element={<TermsCondition />} />
               <Route path="/events" element={<Events />} />
               <Route path="/test" element={<Test />} />
-              <Route path="/login" element={<Test />} />
+              <Route path="/login" element={<Login />} />
             </Route>
             {/*  Test Flow (NO Header/Footer) - Protected */}
             <Route element={<ProtectedRoute />}>

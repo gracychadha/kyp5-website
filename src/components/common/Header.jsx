@@ -4,7 +4,7 @@ import { useSite } from "../../context/SiteContext";
 import { useAuth } from "../../context/AuthContext";
 import logo from "../../../public/assets/images/logo/main-logo.png";
 import axios from "axios";
-
+import Swal from "sweetalert2";
 function Header() {
   const { siteData } = useSite();
   const { student, logout } = useAuth();
@@ -202,7 +202,10 @@ function Header() {
                       </Link>
                     </li>
                     <div className="buttons-area">
-                      <Link className="rts-btn btn-primary me-2" to="/contact-us">
+                      <Link
+                        className="rts-btn btn-primary me-2"
+                        to="/contact-us"
+                      >
                         Contact Us
                       </Link>
                     </div>
@@ -211,50 +214,115 @@ function Header() {
                         className="has-dropdown"
                         style={{ marginLeft: "20px" }}
                       >
-                        <a
-                          className="nav-link"
-                          href="#"
-                          onClick={(e) => e.preventDefault()}
-                          style={{
-                            display: "flex",
-                            alignItems: "center",
-                            gap: "10px",
-                          }}
-                        >
-                          <img
-                            src={student.avatar || "/assets/images/auser.jpg"}
-                            alt="User"
-                            style={{
-                              width: "35px",
-                              height: "35px",
-                              borderRadius: "50%",
-                              objectFit: "cover",
-                              border: "2px solid var(--color-primary)",
-                            }}
-                          />
-                          <span>{student.name.split(" ")[0]}</span>
-                        </a>
-                        <ul className="submenu">
-                          <li>
-                            <button
-                              className="submenu-link"
-                              onClick={handleLogout}
+                        <div className="dropdown">
+                          <div
+                            className="d-flex align-items-center gap-2"
+                            role="button"
+                            data-bs-toggle="dropdown"
+                            aria-expanded="false"
+                            style={{ cursor: "pointer" }}
+                          >
+                            <img
+                              src={student.avatar || "/assets/images/auser.jpg"}
+                              alt="User"
                               style={{
-                                border: "none",
-                                background: "none",
-                                width: "100%",
-                                textAlign: "left",
-                                cursor: "pointer",
-                                display: "flex",
-                                alignItems: "center",
-                                gap: "10px",
+                                width: "45px",
+                                height: "45px",
+                                borderRadius: "50%",
+                                objectFit: "cover",
+                                border: "2px solid var(--color-primary)",
                               }}
-                            >
-                              <i className="fa-light fa-right-from-bracket"></i>{" "}
-                              Logout
-                            </button>
-                          </li>
-                        </ul>
+                            />
+
+                            <div className="d-none d-md-block">
+                              <h6
+                                style={{
+                                  margin: 0,
+                                  fontSize: "14px",
+                                  fontWeight: "600",
+                                  lineHeight: "18px",
+                                }}
+                              >
+                                {student.name}
+                              </h6>
+
+                              <small
+                                style={{
+                                  color: "#777",
+                                  fontSize: "12px",
+                                }}
+                              >
+                                {student.email}
+                              </small>
+                            </div>
+
+                            <i
+                              className="fa-light fa-angle-down"
+                              style={{
+                                fontSize: "14px",
+                                color: "#555",
+                              }}
+                            ></i>
+                          </div>
+
+                          <ul
+                            className="dropdown-menu dropdown-menu-end shadow border-0 mt-3"
+                            style={{
+                              minWidth: "220px",
+                              borderRadius: "12px",
+                              padding: "10px",
+                            }}
+                          >
+                            <li className="px-2 pb-2 border-bottom mb-2">
+                              <div className="fw-bold">{student.name}</div>
+                              <small className="text-muted">
+                                {student.email}
+                              </small>
+                            </li>
+
+                            <li>
+                              <button
+                                className="dropdown-item d-flex align-items-center gap-2"
+                                onClick={() => {
+                                  Swal.fire({
+                                    title: "Logout?",
+                                    text: "Are you sure you want to logout?",
+                                    icon: "warning",
+                                    showCancelButton: true,
+                                    confirmButtonText: "Yes, Logout",
+                                    cancelButtonText: "Cancel",
+                                    confirmButtonColor: "#d33",
+                                    cancelButtonColor: "#3085d6",
+                                  }).then((result) => {
+                                    if (result.isConfirmed) {
+                                      logout();
+
+                                      Swal.fire({
+                                        title: "Logged Out!",
+                                        text: "You have been logged out successfully.",
+                                        icon: "success",
+                                        timer: 1500,
+                                        showConfirmButton: false,
+                                      });
+
+                                      setTimeout(() => {
+                                        navigate("/");
+                                      }, 1500);
+                                    }
+                                  });
+                                }}
+                                style={{
+                                  borderRadius: "8px",
+                                  padding: "10px",
+                                  fontWeight: "500",
+                                }}
+                              >
+                                <i className="fa-light fa-right-from-bracket"></i>
+                                Logout
+                              </button>
+                            </li>
+                          </ul>
+                        </div>
                       </li>
                     ) : (
                       <div className="buttons-area">

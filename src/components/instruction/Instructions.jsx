@@ -275,10 +275,10 @@ function Instructions() {
                   <div className="d-flex gap-3 mt-3 justify-content-between">
                     <button
                       className="exam-back-btn"
-                      onClick={() => navigate(`/test?testId=${testId}`)}
+                      onClick={() => navigate(`/`)}
                     >
                       <i className="fa-light fa-arrow-left"></i>
-                      Back to Test
+                      Back 
                     </button>
                     <button
                       className="start-btn flex-grow-1 rts-btn btn-primary"

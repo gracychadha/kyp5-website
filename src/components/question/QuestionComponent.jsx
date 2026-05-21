@@ -568,7 +568,7 @@ const QuestionComponent = () => {
                   <button
                     onClick={handlePrevious}
                     disabled={currentIndex === 0}
-                    className="rts-btn btn-secondary px-4"
+                    className="rts-btn btn-secondary px-4 text-white"
                   >
                     Previous
                   </button>
@@ -832,7 +832,7 @@ const QuestionComponent = () => {
               </div>
             </div>
 
-            <div className="d-flex gap-3">
+            <div className="d-flex gap-3 justify-content-between">
               <button
                 onClick={() => setShowConfirmSubmitModal(false)}
                 className="rts-btn btn-secondary w-50 py-3 rounded-4 shadow-sm fw-bold border-0"

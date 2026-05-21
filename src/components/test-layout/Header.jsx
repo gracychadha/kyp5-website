@@ -8,7 +8,7 @@ import {
 import { useAuth } from "../../context/AuthContext";
 import { useSite } from "../../context/SiteContext";
 import defaultLogo from "../../../public/assets/images/logo/kyp5.png";
-
+import Swal from "sweetalert2";
 function Header() {
   const { student, logout } = useAuth();
   const { siteData } = useSite();
@@ -120,10 +120,32 @@ function Header() {
                   <button
                     className="dropdown-item d-flex align-items-center gap-2"
                     onClick={() => {
-                      if (window.confirm("Are you sure you want to logout?")) {
-                        logout();
-                        navigate("/");
-                      }
+                      Swal.fire({
+                        title: "Logout?",
+                        text: "Are you sure you want to logout?",
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonText: "Yes, Logout",
+                        cancelButtonText: "Cancel",
+                        confirmButtonColor: "#d33",
+                        cancelButtonColor: "#3085d6",
+                      }).then((result) => {
+                        if (result.isConfirmed) {
+                          logout();
+
+                          Swal.fire({
+                            title: "Logged Out!",
+                            text: "You have been logged out successfully.",
+                            icon: "success",
+                            timer: 1500,
+                            showConfirmButton: false,
+                          });
+
+                          setTimeout(() => {
+                            navigate("/");
+                          }, 1500);
+                        }
+                      });
                     }}
                     style={{
                       borderRadius: "8px",

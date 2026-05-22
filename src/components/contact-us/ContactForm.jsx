@@ -90,7 +90,7 @@ function ContactForm() {
                     <span>Contact Us</span>
                   </div>
                   <h2 className="title">
-                    Love to hear from you <br />
+                    We’d Love to Hear From You <br />
                     <span>Get in touch!</span>
                   </h2>
                 </div>

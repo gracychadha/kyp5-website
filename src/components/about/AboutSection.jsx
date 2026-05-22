@@ -116,8 +116,8 @@ function AboutSection() {
 
               <div className="about-inner-right-one">
                 <div className="author-area">
-                  <a href="/about-us" className="rts-btn btn-primary">
-                    About Us
+                  <a href="/contact-us" className="rts-btn btn-primary">
+                    Contact Us
                   </a>
                 </div>
               </div>

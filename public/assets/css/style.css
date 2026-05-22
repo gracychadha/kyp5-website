@@ -34148,3 +34148,101 @@ header.header-three .sub-dropdown .submenu.third-lvl.base {
 .youtube {
   background: #ff0000;
 }
+.funfacts-section {
+  padding: 80px 0;
+  background: linear-gradient(135deg, #0f172a, #1e293b);
+  position: relative;
+  overflow: hidden;
+}
+
+.funfacts-wrapper {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 25px;
+}
+
+.funfact-card {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 24px;
+  padding: 40px 25px;
+  text-align: center;
+  transition: 0.4s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.funfact-card::before {
+  content: "";
+  position: absolute;
+  width: 180px;
+  height: 180px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 50%;
+  top: -70px;
+  right: -70px;
+}
+
+.funfact-card:hover {
+  transform: translateY(-10px);
+  border-color: #ffffff40;
+}
+
+.funfact-icon {
+  width: 90px;
+  height: 90px;
+  margin: auto;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #52a6c2, #3098bb);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 25px;
+  box-shadow: 0 15px 35px rgb(48 152 187 / 37%);
+}
+
+.funfact-icon img {
+  width: 45px;
+  height: 45px;
+  object-fit: contain;
+}
+
+.funfact-number {
+  font-size: 48px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 10px;
+  line-height: 1;
+}
+
+.funfact-number span {
+  color: #3098bb;
+}
+
+.funfact-title {
+  color: #cbd5e1;
+  font-size: 18px;
+  font-weight: 500;
+  margin: 0;
+}
+
+@media (max-width: 991px) {
+  .funfacts-wrapper {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 576px) {
+  .funfacts-wrapper {
+    grid-template-columns: 1fr;
+  }
+
+  .funfact-card {
+    padding: 35px 20px;
+  }
+
+  .funfact-number {
+    font-size: 40px;
+  }
+}

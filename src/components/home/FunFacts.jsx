@@ -10,7 +10,6 @@ function FunFacts() {
       .then((response) => {
         const data = response.data?.data || [];
 
-        // sort by order
         const sorted = data.sort((a, b) => a.order - b.order);
 
         setCounters(sorted);
@@ -23,62 +22,36 @@ function FunFacts() {
   const BASE_URL = import.meta.env.VITE_BASE_URL.replace("/api/public/", "");
 
   return (
-    <>
-      <div className="fun-facts-area-1 shape-move bg_image ptb--50">
-        <div className="container">
-          <div className="row">
-            <div className="col-lg-12">
+    <section className="funfacts-section">
+      <div className="container">
+        <div className="funfacts-wrapper">
+          {counters.length > 0 ? (
+            counters.map((counter) => {
+              const icon = counter.icon
+                ? BASE_URL + counter.icon
+                : "/assets/images/fun-facts/01.svg";
 
-              <div className="fun-facts-main-wrapper-1">
+              return (
+                <div className="funfact-card" key={counter.id}>
+                  <div className="funfact-icon">
+                    <img src={icon} alt={counter.label} />
+                  </div>
 
-                {counters.length > 0 ? (
-                  counters.map((counter) => {
-                    const icon = counter.icon
-                      ? BASE_URL + counter.icon
-                      : "/assets/images/fun-facts/01.svg";
+                  <h2 className="funfact-number">
+                    {counter.value}
+                    <span>+</span>
+                  </h2>
 
-                    const label = counter.label || "Counter";
-
-                    const value = counter.value || 0;
-
-                    return (
-                      <div className="single-fun-facts" key={counter.id}>
-                        <div className="icon">
-                          <img src={icon} alt={label} />
-                        </div>
-
-                        <h5 className="title">
-                          <span className="counter">{value}</span>
-                        </h5>
-
-                        <span className="enr">{label}</span>
-                      </div>
-                    );
-                  })
-                ) : (
-                  <p style={{ textAlign: "center" }}>
-                    No counters available
-                  </p>
-                )}
-
-              </div>
-
-            </div>
-          </div>
+                  <p className="funfact-title">{counter.label}</p>
+                </div>
+              );
+            })
+          ) : (
+            <p>No counters available</p>
+          )}
         </div>
-
-        <div className="shape-image">
-          <div className="shape one" data-speed="0.04" data-revert="true">
-            <img src="/assets/images/banner/15.png" alt="shape" />
-          </div>
-
-          <div className="shape three" data-speed="0.04">
-            <img src="/assets/images/banner/16.png" alt="shape" />
-          </div>
-        </div>
-
       </div>
-    </>
+    </section>
   );
 }
 

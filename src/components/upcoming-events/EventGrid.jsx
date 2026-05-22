@@ -50,7 +50,7 @@ function EventGrid() {
               return (
                 <div className="col-lg-6" key={event.id}>
                   <div className="single-blog-style-one">
-                    <a href={buttonLink} className="thumbnail">
+                    <a href={`/events/${event.id}`} className="thumbnail">
                       <img src={image} alt={title} />
                     </a>
 

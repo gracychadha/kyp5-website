@@ -71,7 +71,7 @@ function UpcomingEvents() {
                         key={event.id || Math.random()}
                       >
                         <div className="img-information">
-                          <a href={buttonLink} className="thumbnail">
+                          <a href={`/events/${event.id}`} className="thumbnail">
                             <img src={image} alt={title} />
                           </a>
 
@@ -93,7 +93,7 @@ function UpcomingEvents() {
                               </div>
                             </div>
 
-                            <a href={buttonLink}>
+                            <a href={`/events/${event.id}`}>
                               <h5 className="title">{title}</h5>
                             </a>
                           </div>

@@ -17,6 +17,7 @@ import Course from "./pages/course/Course";
 import PrivacyPolicy from "./pages/privacy-policy/PrivacyPolicy";
 import TermsCondition from "./pages/terms-conditions/TermsCondition";
 import Events from "./pages/upcoming-events/Events";
+import EventDetail from "./pages/upcoming-events/EventDetail";
 import Question from "./pages/question/Question";
 
 import Test from "./pages/test/Test";
@@ -47,6 +48,7 @@ function App() {
               <Route path="/privacy-policy" element={<PrivacyPolicy />} />
               <Route path="/terms-conditions" element={<TermsCondition />} />
               <Route path="/events" element={<Events />} />
+              <Route path="/events/:id" element={<EventDetail />} />
               <Route path="/test" element={<Test />} />
               <Route path="/login" element={<Login />} />
             </Route>

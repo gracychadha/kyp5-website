@@ -46,7 +46,7 @@ function Brand() {
         {/* Left Title */}
         <Box minW="150px">
           <Text fontWeight="bold" fontSize="xxl" color="blue.900" style={{ fontSize: "26px" }}>
-            Trusted by:
+            Trusted By:
           </Text>
         </Box>
 

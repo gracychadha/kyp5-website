@@ -47,8 +47,10 @@ const About = () => {
                               ? `${aboutContent.experienceYears} +`
                               : "0 +"}
                           </span>
+                          
                         </h3>
-                        {/* <span className="review">Positive Review</span> */}
+                        
+                        <span className="review">Experienced</span>
                       </div>
 
                       <div className="right">

@@ -25,10 +25,10 @@ function Feedback() {
               <div className="title-area-center-style">
                 <div className="pre-title">
                   <img src="/assets/images/banner/bulb.png" alt="icon" />
-                  <span>Student's Reviews</span>
+                  <span>Students' Reviews</span>
                 </div>
 
-                <h2 className="title">Our Student's Feedback</h2>
+                <h2 className="title">Our Students' Feedback</h2>
 
                 <p className="post-title">
                   You'll find something to spark your curiosity and enhance

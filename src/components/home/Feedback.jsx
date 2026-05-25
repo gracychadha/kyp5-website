@@ -31,7 +31,7 @@ function Feedback() {
                 <h2 className="title">Our Students' Feedback</h2>
 
                 <p className="post-title">
-                  You'll find something to spark your curiosity and enhance
+                  Discover what our students have to say about their experience with us.
                 </p>
               </div>
             </div>

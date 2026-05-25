@@ -19,11 +19,10 @@ function EventGrid() {
 
   return (
     <div className="rts-section-gap rts-blog-area">
-     
       <div className="container">
-         <div className="section-title">
-        <h2>Upcoming Events</h2>
-      </div>
+        <div className="section-title">
+          <h2>Upcoming Events</h2>
+        </div>
         <div className="row g-5 mt--20">
           {events.length > 0 ? (
             events.map((event) => {
@@ -53,7 +52,9 @@ function EventGrid() {
                     <a href={`/events/${event.id}`} className="thumbnail">
                       <img src={image} alt={title} />
                     </a>
-
+                    <a href={`/events/${event.id}`}>
+                      <h5 class="title">{title}</h5>
+                    </a>
                     <div className="blog-top-area">
                       <div className="single">
                         <i className="fa-light fa-calendar-days"></i>

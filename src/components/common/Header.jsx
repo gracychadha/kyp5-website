@@ -64,6 +64,8 @@ function Header() {
                   </a>
                 </div>
                 <div className="right-information">
+                  <a href="/tests"><div className="take-test highlight-text">Take Test</div></a>
+
                   {/* Top Header Social Follow Us */}
                   <div className="top-social-bar">
                     <span className="follow-text">Follow Us On :</span>
@@ -88,8 +90,6 @@ function Header() {
                     >
                       <i className="fab fa-linkedin-in" />
                     </a>
-                   
-                    
                   </div>
                 </div>
               </div>
@@ -166,6 +166,7 @@ function Header() {
                         Contact Us
                       </Link>
                     </div>
+
                     {student ? (
                       <li
                         className="has-dropdown"

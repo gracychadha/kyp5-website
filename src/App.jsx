@@ -26,6 +26,7 @@ import TestLayout from "./layouts/TestLayout";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
 import { AuthProvider } from "./context/AuthContext";
 import { SiteProvider } from "./context/SiteContext";
+import Tests from "./pages/tests/Tests";
 
 function App() {
   return (
@@ -50,6 +51,7 @@ function App() {
               <Route path="/events" element={<Events />} />
               <Route path="/events/:id" element={<EventDetail />} />
               <Route path="/test" element={<Test />} />
+              <Route path="/tests" element={<Tests />} />
               <Route path="/login" element={<Login />} />
             </Route>
             {/*  Test Flow (NO Header/Footer) - Protected */}

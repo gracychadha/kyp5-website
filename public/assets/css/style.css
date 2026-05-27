@@ -34246,3 +34246,63 @@ header.header-three .sub-dropdown .submenu.third-lvl.base {
     font-size: 40px;
   }
 }
+.take-test {
+  position: relative;
+
+  display: inline-block;
+  padding: 10px;
+  background: #3f433e;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 700;
+  border-radius: 5px;
+  cursor: pointer;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  letter-spacing: 0.5px;
+  animation: pulseGlow 2s infinite;
+}
+
+/* Shine Effect */
+.take-test::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -80%;
+  width: 50%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.3);
+  transform: skewX(-25deg);
+  animation: shine 2.5s infinite;
+}
+
+/* Hover */
+.take-test:hover {
+  background: #fc9e00;
+  color:#3f433e;
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 0 18px rgba(13, 110, 253, 0.6);
+}
+
+/* Glow Animation */
+@keyframes pulseGlow {
+  0% {
+    box-shadow: 0 0 8px rgba(13, 110, 253, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(13, 110, 253, 0.7);
+  }
+  100% {
+    box-shadow: 0 0 8px rgba(13, 110, 253, 0.3);
+  }
+}
+
+/* Moving Shine */
+@keyframes shine {
+  0% {
+    left: -80%;
+  }
+  100% {
+    left: 130%;
+  }
+}

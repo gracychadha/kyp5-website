@@ -136,16 +136,16 @@ function Header() {
                         Services
                       </a>
                       <ul className="submenu">
-                        {tests.map((test) => (
-                          <li key={test.id}>
+                        
+                          <li >
                             <Link
                               className="submenu-link"
-                              to={`/test?testId=${test.id}`}
+                              to="/service-details"
                             >
-                              {test.title}
+                            Potential Prism
                             </Link>
                           </li>
-                        ))}
+                       
                       </ul>
                     </li>
                     <li className="" style={{ position: "static" }}>

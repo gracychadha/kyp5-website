@@ -24,13 +24,13 @@ export const SiteProvider = ({ children }) => {
         `${import.meta.env.VITE_BASE_URL}settings/site-config`
       );
 
-      console.log(res.data);
+      // console.log(res.data);
 
       setSiteData(res.data);
 
     } catch (err) {
 
-      console.log(err);
+      // console.log(err);
 
     } finally {
 

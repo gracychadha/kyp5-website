@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useAuth } from "../../../context/AuthContext";
+import { Center } from "@chakra-ui/react";
 
 function LoginComponent() {
   const STUDENT_URL = import.meta.env.VITE_BASE_URL.replace(
@@ -17,14 +18,23 @@ function LoginComponent() {
 
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
   const [otpEmail, setOtpEmail] = useState("");
-
+  const [signupStep, setSignupStep] = useState(1);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     password: "",
     phone: "",
+    dateOfBirth: "",
+    gender: "",
+    fatherName: "",
+    motherName: "",
+    address: "",
+    city: "",
+    state: "",
+    country: "",
+    schoolInstitute: "",
+    teacherReferrer: "",
   });
-
   const [confirmPassword, setConfirmPassword] = useState("");
 
   const [loading, setLoading] = useState(false);
@@ -87,7 +97,7 @@ function LoginComponent() {
         setOtp(["", "", "", "", "", ""]);
 
         setMessage(
-          "Please verify your email before logging in. OTP sent to your email."
+          "Please verify your email before logging in. OTP sent to your email.",
         );
       }
     } finally {
@@ -112,7 +122,7 @@ function LoginComponent() {
 
       const response = await axios.post(
         `${STUDENT_URL}auth/register`,
-        formData
+        formData,
       );
 
       if (response.data.success) {
@@ -121,7 +131,7 @@ function LoginComponent() {
         setOtp(["", "", "", "", "", ""]);
 
         setMessage(
-          "Registration successful! Please verify OTP sent to your email."
+          "Registration successful! Please verify OTP sent to your email.",
         );
       }
     } catch (err) {
@@ -175,13 +185,10 @@ function LoginComponent() {
     try {
       setLoading(true);
 
-      const response = await axios.post(
-        `${STUDENT_URL}auth/verify-otp`,
-        {
-          email: otpEmail,
-          otp: otp.join(""),
-        }
-      );
+      const response = await axios.post(`${STUDENT_URL}auth/verify-otp`, {
+        email: otpEmail,
+        otp: otp.join(""),
+      });
 
       if (response.data.success) {
         login(response.data.data.user, response.data.data.accessToken);
@@ -204,12 +211,9 @@ function LoginComponent() {
     try {
       setLoading(true);
 
-      const response = await axios.post(
-        `${STUDENT_URL}auth/resend-otp`,
-        {
-          email: otpEmail,
-        }
-      );
+      const response = await axios.post(`${STUDENT_URL}auth/resend-otp`, {
+        email: otpEmail,
+      });
 
       if (response.data.success) {
         setMessage("OTP resent successfully!");
@@ -225,20 +229,15 @@ function LoginComponent() {
     <div className="login-registration-wrapper">
       <div className="container">
         <div className="row g-0">
-
           <div className="col-lg-6">
             <div className="login-page-form-area">
-
               {isOtpVerification ? (
                 <>
                   <h4 className="title">Verify OTP</h4>
 
-                  <p className="sub-title">
-                    Enter OTP sent to {otpEmail}
-                  </p>
+                  <p className="sub-title">Enter OTP sent to {otpEmail}</p>
 
                   <form onSubmit={handleVerifyOtp}>
-
                     <div
                       className="d-flex justify-content-center gap-2 mb-4"
                       onPaste={handleOtpPaste}
@@ -254,9 +253,7 @@ function LoginComponent() {
                           onChange={(e) =>
                             handleOtpChange(e.target.value, index)
                           }
-                          onKeyDown={(e) =>
-                            handleOtpKeyDown(e, index)
-                          }
+                          onKeyDown={(e) => handleOtpKeyDown(e, index)}
                           required
                           style={{
                             width: "55px",
@@ -270,13 +267,9 @@ function LoginComponent() {
                       ))}
                     </div>
 
-                    {error && (
-                      <p style={{ color: "red" }}>{error}</p>
-                    )}
+                    {error && <p style={{ color: "red" }}>{error}</p>}
 
-                    {message && (
-                      <p style={{ color: "green" }}>{message}</p>
-                    )}
+                    {message && <p style={{ color: "green" }}>{message}</p>}
 
                     <button
                       type="submit"
@@ -311,7 +304,6 @@ function LoginComponent() {
                         Back
                       </span>
                     </div>
-
                   </form>
                 </>
               ) : (
@@ -321,106 +313,346 @@ function LoginComponent() {
                   </h4>
 
                   <form onSubmit={isLogin ? handleLogin : handleRegister}>
+                    {/* here is in steps */}
+                    {!isLogin && signupStep === 1 && (
+                      <>
+                        <h5 className="mt-2 text-center">
+                          <p className="text-muted p-0 mb-0">Step {signupStep} of 4</p>
+                          
+                          <span
+                            style={{
+                              color: "var(--color-primary)",
+                              fontWeight: "600",
+                              marginLeft: "5px",
+                            }}
+                          >
+                            Basic Information
+                          </span>
+                        </h5>
+                        <div className="single-input-wrapper">
+                          <input
+                            type="text"
+                            name="name"
+                            placeholder="Full Name"
+                            value={formData.name}
+                            onChange={handleInput}
+                            required
+                          />
+                        </div>
+
+                        <div className="single-input-wrapper">
+                          <input
+                            type="text"
+                            name="phone"
+                            placeholder="Phone Number"
+                            value={formData.phone}
+                            onChange={handleInput}
+                            required
+                          />
+                        </div>
+                        <div className="single-input-wrapper">
+                          <input
+                            type="email"
+                            name="email"
+                            placeholder="Email Address"
+                            value={formData.email}
+                            onChange={handleInput}
+                            required
+                          />
+                        </div>
+                      </>
+                    )}
+
+                    {!isLogin && signupStep === 2 && (
+                      <>
+                        <h5 className="mt-2 text-center">
+                          <p className="text-muted p-0 mb-0">Step {signupStep} of 4</p>
+                          
+                          <span
+                            style={{
+                              color: "var(--color-primary)",
+                              fontWeight: "600",
+                              marginLeft: "5px",
+                            }}
+                          >
+                            Personal Information
+                          </span>
+                        </h5>
+                        <div className="single-input-wrapper">
+                          <input
+                            type="text"
+                            name="fatherName"
+                            placeholder="Father's Name"
+                            value={formData.fatherName}
+                            onChange={handleInput}
+                          />
+                        </div>
+
+                        <div className="single-input-wrapper">
+                          <input
+                            type="text"
+                            name="motherName"
+                            placeholder="Mother's Name"
+                            value={formData.motherName}
+                            onChange={handleInput}
+                          />
+                        </div>
+
+                        <div className="single-input-wrapper">
+                          <input
+                            type="date"
+                            name="dateOfBirth"
+                            value={formData.dateOfBirth}
+                            onChange={handleInput}
+                          />
+                        </div>
+                        <div className="single-input-wrapper">
+                          <select
+                            name="gender"
+                            value={formData.gender}
+                            onChange={handleInput}
+                          >
+                            <option value="">Select Gender</option>
+                            <option value="MALE">Male</option>
+                            <option value="FEMALE">Female</option>
+                            <option value="OTHER">Other</option>
+                          </select>
+                        </div>
+                      </>
+                    )}
+
+                    {!isLogin && signupStep === 3 && (
+                      <>
+                        <h5 className="mt-2 text-center">
+                          <p className="text-muted p-0 mb-0">Step {signupStep} of 4</p>
+                          
+                          <span
+                            style={{
+                              color: "var(--color-primary)",
+                              fontWeight: "600",
+                              marginLeft: "5px",
+                            }}
+                          >
+                            Academic Information
+                          </span>
+                        </h5>
+                        <div className="single-input-wrapper">
+                          <input
+                            type="text"
+                            name="schoolInstitute"
+                            placeholder="School / Institute"
+                            value={formData.schoolInstitute}
+                            onChange={handleInput}
+                          />
+                        </div>
+                        <div className="single-input-wrapper">
+                          <input
+                            type="text"
+                            name="teacherReferrer"
+                            placeholder="Teacher Referrer"
+                            value={formData.teacherReferrer}
+                            onChange={handleInput}
+                          />
+                        </div>
+                        <div className="single-input-wrapper">
+                          <input
+                            type="text"
+                            name="address"
+                            placeholder="Address"
+                            value={formData.address}
+                            onChange={handleInput}
+                          />
+                        </div>
+                        <div className="single-input-wrapper">
+                          <input
+                            type="text"
+                            name="country"
+                            placeholder="Country"
+                            value={formData.country}
+                            onChange={handleInput}
+                          />
+                        </div>
+                        <div className="single-input-wrapper">
+                          <input
+                            type="text"
+                            name="city"
+                            placeholder="City"
+                            value={formData.city}
+                            onChange={handleInput}
+                          />
+                        </div>
+
+                        <div className="single-input-wrapper">
+                          <input
+                            type="text"
+                            name="state"
+                            placeholder="State"
+                            value={formData.state}
+                            onChange={handleInput}
+                          />
+                        </div>
+                      </>
+                    )}
+                    {!isLogin && signupStep === 4 && (
+                      <>
+                        <h5 className="mt-2 text-center">
+                          <p className="text-muted p-0 mb-0">Step {signupStep} of 4</p>
+                          
+                          <span
+                            style={{
+                              color: "var(--color-primary)",
+                              fontWeight: "600",
+                              marginLeft: "5px",
+                            }}
+                          >
+                            Security
+                          </span>
+                        </h5>
+
+                        <div
+                          className="single-input-wrapper"
+                          style={{ position: "relative" }}
+                        >
+                          <input
+                            type={showPassword ? "text" : "password"}
+                            name="password"
+                            placeholder="Password"
+                            value={formData.password}
+                            onChange={handleInput}
+                            required
+                          />
+
+                          <i
+                            className={`fa-light ${
+                              showPassword ? "fa-eye-slash" : "fa-eye"
+                            }`}
+                            onClick={() => setShowPassword(!showPassword)}
+                            style={{
+                              position: "absolute",
+                              right: "15px",
+                              top: "50%",
+                              transform: "translateY(-50%)",
+                              cursor: "pointer",
+                            }}
+                          ></i>
+                        </div>
+                        <div
+                          className="single-input-wrapper"
+                          style={{ position: "relative" }}
+                        >
+                          <input
+                            type={showConfirmPassword ? "text" : "password"}
+                            placeholder="Confirm Password"
+                            value={confirmPassword}
+                            onChange={(e) => setConfirmPassword(e.target.value)}
+                            required
+                          />
+
+                          <i
+                            className={`fa-light ${
+                              showConfirmPassword ? "fa-eye-slash" : "fa-eye"
+                            }`}
+                            onClick={() =>
+                              setShowConfirmPassword(!showConfirmPassword)
+                            }
+                            style={{
+                              position: "absolute",
+                              right: "15px",
+                              top: "50%",
+                              transform: "translateY(-50%)",
+                              cursor: "pointer",
+                            }}
+                          ></i>
+                        </div>
+                      </>
+                    )}
 
                     {!isLogin && (
+                      <div className="d-flex gap-3 mt-3">
+                        {signupStep > 1 && (
+                          <button
+                            className="rts-btn btn-border"
+                            type="button"
+                            onClick={() => setSignupStep(signupStep - 1)}
+                          >
+                            Previous
+                          </button>
+                        )}
+
+                        {signupStep < 4 ? (
+                          <button
+                            className="rts-btn btn-primary"
+                            type="button"
+                            onClick={() => setSignupStep(signupStep + 1)}
+                          >
+                            Next
+                          </button>
+                        ) : (
+                          <button className="rts-btn btn-primary" type="submit">
+                            Sign Up
+                          </button>
+                        )}
+                      </div>
+                    )}
+                    {/* {!isLogin && (
+                      <div className="signup-progress">
+                        <div className="progress-track">
+                          <div
+                            className="progress-fill"
+                            style={{ width: `${(signupStep / 4) * 100}%` }}
+                          ></div>
+                        </div>
+
+                        <div className="progress-steps">
+                          <span className={signupStep >= 1 ? "active" : ""}>
+                            Basic
+                          </span>
+                          <span className={signupStep >= 2 ? "active" : ""}>
+                            Personal
+                          </span>
+                          <span className={signupStep >= 3 ? "active" : ""}>
+                            Academic
+                          </span>
+                          <span className={signupStep >= 4 ? "active" : ""}>
+                            Security
+                          </span>
+                        </div>
+                      </div>
+                    )} */}
+
+                    {/* the end */}
+
+                    {isLogin && (
                       <div className="single-input-wrapper">
                         <input
-                          type="text"
-                          name="name"
-                          placeholder="Full Name"
-                          value={formData.name}
+                          type="email"
+                          name="email"
+                          placeholder="Email Address"
+                          value={formData.email}
                           onChange={handleInput}
                           required
                         />
                       </div>
                     )}
-
-                    <div className="single-input-wrapper">
-                      <input
-                        type="email"
-                        name="email"
-                        placeholder="Email Address"
-                        value={formData.email}
-                        onChange={handleInput}
-                        required
-                      />
-                    </div>
-
-                    {!isLogin && (
-                      <div className="single-input-wrapper">
-                        <input
-                          type="text"
-                          name="phone"
-                          placeholder="Phone Number"
-                          value={formData.phone}
-                          onChange={handleInput}
-                          required
-                        />
-                      </div>
-                    )}
-
-                    <div
-                      className="single-input-wrapper"
-                      style={{ position: "relative" }}
-                    >
-                      <input
-                        type={showPassword ? "text" : "password"}
-                        name="password"
-                        placeholder="Password"
-                        value={formData.password}
-                        onChange={handleInput}
-                        required
-                      />
-
-                      <i
-                        className={`fa-light ${
-                          showPassword
-                            ? "fa-eye-slash"
-                            : "fa-eye"
-                        }`}
-                        onClick={() =>
-                          setShowPassword(!showPassword)
-                        }
-                        style={{
-                          position: "absolute",
-                          right: "15px",
-                          top: "50%",
-                          transform: "translateY(-50%)",
-                          cursor: "pointer",
-                        }}
-                      ></i>
-                    </div>
-
-                    {!isLogin && (
+                    {isLogin && (
                       <div
                         className="single-input-wrapper"
                         style={{ position: "relative" }}
                       >
                         <input
-                          type={
-                            showConfirmPassword
-                              ? "text"
-                              : "password"
-                          }
-                          placeholder="Confirm Password"
-                          value={confirmPassword}
-                          onChange={(e) =>
-                            setConfirmPassword(e.target.value)
-                          }
+                          type={showPassword ? "text" : "password"}
+                          name="password"
+                          placeholder="Password"
+                          value={formData.password}
+                          onChange={handleInput}
                           required
                         />
 
                         <i
                           className={`fa-light ${
-                            showConfirmPassword
-                              ? "fa-eye-slash"
-                              : "fa-eye"
+                            showPassword ? "fa-eye-slash" : "fa-eye"
                           }`}
-                          onClick={() =>
-                            setShowConfirmPassword(
-                              !showConfirmPassword
-                            )
-                          }
+                          onClick={() => setShowPassword(!showPassword)}
                           style={{
                             position: "absolute",
                             right: "15px",
@@ -432,25 +664,19 @@ function LoginComponent() {
                       </div>
                     )}
 
-                    {error && (
-                      <p style={{ color: "red" }}>{error}</p>
-                    )}
+                    {error && <p style={{ color: "red" }}>{error}</p>}
 
-                    {message && (
-                      <p style={{ color: "green" }}>{message}</p>
-                    )}
+                    {message && <p style={{ color: "green" }}>{message}</p>}
 
-                    <button
-                      type="submit"
-                      className="rts-btn btn-primary"
-                      disabled={loading}
-                    >
-                      {loading
-                        ? "Please Wait..."
-                        : isLogin
-                        ? "Login"
-                        : "Sign Up"}
-                    </button>
+                    {isLogin && (
+                      <button
+                        type="submit"
+                        className="rts-btn btn-primary"
+                        disabled={loading}
+                      >
+                        {loading ? "Please Wait..." : "Login"}
+                      </button>
+                    )}
 
                     <p className="mt-4">
                       {isLogin
@@ -473,11 +699,9 @@ function LoginComponent() {
                         {isLogin ? "Sign Up" : "Login"}
                       </span>
                     </p>
-
                   </form>
                 </>
               )}
-
             </div>
           </div>
 
@@ -491,7 +715,6 @@ function LoginComponent() {
               />
             </div>
           </div>
-
         </div>
       </div>
     </div>

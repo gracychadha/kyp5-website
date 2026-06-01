@@ -30576,7 +30576,7 @@ header.header-three .sub-dropdown .submenu.third-lvl.base {
   width: 583px;
   border-radius: 6px;
   border: 1px solid #ddd8f9;
-  padding: 60px;
+  padding: 30px;
   background: #fff;
   box-shadow: 0px 4px 20px 0px rgba(0, 0, 0, 0.05);
 }
@@ -30614,6 +30614,12 @@ header.header-three .sub-dropdown .submenu.third-lvl.base {
   margin-bottom: 15px;
 }
 .login-page-form-area input {
+  border-radius: 4px;
+  border: 1px solid #ddd8f9;
+  background: #fff;
+  height: 56px;
+}
+.login-page-form-area select {
   border-radius: 4px;
   border: 1px solid #ddd8f9;
   background: #fff;
@@ -34539,4 +34545,32 @@ header.header-three .sub-dropdown .submenu.third-lvl.base {
 .section-about-image img{
 border-radius: 12px;
  box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+}
+.signup-progress{
+    margin:20px 0 30px;
+}
+
+.progress-track{
+    height:6px;
+    background:#e5e5e5;
+    border-radius:20px;
+    overflow:hidden;
+}
+
+.progress-fill{
+    height:100%;
+    background:var(--color-primary);
+    transition:0.3s;
+}
+
+.progress-steps{
+    display:flex;
+    justify-content:space-between;
+    margin-top:10px;
+    font-size:14px;
+}
+
+.progress-steps .active{
+    color:var(--color-primary);
+    font-weight:600;
 }

@@ -224,6 +224,78 @@ function LoginComponent() {
       setLoading(false);
     }
   };
+  const validateStep = () => {
+    switch (signupStep) {
+      case 1:
+        if (!formData.name.trim()) {
+          setError("Full Name is required");
+          return false;
+        }
+        if (!/^\d{10}$/.test(formData.phone)) {
+          setError("Please enter a valid 10-digit phone number");
+          return false;
+        }
+        if (!formData.email.trim()) {
+          setError("Email Address is required");
+          return false;
+        }
+        break;
+
+      case 2:
+        if (!formData.fatherName.trim()) {
+          setError("Father's Name is required");
+          return false;
+        }
+        if (!formData.motherName.trim()) {
+          setError("Mother's Name is required");
+          return false;
+        }
+        if (!formData.dateOfBirth) {
+          setError("Date of Birth is required");
+          return false;
+        }
+        if (!formData.gender) {
+          setError("Gender is required");
+          return false;
+        }
+        break;
+
+      case 3:
+        if (!formData.schoolInstitute.trim()) {
+          setError("School / Institute is required");
+          return false;
+        }
+        if (!formData.address.trim()) {
+          setError("Address is required");
+          return false;
+        }
+        if (!formData.country.trim()) {
+          setError("Country is required");
+          return false;
+        }
+        if (!formData.city.trim()) {
+          setError("City is required");
+          return false;
+        }
+        if (!formData.state.trim()) {
+          setError("State is required");
+          return false;
+        }
+        break;
+
+      default:
+        break;
+    }
+
+    setError("");
+    return true;
+  };
+
+  const handleNextStep = () => {
+    if (validateStep()) {
+      setSignupStep((prev) => prev + 1);
+    }
+  };
 
   return (
     <div className="login-registration-wrapper">
@@ -317,8 +389,10 @@ function LoginComponent() {
                     {!isLogin && signupStep === 1 && (
                       <>
                         <h5 className="mt-2 text-center">
-                          <p className="text-muted p-0 mb-0">Step {signupStep} of 4</p>
-                          
+                          <p className="text-muted p-0 mb-0">
+                            Step {signupStep} of 4
+                          </p>
+
                           <span
                             style={{
                               color: "var(--color-primary)",
@@ -366,8 +440,10 @@ function LoginComponent() {
                     {!isLogin && signupStep === 2 && (
                       <>
                         <h5 className="mt-2 text-center">
-                          <p className="text-muted p-0 mb-0">Step {signupStep} of 4</p>
-                          
+                          <p className="text-muted p-0 mb-0">
+                            Step {signupStep} of 4
+                          </p>
+
                           <span
                             style={{
                               color: "var(--color-primary)",
@@ -424,8 +500,10 @@ function LoginComponent() {
                     {!isLogin && signupStep === 3 && (
                       <>
                         <h5 className="mt-2 text-center">
-                          <p className="text-muted p-0 mb-0">Step {signupStep} of 4</p>
-                          
+                          <p className="text-muted p-0 mb-0">
+                            Step {signupStep} of 4
+                          </p>
+
                           <span
                             style={{
                               color: "var(--color-primary)",
@@ -496,8 +574,10 @@ function LoginComponent() {
                     {!isLogin && signupStep === 4 && (
                       <>
                         <h5 className="mt-2 text-center">
-                          <p className="text-muted p-0 mb-0">Step {signupStep} of 4</p>
-                          
+                          <p className="text-muted p-0 mb-0">
+                            Step {signupStep} of 4
+                          </p>
+
                           <span
                             style={{
                               color: "var(--color-primary)",
@@ -583,7 +663,7 @@ function LoginComponent() {
                           <button
                             className="rts-btn btn-primary"
                             type="button"
-                            onClick={() => setSignupStep(signupStep + 1)}
+                            onClick={handleNextStep}
                           >
                             Next
                           </button>

@@ -77,7 +77,7 @@ const About = () => {
                       alt="about"
                       onError={(e) => {
                         e.target.onerror = null;
-                        e.target.src = "/assets/images/about/03.jpg";
+                        e.target.src = "/assets/images/about/02.jpg";
                       }}
                     />
                   </div>
@@ -90,7 +90,7 @@ const About = () => {
                     alt="about"
                     onError={(e) => {
                       e.target.onerror = null;
-                      e.target.src = "/assets/images/about/02.jpg";
+                      e.target.src = "/assets/images/about/01.jpg";
                     }}
                   />
                 </div>
@@ -114,7 +114,7 @@ const About = () => {
                 </h2>
 
                 <p className="post-title justify-content">
-                  {aboutContent.summary ? aboutContent.summary : "Summary"}
+                  {aboutContent.summary ? aboutContent.summary : "KYP5 (Know Your Power, Potential, Personality, Purpose & Path) is a comprehensive personal growth and career guidance platform dedicated to helping individuals discover their true strengths, talents, and life purpose. Through scientifically designed psychometric assessments, career counseling, and self-development programs, KYP5 empowers students, professionals, parents, and educational institutions to make informed decisions about education, careers, and personal growth. The platform focuses on providing deep insights into an individual's personality, aptitude, emotional intelligence, and potential, enabling them to identify the most suitable career paths and opportunities. By combining data-driven assessments with expert guidance, KYP5 helps individuals build confidence, unlock their capabilities, and create a clear roadmap toward achieving their academic, professional, and personal goals."}
                 </p>
 
                 <p

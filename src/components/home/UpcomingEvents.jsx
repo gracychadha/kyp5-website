@@ -39,13 +39,11 @@ function UpcomingEvents() {
           <div className="row mt--50">
             <div className="col-lg-12">
               <div className="upcoming-events-main-wrapper-1">
-
                 {events.length > 0 ? (
                   events.map((event) => {
-                    const image =
-                      event.thumbnail
-                        ? baseURL + event.thumbnail
-                        : "/assets/images/events/01.jpg";
+                    const image = event.thumbnail
+                      ? baseURL + event.thumbnail
+                      : "/assets/images/events/01.jpg";
 
                     const title = event.title || "Upcoming Event";
 
@@ -103,18 +101,55 @@ function UpcomingEvents() {
                           href="/events"
                           className="rts-btn btn-primary with-arrow"
                         >
-                         View All Events
+                          View All Events
                           <i className="fa-light fa-arrow-right"></i>
                         </a>
                       </div>
                     );
                   })
                 ) : (
-                  <p style={{ textAlign: "center" }}>
-                    No upcoming events available.
-                  </p>
-                )}
+                  <div
+                    className="single-upcoming-events"
+                   
+                  >
+                    <div className="img-information">
+                      <a href="" className="thumbnail">
+                        <img src="/assets/images/events/01.jpg" alt="Event Image" />
+                      </a>
 
+                      <div className="information">
+                        <div className="date-details">
+                          <div className="date">
+                            <i className="fa-thin fa-calendar-days"></i>
+                            <p>15 July 2026</p>
+                          </div>
+
+                          <div className="time">
+                            <i className="fa-regular fa-clock"></i>
+                            <p>10:30 PM</p>
+                          </div>
+
+                          <div className="location">
+                            <i className="fa-thin fa-location-dot"></i>
+                            <p>College Auditorium</p>
+                          </div>
+                        </div>
+
+                        <a href="" className="title">
+                          <h5 className="title">Higher Education Seminar 2026</h5>
+                        </a>
+                      </div>
+                    </div>
+
+                    <a
+                      href="/events"
+                      className="rts-btn btn-primary with-arrow"
+                    >
+                      View All Events
+                      <i className="fa-light fa-arrow-right"></i>
+                    </a>
+                  </div>
+                )}
               </div>
             </div>
           </div>

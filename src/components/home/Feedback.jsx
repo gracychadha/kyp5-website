@@ -31,7 +31,8 @@ function Feedback() {
                 <h2 className="title">Our Students' Feedback</h2>
 
                 <p className="post-title">
-                  Discover what our students have to say about their experience with us.
+                  Discover what our students have to say about their experience
+                  with us.
                 </p>
               </div>
             </div>
@@ -43,15 +44,83 @@ function Feedback() {
                 <div className="swiper mySwiper-testimonials-1">
                   <div className="swiper-wrapper">
                     {/* Testimonial 1 */}
-                    {testimonials.map((testimonial) => (
-                      <div className="swiper-slide" key={testimonial.id}>
+                    {testimonials && testimonials.length > 0 ? (
+                      testimonials.map((testimonial) => (
+                        <div className="swiper-slide" key={testimonial.id}>
+                          <div className="single-students-feedback">
+                            <div className="left-image">
+                              <img
+                                src={
+                                  testimonial.avatar
+                                    ? import.meta.env.VITE_BASE_URL.replace(
+                                        "/api/public/",
+                                        "",
+                                      ) + testimonial.avatar
+                                    : "/assets/images/students-feedback/01.png"
+                                }
+                                alt="feedback"
+                              />
+                            </div>
+
+                            <div className="right-content">
+                              <img
+                                src="/assets/images/students-feedback/01.png"
+                                alt="quote"
+                              />
+
+                              <p className="disc">
+                                {testimonial.content ||
+                                  "We had a great experience with KYP5. They are very helpful and supportive. I am very happy to join KYP5."}
+                              </p>
+
+                              <div className="author-area">
+                                <ul className="stars">
+                                  {testimonial.rating ? (
+                                    Array.from({
+                                      length: testimonial.rating,
+                                    }).map((_, index) => (
+                                      <li key={index}>
+                                        <i className="fa-solid fa-star"></i>
+                                      </li>
+                                    ))
+                                  ) : (
+                                    <>
+                                      <li>
+                                        <i className="fa-solid fa-star"></i>
+                                      </li>
+                                      <li>
+                                        <i className="fa-solid fa-star"></i>
+                                      </li>
+                                      <li>
+                                        <i className="fa-solid fa-star"></i>
+                                      </li>
+                                      <li>
+                                        <i className="fa-solid fa-star"></i>
+                                      </li>
+                                      <li>
+                                        <i className="fa-solid fa-star"></i>
+                                      </li>
+                                    </>
+                                  )}
+                                </ul>
+
+                                <h5 className="title">
+                                  {testimonial.name || "Admin"}
+                                </h5>
+                                <span>
+                                  {testimonial.designation || "Student"}
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      ))
+                    ) : (
+                      <div className="swiper-slide">
                         <div className="single-students-feedback">
                           <div className="left-image">
                             <img
-                              src={testimonial.avatar
-                                ? import.meta.env.VITE_BASE_URL.replace("/api/public/", "") +
-                                  testimonial.avatar
-                                : "/assets/images/students-feedback/01.png"}
+                              src="/assets/images/students-feedback/01.jpg"
                               alt="feedback"
                             />
                           </div>
@@ -63,43 +132,27 @@ function Feedback() {
                             />
 
                             <p className="disc">
-                             {testimonial.content ? testimonial.content : "we have a good experience with KYP5. They are very helpful and supportive. I am very happy to join KYP5."}
+                              We had a great experience with KYP5. They are very
+                              helpful and supportive. I am very happy to join
+                              KYP5.
                             </p>
 
                             <div className="author-area">
                               <ul className="stars">
-                                {testimonial.rating ? (
-                                  Array.from({ length: testimonial.rating }).map(
-                                    (_, index) => (
-                                      <li key={index}>
-                                        <i className="fa-solid fa-star"></i>
-                                      </li>
-                                    )
-                                  )
-                                ) : (
-                                  <>
-                                    <li>
-                                      <i className="fa-solid fa-star"></i>
-                                    </li>
-                                    <li>
-                                      <i className="fa-solid fa-star"></i>
-                                    </li>
-                                    <li>
-                                      <i className="fa-regular fa-star"></i>
-                                    </li>
-                                  </>
-                                )}
-
+                                {[...Array(5)].map((_, index) => (
+                                  <li key={index}>
+                                    <i className="fa-solid fa-star"></i>
+                                  </li>
+                                ))}
                               </ul>
 
-                              <h5 className="title">{testimonial.name ? testimonial.name : "Admin"}</h5>
-                              <span>{testimonial.designation ? testimonial.designation : "Student"}</span>
+                              <h5 className="title">Admin</h5>
+                              <span>Student</span>
                             </div>
                           </div>
                         </div>
                       </div>
-                    ))}
-                    
+                    )}
                   </div>
 
                   <div className="swiper-button-next">

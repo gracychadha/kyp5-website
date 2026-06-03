@@ -10,7 +10,25 @@ function Header() {
   const { student, logout } = useAuth();
   const [tests, setTests] = React.useState([]);
   const navigate = useNavigate();
+  const [services, setServices] = React.useState([]);
 
+  React.useEffect(() => {
+    const fetchServices = async () => {
+      try {
+        const response = await axios.get(
+          import.meta.env.VITE_BASE_URL + "/services",
+        );
+
+        if (response.data.success) {
+          setServices(response.data.data);
+        }
+      } catch (error) {
+        console.error("Error fetching services:", error);
+      }
+    };
+
+    fetchServices();
+  }, []);
   React.useEffect(() => {
     const fetchTests = async () => {
       try {
@@ -64,7 +82,9 @@ function Header() {
                   </a>
                 </div>
                 <div className="right-information">
-                  <a href="/tests"><div className="take-test highlight-text">Take Test</div></a>
+                  <a href="/tests">
+                    <div className="take-test highlight-text">Take Test</div>
+                  </a>
 
                   {/* Top Header Social Follow Us */}
                   <div className="top-social-bar">
@@ -130,24 +150,25 @@ function Header() {
                         Our Team
                       </Link>
                     </li>
-
                     <li className="has-dropdown">
                       <a className="nav-link" href="#">
                         Services
                       </a>
+
                       <ul className="submenu">
-                        
-                          <li >
+                        {services.map((service, index) => (
+                          <li key={index}>
                             <Link
                               className="submenu-link"
-                              to="/service-details"
+                              to={`/service-details/${encodeURIComponent(service.title)}`}
                             >
-                            Potential Prism
+                              {service.title}
                             </Link>
                           </li>
-                       
+                        ))}
                       </ul>
                     </li>
+                    
                     <li className="" style={{ position: "static" }}>
                       <Link className="nav-link" to="/gallery">
                         Gallery

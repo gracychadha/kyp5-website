@@ -54,7 +54,10 @@ function App() {
               <Route path="/test" element={<Test />} />
               <Route path="/tests" element={<Tests />} />
               <Route path="/login" element={<Login />} />
-              <Route path="/service-details" element={<ServiceDetails />} />
+              <Route
+                path="/service-details/:title"
+                element={<ServiceDetails />}
+              />
             </Route>
             {/*  Test Flow (NO Header/Footer) - Protected */}
             <Route element={<ProtectedRoute />}>

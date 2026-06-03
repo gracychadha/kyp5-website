@@ -22015,6 +22015,10 @@ nav ul li a {
 
 .single-instructor {
   text-align: center;
+  border-radius: 12px;
+    background: #fff;
+    text-align: center;
+    box-shadow: 0px 0px 6px 1px #b2b1b1;
 }
 .single-instructor .thumbnail-img {
   position: relative;
@@ -22074,7 +22078,7 @@ nav ul li a {
   font-weight: 600;
   line-height: 35px;
   margin-bottom: 0;
-  margin-top: 20px;
+  margin: 10px 0 0;
   transition: 0.3s;
 }
 .single-instructor .title:hover {
@@ -22087,6 +22091,7 @@ nav ul li a {
   font-style: normal;
   font-weight: 400;
   line-height: 26px;
+  padding:10px 0;
 }
 .single-instructor.v-8 .thumbnail-img .social-img-instructor ul li a i {
   color: var(--color-primary-kitchen);

@@ -47,7 +47,57 @@ function FunFacts() {
               );
             })
           ) : (
-            <p>No counters available</p>
+            <>
+              {" "}
+              <div className="funfact-card">
+                <div className="funfact-icon">
+                  <img src="/assets/images/fun-facts/01.svg" alt="img" />
+                </div>
+
+                <h2 className="funfact-number">
+                  10000
+                  <span>+</span>
+                </h2>
+
+                <p className="funfact-title">Questionaire</p>
+              </div>
+              <div className="funfact-card">
+                <div className="funfact-icon">
+                  <img src="/assets/images/fun-facts/01.svg" alt="img" />
+                </div>
+
+                <h2 className="funfact-number">
+                  25
+                  <span>+</span>
+                </h2>
+
+                <p className="funfact-title">Trusted Institutes</p>
+              </div>
+              <div className="funfact-card">
+                <div className="funfact-icon">
+                  <img src="/assets/images/fun-facts/01.svg" alt="img" />
+                </div>
+
+                <h2 className="funfact-number">
+                  100
+                  <span>%</span>
+                </h2>
+
+                <p className="funfact-title">Client Satisfaction</p>
+              </div>
+              <div className="funfact-card">
+                <div className="funfact-icon">
+                  <img src="/assets/images/fun-facts/01.svg" alt="img" />
+                </div>
+
+                <h2 className="funfact-number">
+                  2
+                  <span>+</span>
+                </h2>
+
+                <p className="funfact-title">Award Winning</p>
+              </div>
+            </>
           )}
         </div>
       </div>

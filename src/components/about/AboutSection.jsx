@@ -72,7 +72,7 @@ function AboutSection() {
                       alt="about"
                       onError={(e) => {
                         e.target.onerror = null;
-                        e.target.src = "/assets/images/about/03.jpg";
+                        e.target.src = "/assets/images/about/02.jpg";
                       }}
                     />
                   </div>
@@ -85,7 +85,7 @@ function AboutSection() {
                     alt="about"
                     onError={(e) => {
                       e.target.onerror = null;
-                      e.target.src = "/assets/images/about/02.jpg";
+                      e.target.src = "/assets/images/about/01.jpg";
                     }}
                   />
                 </div>

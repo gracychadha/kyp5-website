@@ -25,8 +25,9 @@ function Gallery() {
           <h2>Gallery</h2>
         </div>
 
-        <div className="gallery-grid">
-          {gallery.map((item) => (
+        <div className="gallery-grid"> 
+          {gallery && gallery.length > 0 ? (
+            gallery.map((item) => (
             <div className="gallery-item" key={item.id}>
               <img
                 src={item.image ? BASE_URL + item.image : "/assets/images/gallery/default.jpg"}
@@ -42,7 +43,25 @@ function Gallery() {
                 </button>
               </div>
             </div>
-          ))}
+          ))
+           ) : (
+             <div className="gallery-item" >
+              <img
+                src="/assets/images/course/04.jpg"
+                alt="img"
+              />
+
+              <div className="gallery-overlay">
+                <button
+                  className="view-btn"
+                  onClick={() => setSelectedImage(BASE_URL + item.image)}
+                >
+                  View
+                </button>
+              </div>
+            </div>
+           )}
+          
         </div>
       </div>
 

@@ -620,67 +620,13 @@ const QuestionComponent = () => {
             <h2 className="fw-bold mb-2">Test Submitted!</h2>
             <p className="text-muted mb-4">{testResult.submissionMessage}</p>
 
-            {testResult.showResult ? (
-              <div className="result-stats-container">
-                <div className="score-display mb-4 p-4 rounded-4 bg-light">
-                  <h1 className="display-4 fw-bold text-primary mb-0">
-                    {testResult.result?.score}
-                  </h1>
-                  <p className="text-muted fw-bold mb-0">Total Score</p>
-                  <div className="mt-2 badge rounded-pill bg-primary px-3 py-2">
-                    {testResult.result?.percentage}% Accuracy
-                  </div>
-                </div>
-
-                <div
-                  className="stats-grid d-grid gap-3"
-                  style={{ gridTemplateColumns: "repeat(3, 1fr)" }}
-                >
-                  <div className="stat-item p-3 rounded-4 border bg-white">
-                    <h5 className="mb-0 text-success fw-bold">
-                      {testResult.result?.correctCount}
-                    </h5>
-                    <small className="text-muted">Correct</small>
-                  </div>
-                  <div className="stat-item p-3 rounded-4 border bg-white">
-                    <h5 className="mb-0 text-danger fw-bold">
-                      {testResult.result?.wrongCount}
-                    </h5>
-                    <small className="text-muted">Wrong</small>
-                  </div>
-                  <div className="stat-item p-3 rounded-4 border bg-white">
-                    <h5 className="mb-0 text-secondary fw-bold">
-                      {testResult.result?.skippedCount}
-                    </h5>
-                    <small className="text-muted">Skipped</small>
-                  </div>
-                </div>
-
-                <div
-                  className={`mt-4 py-3 rounded-4 fw-bold ${testResult.result?.isPassed ? "text-success bg-success-subtle" : "text-danger bg-danger-subtle"}`}
-                  style={{
-                    backgroundColor: testResult.result?.isPassed
-                      ? "rgba(25, 135, 84, 0.1)"
-                      : "rgba(220, 53, 69, 0.1)",
-                  }}
-                >
-                  {testResult.result?.isPassed
-                    ? "🎉 YOU PASSED"
-                    : "❌ NEEDS IMPROVEMENT"}
-                </div>
-              </div>
-            ) : (
-              <div className="no-result-message p-4 rounded-4 bg-light text-muted">
-                Result will be declared soon after review.
-              </div>
-            )}
 
             <button
               onClick={() => {
                 localStorage.removeItem("attemptId");
                 navigate("/");
               }}
-              className="rts-btn btn-primary w-100 mt-5 py-3 rounded-4 shadow-sm fw-bold"
+              className="rts-btn btn-primary w-100 mt-5 py-3 rounded-4 shadow-sm fw-bold d-flex align-items-center justify-content-center mx-auto"
             >
               Back to Home
             </button>

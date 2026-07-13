@@ -88,11 +88,10 @@ function Instructions() {
     );
   }
 
-  const { test, studentStatus } = testData;
-  
+  const { test, questions = [], studentStatus } = testData;
+  const totalQuestions = questions.length;
 
   return (
-    
     <section className="test-wrapper">
       <div className="test-container">
         <div className="user-panel">
@@ -227,8 +226,7 @@ function Instructions() {
                   </li>
 
                   <li>
-                    Total Questions:{" "}
-                    <strong>{test.questionCount ?? "12"}</strong>
+                    Total Questions: <strong>{ totalQuestions }</strong>
                   </li>
 
                   <li>

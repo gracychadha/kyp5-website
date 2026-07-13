@@ -89,8 +89,10 @@ function Instructions() {
   }
 
   const { test, studentStatus } = testData;
+  
 
   return (
+    
     <section className="test-wrapper">
       <div className="test-container">
         <div className="user-panel">
@@ -225,21 +227,8 @@ function Instructions() {
                   </li>
 
                   <li>
-                    Total Questions: <strong>{test.totalQuestions}</strong>
-                  </li>
-
-                  <li>
-                    Negative Marking:
-                    <strong>
-                      {test.negativeMarking
-                        ? ` Yes (${test.negativeMarkValue})`
-                        : " No"}
-                    </strong>
-                  </li>
-
-                  <li>
-                    Auto Submit:
-                    <strong> {test.autoSubmit ? "Enabled" : "Disabled"}</strong>
+                    Total Questions:{" "}
+                    <strong>{test.questionCount ?? "12"}</strong>
                   </li>
 
                   <li>
@@ -278,7 +267,7 @@ function Instructions() {
                       onClick={() => navigate(`/`)}
                     >
                       <i className="fa-light fa-arrow-left"></i>
-                      Back 
+                      Back
                     </button>
                     <button
                       className="start-btn flex-grow-1 rts-btn btn-primary"

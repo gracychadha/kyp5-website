@@ -527,7 +527,7 @@ function LoginComponent() {
                           <input
                             type="text"
                             name="teacherReferrer"
-                            placeholder="Teacher Referrer"
+                            placeholder="Teacher / Refferrer Name"
                             value={formData.teacherReferrer}
                             onChange={handleInput}
                           />

@@ -17,6 +17,8 @@ function TestGridComponent() {
     };
     fetchTests();
   }, []);
+  const BASE_URL = import.meta.env.VITE_BASE_URL.replace("/api/public/", "");
+
   return (
     <>
       <div className="rts-section-gap rts-blog-area">
@@ -26,7 +28,7 @@ function TestGridComponent() {
               <div className="col-lg-4" key={test.id}>
                 <div className="single-blog-style-one">
                   <a href={`/test?testId=${test.id}`} className="thumbnail">
-                    <img src="assets/images/test-kyp5.png" alt="blog" />
+                    <img src={test.image ? BASE_URL + test.image : "assets/images/test-kyp5.png"} alt="blog" />
                   </a>
 
                   <a href={`/test?testId=${test.id}`}>

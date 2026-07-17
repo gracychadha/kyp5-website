@@ -44,6 +44,16 @@ function LoginComponent() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
+  // Forgot & Reset Password states
+  const [isForgotPasswordMode, setIsForgotPasswordMode] = useState(false);
+  const [forgotPasswordStep, setForgotPasswordStep] = useState("request"); // "request" or "reset"
+  const [forgotPasswordEmail, setForgotPasswordEmail] = useState("");
+  const [resetOtp, setResetOtp] = useState(["", "", "", "", "", ""]);
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmNewPassword, setConfirmNewPassword] = useState("");
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showConfirmNewPassword, setShowConfirmNewPassword] = useState(false);
+
   useEffect(() => {
     const token = localStorage.getItem("studentToken");
 
@@ -224,6 +234,142 @@ function LoginComponent() {
       setLoading(false);
     }
   };
+
+  // FORGOT PASSWORD REQUEST
+  const handleForgotPasswordRequest = async (e) => {
+    e.preventDefault();
+    setError("");
+    setMessage("");
+
+    if (!forgotPasswordEmail.trim()) {
+      setError("Email Address is required");
+      return;
+    }
+
+    try {
+      setLoading(true);
+      const response = await axios.post(`${STUDENT_URL}auth/forgot-password`, {
+        email: forgotPasswordEmail,
+      });
+
+      if (response.data.success) {
+        setMessage(response.data.message || "OTP sent successfully to your email.");
+        setForgotPasswordStep("reset");
+        setResetOtp(["", "", "", "", "", ""]);
+        setNewPassword("");
+        setConfirmNewPassword("");
+      }
+    } catch (err) {
+      setError(err.response?.data?.message || "Failed to send OTP");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // RESEND RESET OTP
+  const handleResendResetOtp = async () => {
+    setError("");
+    setMessage("");
+    try {
+      setLoading(true);
+      const response = await axios.post(`${STUDENT_URL}auth/forgot-password`, {
+        email: forgotPasswordEmail,
+      });
+      if (response.data.success) {
+        setMessage("OTP resent successfully!");
+      }
+    } catch (err) {
+      setError(err.response?.data?.message || "Failed to resend OTP");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // RESET PASSWORD SUBMIT
+  const handleResetPasswordSubmit = async (e) => {
+    e.preventDefault();
+    setError("");
+    setMessage("");
+
+    if (newPassword.length < 6) {
+      setError("Password must be at least 6 characters");
+      return;
+    }
+    if (!/[A-Z]/.test(newPassword)) {
+      setError("Password must contain at least one uppercase letter");
+      return;
+    }
+    if (!/[0-9]/.test(newPassword)) {
+      setError("Password must contain at least one number");
+      return;
+    }
+    if (newPassword !== confirmNewPassword) {
+      setError("Passwords do not match");
+      return;
+    }
+
+    try {
+      setLoading(true);
+      const response = await axios.post(`${STUDENT_URL}auth/reset-password`, {
+        email: forgotPasswordEmail,
+        otp: resetOtp.join(""),
+        newPassword: newPassword,
+      });
+
+      if (response.data.success) {
+        setMessage("Password reset successfully! Redirecting to login...");
+        setTimeout(() => {
+          setIsForgotPasswordMode(false);
+          setForgotPasswordStep("request");
+          setError("");
+          setMessage("");
+          // Clear inputs and prefill email
+          setFormData((prev) => ({
+            ...prev,
+            email: forgotPasswordEmail,
+            password: "",
+          }));
+        }, 2000);
+      }
+    } catch (err) {
+      setError(err.response?.data?.message || "Reset password failed");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // RESET OTP HANDLERS
+  const handleResetOtpChange = (value, index) => {
+    if (!/^\d*$/.test(value)) return;
+
+    const newOtp = [...resetOtp];
+    newOtp[index] = value.slice(-1);
+
+    setResetOtp(newOtp);
+
+    if (value && index < 5) {
+      const nextInput = document.getElementById(`reset-otp-${index + 1}`);
+      if (nextInput) nextInput.focus();
+    }
+  };
+
+  const handleResetOtpKeyDown = (e, index) => {
+    if (e.key === "Backspace" && !resetOtp[index] && index > 0) {
+      const prevInput = document.getElementById(`reset-otp-${index - 1}`);
+      if (prevInput) prevInput.focus();
+    }
+  };
+
+  const handleResetOtpPaste = (e) => {
+    e.preventDefault();
+    const pastedData = e.clipboardData.getData("text").trim();
+    if (!/^\d{6}$/.test(pastedData)) return;
+
+    const otpArray = pastedData.split("");
+    setResetOtp(otpArray);
+    const lastInput = document.getElementById("reset-otp-5");
+    if (lastInput) lastInput.focus();
+  };
   const validateStep = () => {
     switch (signupStep) {
       case 1:
@@ -378,6 +524,192 @@ function LoginComponent() {
                     </div>
                   </form>
                 </>
+              ) : isForgotPasswordMode ? (
+                forgotPasswordStep === "request" ? (
+                  <>
+                    <h4 className="title">Forgot Password</h4>
+
+                    <p className="sub-title">
+                      Enter your email address to receive a password reset OTP.
+                    </p>
+
+                    <form onSubmit={handleForgotPasswordRequest}>
+                      <div className="single-input-wrapper">
+                        <input
+                          type="email"
+                          placeholder="Email Address"
+                          value={forgotPasswordEmail}
+                          onChange={(e) => setForgotPasswordEmail(e.target.value)}
+                          required
+                        />
+                      </div>
+
+                      {error && <p style={{ color: "red" }}>{error}</p>}
+
+                      {message && <p style={{ color: "green" }}>{message}</p>}
+
+                      <button
+                        type="submit"
+                        className="rts-btn btn-primary"
+                        disabled={loading}
+                      >
+                        {loading ? "Sending OTP..." : "Send OTP"}
+                      </button>
+
+                      <p className="mt-4">
+                        <span
+                          onClick={() => {
+                            setIsForgotPasswordMode(false);
+                            setError("");
+                            setMessage("");
+                          }}
+                          style={{
+                            cursor: "pointer",
+                            color: "var(--color-primary)",
+                            fontWeight: "600",
+                          }}
+                        >
+                          Back to Login
+                        </span>
+                      </p>
+                    </form>
+                  </>
+                ) : (
+                  <>
+                    <h4 className="title">Reset Password</h4>
+
+                    <p className="sub-title">
+                      Enter the OTP sent to {forgotPasswordEmail} and your new password.
+                    </p>
+
+                    <form onSubmit={handleResetPasswordSubmit}>
+                      <div
+                        className="d-flex justify-content-center gap-2 mb-4"
+                        onPaste={handleResetOtpPaste}
+                      >
+                        {resetOtp.map((digit, index) => (
+                          <input
+                            key={index}
+                            id={`reset-otp-${index}`}
+                            type="text"
+                            inputMode="numeric"
+                            maxLength="1"
+                            value={digit}
+                            onChange={(e) =>
+                              handleResetOtpChange(e.target.value, index)
+                            }
+                            onKeyDown={(e) => handleResetOtpKeyDown(e, index)}
+                            required
+                            style={{
+                              width: "55px",
+                              height: "55px",
+                              textAlign: "center",
+                              fontSize: "22px",
+                              border: "1px solid #ccc",
+                              borderRadius: "10px",
+                            }}
+                          />
+                        ))}
+                      </div>
+
+                      <div
+                        className="single-input-wrapper"
+                        style={{ position: "relative" }}
+                      >
+                        <input
+                          type={showNewPassword ? "text" : "password"}
+                          placeholder="New Password"
+                          value={newPassword}
+                          onChange={(e) => setNewPassword(e.target.value)}
+                          required
+                        />
+
+                        <i
+                          className={`fa-light ${
+                            showNewPassword ? "fa-eye-slash" : "fa-eye"
+                          }`}
+                          onClick={() => setShowNewPassword(!showNewPassword)}
+                          style={{
+                            position: "absolute",
+                            right: "15px",
+                            top: "50%",
+                            transform: "translateY(-50%)",
+                            cursor: "pointer",
+                          }}
+                        ></i>
+                      </div>
+
+                      <div
+                        className="single-input-wrapper"
+                        style={{ position: "relative" }}
+                      >
+                        <input
+                          type={showConfirmNewPassword ? "text" : "password"}
+                          placeholder="Confirm New Password"
+                          value={confirmNewPassword}
+                          onChange={(e) => setConfirmNewPassword(e.target.value)}
+                          required
+                        />
+
+                        <i
+                          className={`fa-light ${
+                            showConfirmNewPassword ? "fa-eye-slash" : "fa-eye"
+                          }`}
+                          onClick={() =>
+                            setShowConfirmNewPassword(!showConfirmNewPassword)
+                          }
+                          style={{
+                            position: "absolute",
+                            right: "15px",
+                            top: "50%",
+                            transform: "translateY(-50%)",
+                            cursor: "pointer",
+                          }}
+                        ></i>
+                      </div>
+
+                      {error && <p style={{ color: "red" }}>{error}</p>}
+
+                      {message && <p style={{ color: "green" }}>{message}</p>}
+
+                      <button
+                        type="submit"
+                        className="rts-btn btn-primary"
+                        disabled={loading}
+                      >
+                        {loading ? "Resetting..." : "Reset Password"}
+                      </button>
+
+                      <div className="mt-4 d-flex justify-content-between">
+                        <span
+                          style={{
+                            cursor: "pointer",
+                            color: "var(--color-primary)",
+                            fontWeight: "600",
+                          }}
+                          onClick={handleResendResetOtp}
+                        >
+                          Resend OTP
+                        </span>
+
+                        <span
+                          style={{
+                            cursor: "pointer",
+                            color: "var(--color-primary)",
+                            fontWeight: "600",
+                          }}
+                          onClick={() => {
+                            setIsForgotPasswordMode(false);
+                            setError("");
+                            setMessage("");
+                          }}
+                        >
+                          Back to Login
+                        </span>
+                      </div>
+                    </form>
+                  </>
+                )
               ) : (
                 <>
                   <h4 className="title">
@@ -741,6 +1073,28 @@ function LoginComponent() {
                             cursor: "pointer",
                           }}
                         ></i>
+                      </div>
+                    )}
+
+                    {isLogin && (
+                      <div className="d-flex justify-content-end mb-4" style={{ marginTop: "-15px" }}>
+                        <span
+                          onClick={() => {
+                            setIsForgotPasswordMode(true);
+                            setForgotPasswordStep("request");
+                            setForgotPasswordEmail(formData.email || "");
+                            setError("");
+                            setMessage("");
+                          }}
+                          style={{
+                            cursor: "pointer",
+                            color: "var(--color-primary)",
+                            fontWeight: "600",
+                            fontSize: "14px",
+                          }}
+                        >
+                          Forgot Password?
+                        </span>
                       </div>
                     )}
 

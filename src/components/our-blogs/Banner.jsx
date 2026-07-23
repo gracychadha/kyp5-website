@@ -13,7 +13,7 @@ export default function Banner() {
                 <div className="pagination-wrapper">
                   <a href="/">Home</a>
                   <i className="fa-regular fa-chevron-right" />
-                  <a className="active" href="instructor.html">
+                  <a className="active" href="#">
                     Our Blogs
                   </a>
                 </div>

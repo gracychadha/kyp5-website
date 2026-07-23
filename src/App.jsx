@@ -19,6 +19,8 @@ import TermsCondition from "./pages/terms-conditions/TermsCondition";
 import Events from "./pages/upcoming-events/Events";
 import EventDetail from "./pages/upcoming-events/EventDetail";
 import Question from "./pages/question/Question";
+import WhyChooseUs from "./pages/why-choose-us/WhyChooseUs";
+import HelpCenter from "./pages/help-center/HelpCenter";
 
 import Test from "./pages/test/Test";
 import Instruction from "./pages/instructions/Instruction";
@@ -40,6 +42,8 @@ function App() {
             <Route element={<MainLayout />}>
               <Route path="/" element={<Home />} />
               <Route path="/about-us" element={<AboutUs />} />
+              <Route path="/why-choose-us" element={<WhyChooseUs />}/>
+              <Route path="/help-center" element={<HelpCenter />}/>
               <Route path="/our-team" element={<Instructor />} />
               <Route path="/contact-us" element={<Contact />} />
               <Route path="/course" element={<Course />} />

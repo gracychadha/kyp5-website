@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function Banner() {
+function Banner() {
   return (
     <>
       <div className="rts-bread-crumbarea-1 rts-section-gap bg_image">
@@ -8,13 +8,13 @@ export default function Banner() {
           <div className="row">
             <div className="col-lg-12">
               <div className="breadcrumb-main-wrapper">
-                <h1 className="title">Our Team </h1>
+                <h1 className="title">Help Center</h1>
                 {/* breadcrumb pagination area */}
                 <div className="pagination-wrapper">
                   <a href="/">Home</a>
                   <i className="fa-regular fa-chevron-right" />
                   <a className="active" href="#">
-                    Our Team
+                    Help Center
                   </a>
                 </div>
                 {/* breadcrumb pagination area end */}
@@ -26,3 +26,5 @@ export default function Banner() {
     </>
   );
 }
+
+export default Banner;

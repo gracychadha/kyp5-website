@@ -10,6 +10,7 @@ import UpcomingEvents from "../../components/home/UpcomingEvents"
 import FunFacts from "../../components/home/FunFacts"
 // import Instructor from "../../components/common/Instructor"
 import Feedback from "../../components/home/Feedback"
+import Package from "../../components/home/Package"
 
 function Home() {
   return (
@@ -22,6 +23,7 @@ function Home() {
     <FunFacts />
     {/* <WhyChooseUs /> */}
     <UpcomingEvents />
+    <Package />
     
     {/* <Instructor /> */}
     <Feedback />

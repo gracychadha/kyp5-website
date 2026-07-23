@@ -146,10 +146,12 @@ function Header() {
                       </Link>
                     </li>
                     <li className="" style={{ position: "static" }}>
-                      <Link className="nav-link" to="/our-team">
-                        Our Team
+                      <Link className="nav-link" to="/why-choose-us">
+                        Why Choose Us
                       </Link>
                     </li>
+
+                   
                     <li className="has-dropdown">
                       <a className="nav-link" href="#">
                         Services
@@ -168,17 +170,28 @@ function Header() {
                         ))}
                       </ul>
                     </li>
-                    
-                    <li className="" style={{ position: "static" }}>
-                      <Link className="nav-link" to="/gallery">
-                        Gallery
-                      </Link>
-                    </li>
-                    <li className="" style={{ position: "static" }}>
+                     <li className="" style={{ position: "static" }}>
                       <Link className="nav-link" to="/our-blogs">
                         Our Blogs
                       </Link>
                     </li>
+                     <li className="" style={{ position: "static" }}>
+                      <Link className="nav-link" to="/our-team">
+                        Our Team
+                      </Link>
+                    </li>
+                    <li className="" style={{ position: "static" }}>
+                      <Link className="nav-link" to="/help-center">
+                        Help Center
+                      </Link>
+                    </li>
+
+                    {/* <li className="" style={{ position: "static" }}>
+                      <Link className="nav-link" to="/gallery">
+                        Gallery
+                      </Link>
+                    </li> */}
+                   
                     <div className="buttons-area">
                       <Link
                         className="rts-btn btn-primary me-2"

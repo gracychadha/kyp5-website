@@ -18,21 +18,15 @@ function Feedback() {
 
   return (
     <>
-      <div className="rts-feedback-area rts-section-gap bg-light-1 shape-move">
-        <div className="container">
+      <div className="rts-students-feedback-area rts-section-gap">
+        <div className="container pt--120">
           <div className="row">
             <div className="col-lg-12">
-              <div className="title-area-center-style">
-                <div className="pre-title">
-                  <img src="/assets/images/banner/bulb.png" alt="icon" />
-                  <span>Students' Reviews</span>
-                </div>
-
-                <h2 className="title">Our Students' Feedback</h2>
-
-                <p className="post-title">
-                  Discover what our students have to say about their experience
-                  with us.
+              <div className="section-title-w-style-center">
+                <h2 className="title">Our Students Feedback</h2>
+                <p>
+                  Discover what our students have to say about their learning
+                  experience with us.
                 </p>
               </div>
             </div>
@@ -40,15 +34,27 @@ function Feedback() {
 
           <div className="row mt--50">
             <div className="col-lg-12">
-              <div className="students-feedback-wrapper-1 bg_image">
-                <div className="swiper mySwiper-testimonials-1">
+              <div className="swiper-feedback-wrapper-5">
+                <div className="swiper swiper-data">
                   <div className="swiper-wrapper">
-                    {/* Testimonial 1 */}
                     {testimonials && testimonials.length > 0 ? (
                       testimonials.map((testimonial) => (
                         <div className="swiper-slide" key={testimonial.id}>
-                          <div className="single-students-feedback">
-                            <div className="left-image">
+                          <div className="single-students-feedback-5">
+                            {/* Rating */}
+                            <div className="stars">
+                              {Array.from({
+                                length: testimonial.rating || 5,
+                              }).map((_, index) => (
+                                <i key={index} className="fa-solid fa-star"></i>
+                              ))}
+                            </div>
+
+                            {/* Review */}
+                            <p className="disc">{testimonial.content}</p>
+
+                            {/* Author */}
+                            <div className="authore-area">
                               <img
                                 src={
                                   testimonial.avatar
@@ -56,128 +62,51 @@ function Feedback() {
                                         "/api/public/",
                                         "",
                                       ) + testimonial.avatar
-                                    : "/assets/images/students-feedback/01.png"
+                                    : "/assets/images/students-feedback/02.png"
                                 }
-                                alt="feedback"
-                              />
-                            </div>
-
-                            <div className="right-content">
-                              <img
-                                src="/assets/images/students-feedback/01.png"
-                                alt="quote"
+                                alt={testimonial.name}
                               />
 
-                              <p className="disc">
-                                {testimonial.content ||
-                                  "We had a great experience with KYP5. They are very helpful and supportive. I am very happy to join KYP5."}
-                              </p>
+                              <div className="author">
+                                <h6 className="title">{testimonial.name}</h6>
 
-                              <div className="author-area">
-                                <ul className="stars">
-                                  {testimonial.rating ? (
-                                    Array.from({
-                                      length: testimonial.rating,
-                                    }).map((_, index) => (
-                                      <li key={index}>
-                                        <i className="fa-solid fa-star"></i>
-                                      </li>
-                                    ))
-                                  ) : (
-                                    <>
-                                      <li>
-                                        <i className="fa-solid fa-star"></i>
-                                      </li>
-                                      <li>
-                                        <i className="fa-solid fa-star"></i>
-                                      </li>
-                                      <li>
-                                        <i className="fa-solid fa-star"></i>
-                                      </li>
-                                      <li>
-                                        <i className="fa-solid fa-star"></i>
-                                      </li>
-                                      <li>
-                                        <i className="fa-solid fa-star"></i>
-                                      </li>
-                                    </>
-                                  )}
-                                </ul>
-
-                                <h5 className="title">
-                                  {testimonial.name || "Admin"}
-                                </h5>
                                 <span>
                                   {testimonial.designation || "Student"}
                                 </span>
                               </div>
                             </div>
+
+                            {/* Quote */}
+                            <div className="quote">
+                              <img
+                                src="/assets/images/students-feedback/19.png"
+                                alt="quote"
+                              />
+                            </div>
                           </div>
                         </div>
                       ))
                     ) : (
-                      <div className="swiper-slide">
-                        <div className="single-students-feedback">
-                          <div className="left-image">
-                            <img
-                              src="/assets/images/students-feedback/01.jpg"
-                              alt="feedback"
-                            />
-                          </div>
-
-                          <div className="right-content">
-                            <img
-                              src="/assets/images/students-feedback/01.png"
-                              alt="quote"
-                            />
-
-                            <p className="disc">
-                              We had a great experience with KYP5. They are very
-                              helpful and supportive. I am very happy to join
-                              KYP5.
-                            </p>
-
-                            <div className="author-area">
-                              <ul className="stars">
-                                {[...Array(5)].map((_, index) => (
-                                  <li key={index}>
-                                    <i className="fa-solid fa-star"></i>
-                                  </li>
-                                ))}
-                              </ul>
-
-                              <h5 className="title">Admin</h5>
-                              <span>Student</span>
-                            </div>
-                          </div>
-                        </div>
+                      <div className="d-flex justify-content-center align-items-center">
+                        <p>No feedback Found Yet</p>
                       </div>
                     )}
                   </div>
 
-                  <div className="swiper-button-next">
-                    <i className="fa-solid fa-chevron-right"></i>
-                  </div>
+                  {/* Navigation */}
+                  {testimonials && testimonials.length > 0 && (
+                    <div className="left-align-arrow-btn">
+                      <div className="swiper-button-next">
+                        <i className="fa-solid fa-chevron-right"></i>
+                      </div>
 
-                  <div className="swiper-button-prev">
-                    <i className="fa-solid fa-chevron-left"></i>
-                  </div>
+                      <div className="swiper-button-prev">
+                        <i className="fa-solid fa-chevron-left"></i>
+                      </div>
 
-                  <div className="swiper-pagination"></div>
-                </div>
-
-                <div className="shape-image">
-                  <div
-                    className="shape one"
-                    data-speed="0.04"
-                    data-revert="true"
-                  >
-                    <img src="/assets/images/banner/18.png" alt="shape" />
-                  </div>
-
-                  <div className="shape three" data-speed="0.04">
-                    <img src="/assets/images/banner/17.png" alt="shape" />
-                  </div>
+                      <div className="swiper-pagination"></div>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>

@@ -119,15 +119,18 @@ function Footer() {
                       <li>
                         <a href="/about-us">About Us</a>
                       </li>
-                      <li>
-                        <a href="/our-team">Our Team</a>
-                      </li>
+                    
+
                       <li>
                         <a href="/gallery">Gallery</a>
                       </li>
                       <li>
                         <a href="/our-blogs">Our Blogs</a>
                       </li>
+                      <li>
+                        <a href="/our-team">Our Team</a>
+                      </li>
+                    
                     </ul>
                   </div>
                 </div>
@@ -158,7 +161,8 @@ function Footer() {
                   </div>
                   <div className="body">
                     <p className="disc">
-                      Subscribe to Our Newsletter to get updates on our new courses
+                      Subscribe to Our Newsletter to get updates on our new
+                      courses
                     </p>
 
                     <form onSubmit={handleSubmit}>

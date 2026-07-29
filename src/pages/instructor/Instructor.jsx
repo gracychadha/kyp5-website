@@ -8,7 +8,6 @@ function Instructor() {
    <>
    <Banner />
    <InstructorGrid/>
-   <GapManage />
    
    </>
   )

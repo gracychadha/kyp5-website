@@ -78,7 +78,7 @@ function ContactForm() {
 
   return (
     <>
-      <div className="rts-contact-area rts-section-gapTop">
+      <div className="rts-contact-area rts-section-gap">
         <div className="container">
           <div className="row g-5">
             <div className="col-xl-5">

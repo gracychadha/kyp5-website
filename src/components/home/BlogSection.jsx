@@ -17,7 +17,7 @@ function BlogSection() {
   return (
     <>
       <div className="rts-section-gap rts-blog-area">
-        <div className="container pb--130">
+        <div className="container ">
           <div className="row">
             <div className="col-lg-12">
               <div className="title-area-center-style">

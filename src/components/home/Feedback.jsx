@@ -19,7 +19,7 @@ function Feedback() {
   return (
     <>
       <div className="rts-students-feedback-area rts-section-gap">
-        <div className="container pt--120">
+        <div className="container ">
           <div className="row">
             <div className="col-lg-12">
               <div className="section-title-w-style-center">

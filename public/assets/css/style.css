@@ -671,7 +671,7 @@ ol ul {
 }
 
 .rts-section-gapBottom {
-  padding-bottom: 120px;
+  padding-bottom: 60px;
 }
 @media only screen and (min-width: 768px) and (max-width: 991px) {
   .rts-section-gapBottom {
@@ -685,7 +685,7 @@ ol ul {
 }
 
 .rts-section-gapTop {
-  padding-top: 120px;
+  padding-top: 60px;
 }
 @media only screen and (min-width: 768px) and (max-width: 991px) {
   .rts-section-gapTop {
@@ -34759,12 +34759,12 @@ Responsive
 
 @media (max-width: 767px) {
   .okyps-pricing-tabs button {
-    width: 100%;
+    max-width: 80%;
     padding: 16px;
   }
 
   .okyps-pricing-card {
-    padding: 30px;
+    padding: 20px;
   }
 
   .price {

@@ -34578,196 +34578,240 @@ OKYPS Pricing Section
 ===============================*/
 
 .okyps-pricing-section {
-  padding: 60px 0;
+  padding: 70px 0;
   background: #f7fbff;
   position: relative;
 }
 
 .okyps-section-heading {
   max-width: 700px;
-  margin: auto;
+  margin: 0 auto 40px;
 }
 
-.okyps-section-heading .sub-title {
-  color: #3498db;
+.pricing-pill-badge {
+  background: #3098bb;
+  color: #ffffff;
+  padding: 10px 26px;
+  border-radius: 50px;
   font-weight: 600;
-  display: inline-block;
-  margin-bottom: 10px;
+  font-size: 15px;
+  display: inline-flex;
+  align-items: center;
+  box-shadow: 0 6px 20px rgba(48, 152, 187, 0.25);
+  margin-bottom: 24px;
 }
 
-.okyps-section-heading h2 {
-  font-size: 42px;
+.okyps-section-heading .title {
+  font-size: 40px;
   font-weight: 700;
-  margin-bottom: 15px;
+  color: #1d3557;
+  margin-bottom: 14px;
+  letter-spacing: -0.5px;
 }
 
-.okyps-section-heading p {
-  color: #777;
+.okyps-section-heading .disc {
+  color: #64748b;
+  font-size: 16px;
+  line-height: 1.6;
+  margin: 0 auto;
 }
 
-.okyps-pricing-tabs {
-  display: flex;
-  justify-content: center;
-  margin-top: 45px;
-}
-
-.okyps-pricing-tabs button {
-  border: none;
-  background: linear-gradient(90deg, #3098bb, #3098bb);
-
-  color: #fff;
-  padding: 18px 30px;
-
-  border-radius: 60px;
-
-  font-size: 18px;
-  font-weight: 600;
-  max-width: 20%;
-  box-shadow: 0 18px 35px rgba(36, 122, 194, 0.25);
-}
-
+/* Card Styling */
 .okyps-pricing-card {
-  background: #fff;
-
+  background: #ffffff;
   border-radius: 24px;
-
-  padding: 20px;
-
+  padding: 40px 32px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  transition: all 0.35s ease;
   position: relative;
-
-  overflow: hidden;
-
-  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
-
-  transition: 0.4s;
-
-  height: 100%;
 }
 
 .okyps-pricing-card:hover {
-  transform: translateY(-10px);
-
-  box-shadow: 0 25px 55px rgba(0, 0, 0, 0.12);
+  transform: translateY(-8px);
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.1);
 }
 
 .okyps-pricing-card.featured {
-  background: linear-gradient(140deg, #42b8da, #3558d5);
-
-  color: #fff;
-
-  transform: scale(1.04);
+  background: linear-gradient(135deg, #3098bb 0%, #1e40af 100%);
+  border: none;
+  box-shadow: 0 15px 40px rgba(30, 64, 175, 0.3);
+  transform: scale(1.03);
 }
 
-.okyps-pricing-card.featured .price,
-.okyps-pricing-card.featured h3,
-.okyps-pricing-card.featured li,
-.okyps-pricing-card.featured .validity {
-  color: #fff;
+.okyps-pricing-card.featured:hover {
+  transform: scale(1.03) translateY(-8px);
+  box-shadow: 0 25px 50px rgba(30, 64, 175, 0.4);
 }
 
+/* Badges */
 .package-badge {
   display: inline-block;
-
-  padding: 8px 18px;
-
-  background: #e8f7ff;
-
-  color: #0d78a8;
-
+  padding: 6px 18px;
   border-radius: 30px;
-
   font-size: 13px;
-
-  font-weight: 600;
-
-  margin-bottom: 15px;
-}
-
-.featured .package-badge {
-  background: #fff;
-}
-
-.okyps-pricing-card h3 {
-  font-size: 32px;
-
-  margin-bottom: 15px;
-
   font-weight: 700;
+  margin-bottom: 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
-.price {
-  font-size: 38px;
+.package-badge.starter,
+.package-badge.premium {
+  background: #e8f7ff;
+  color: #0d78a8;
+}
 
+.package-badge.popular {
+  background: #ffffff;
+  color: #1e40af;
+}
+
+/* Pack Details */
+.pack-title {
+  font-size: 28px;
   font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 16px;
+}
 
+.price-box {
+  margin-bottom: 8px;
   color: #1d3557;
+  display: flex;
+  align-items: baseline;
+}
 
+.price-box .currency {
+  font-size: 24px;
+  font-weight: 700;
+  margin-right: 2px;
+}
+
+.price-box .amount {
+  font-size: 42px;
+  font-weight: 800;
   line-height: 1;
-
-  margin-bottom: 15px;
 }
 
-.price span {
-  font-size: 22px;
-
-  color: #888;
+.price-box .unit {
+  font-size: 16px;
+  color: #64748b;
+  font-weight: 500;
+  margin-left: 6px;
 }
 
-.validity {
-  margin-bottom: 30px;
-
-  color: #777;
+.validity-info {
+  color: #64748b;
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 0;
 }
 
-.okyps-pricing-card ul {
-  margin: 0;
-  padding: 0;
+.text-white-75 {
+  color: rgba(255, 255, 255, 0.8) !important;
+}
+
+.text-white-85 {
+  color: rgba(255, 255, 255, 0.9) !important;
+}
+
+.card-divider {
+  border-top: 1px solid #e2e8f0;
+  margin: 22px 0;
+  opacity: 0.8;
+}
+
+.divider-white {
+  border-top-color: rgba(255, 255, 255, 0.25);
+}
+
+/* Features List */
+.card-features {
   list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
-.okyps-pricing-card ul li {
-  margin-bottom: 10px;
+.card-features li {
+  margin-bottom: 14px;
+  font-size: 15px;
+  color: #334155;
+  display: flex;
+  align-items: center;
+}
 
+.card-features li:last-child {
+  margin-bottom: 0;
+}
+
+.check-icon {
+  color: #3098bb;
   font-size: 17px;
+  margin-right: 12px;
 }
 
-.okyps-pricing-card ul li i {
-  color: #2ba8d6;
-
-  margin-right: 10px;
+/* Buttons */
+.okyps-pricing-btn {
+  display: block;
+  width: 100%;
+  text-align: center;
+  background: #3098bb;
+  color: #ffffff;
+  padding: 14px 24px;
+  border-radius: 50px;
+  font-weight: 700;
+  font-size: 16px;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  box-shadow: 0 4px 15px rgba(48, 152, 187, 0.3);
 }
 
-.white-btn {
-  background: #fff;
-
-  color: #245fb7;
+.okyps-pricing-btn:hover {
+  background: #2380a0;
+  color: #ffffff;
+  box-shadow: 0 8px 25px rgba(48, 152, 187, 0.45);
 }
 
-/*==============================
-Responsive
-===============================*/
+.btn-white-action {
+  background: #ffffff;
+  color: #1e40af;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.15);
+}
 
+.btn-white-action:hover {
+  background: #f8fafc;
+  color: #1d4ed8;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
+}
+
+/* Responsive */
 @media (max-width: 991px) {
   .okyps-pricing-card.featured {
     transform: none;
   }
-
-  .okyps-section-heading h2 {
+  .okyps-pricing-card.featured:hover {
+    transform: translateY(-8px);
+  }
+  .okyps-section-heading .title {
     font-size: 34px;
   }
 }
 
 @media (max-width: 767px) {
-  .okyps-pricing-tabs button {
-    max-width: 80%;
-    padding: 16px;
+  .okyps-section-heading .title {
+    font-size: 28px;
   }
-
+  .okyps-pricing-section {
+    padding: 50px 0;
+  }
   .okyps-pricing-card {
-    padding: 20px;
+    padding: 30px 24px;
   }
-
-  .price {
+  .price-box .amount {
+    font-size: 36px;
+  }
+}
     font-size: 42px;
   }
 
@@ -35185,9 +35229,6 @@ Responsive
   .assessment-card {
     padding: 30px 20px;
   }
-
-
-  
 
   .assessment-card h4 {
     font-size: 22px;

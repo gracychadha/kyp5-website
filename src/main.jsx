@@ -1,21 +1,10 @@
-import { StrictMode } from "react";
-import { createRoot } from "react-dom/client";
-import { ChakraProvider } from "@chakra-ui/react";
-import { SiteProvider } from "./context/SiteContext";
-import App from "./App.jsx";
+import React from "react";
+import ReactDOM from "react-dom/client";
+import App from "./App";
+import "./index.css";
 
-import { GoogleReCaptchaProvider } from "react-google-recaptcha-v3";
-
-createRoot(document.getElementById("root")).render(
-  <StrictMode>
-    <ChakraProvider>
-      <GoogleReCaptchaProvider
-        reCaptchaKey={import.meta.env.VITE_RECAPTCHA_SITE_KEY}
-      >
-        <SiteProvider>
-          <App />
-        </SiteProvider>
-      </GoogleReCaptchaProvider>
-    </ChakraProvider>
-  </StrictMode>,
+ReactDOM.createRoot(document.getElementById("root")).render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
 );

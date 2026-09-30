@@ -1,294 +1,307 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import {
+  Facebook,
+  Instagram,
+  Linkedin,
+  Twitter,
+  Mail,
+  Phone,
+  Send,
+  ShieldCheck,
+  Award,
+  CheckCircle,
+  MapPin
+} from "lucide-react";
 import { useSite } from "../../context/SiteContext";
-import logo from "../../../public/assets/images/logo/main-logo.png";
-function Footer() {
-  const { siteData } = useSite();
-  const [email, setEmail] = useState("");
-  const [checked, setChecked] = useState(false);
-  const [message, setMessage] = useState("");
-  const [messageType, setMessageType] = useState("");
-  const API = import.meta.env.VITE_BASE_URL;
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+import publicApi from "../../api/publicApi";
+import { resolveImageUrl } from "../../utils/dataHelper";
+import toast from "react-hot-toast";
 
-    // Validation
-    if (!checked) {
-      setMessage("Please accept terms and privacy policy.");
-      setMessageType("error");
+export default function Footer() {
+  const { siteData } = useSite();
+  const [newsletterEmail, setNewsletterEmail] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+
+  const email = siteData?.contact?.email || siteData?.general?.orgEmail || "info@kyp5.com";
+  const phone = siteData?.contact?.phone || siteData?.general?.orgPhone || "+91 83528 03233";
+  const address = siteData?.contact?.address || "Educational Assessment & Guidance Center, Sector 62, Institutional Area, Noida / New Delhi NCR";
+  const aboutText =
+    siteData?.footer?.about ||
+    "KYP5 (Know Your Potential, Personality, Progress & Path) is an advanced scientific psychometric assessment and career guidance platform empowering students, schools, and organizations with data-driven choices.";
+
+  const logoSrc = resolveImageUrl(
+    siteData?.branding?.logoDarkUrl || siteData?.branding?.logoUrl,
+    "/assets/images/logo/main-logo.png"
+  );
+
+  const formatExternalUrl = (url) => {
+    if (!url || typeof url !== "string") return "";
+    const clean = url.trim();
+    if (!clean) return "";
+    return clean.startsWith("http://") || clean.startsWith("https://") ? clean : `https://${clean}`;
+  };
+
+  const facebookUrl = formatExternalUrl(siteData?.footer?.socialLinks?.facebook || "https://www.facebook.com/KnowYourP5/");
+  const instagramUrl = formatExternalUrl(siteData?.footer?.socialLinks?.instagram || "https://www.instagram.com/know_about_your_power");
+  const linkedinUrl = formatExternalUrl(siteData?.footer?.socialLinks?.linkedin);
+  const twitterUrl = formatExternalUrl(siteData?.footer?.socialLinks?.twitter);
+
+  const handleNewsletter = async (e) => {
+    e.preventDefault();
+    if (!newsletterEmail || !newsletterEmail.includes("@")) {
+      toast.error("Please enter a valid email address.");
       return;
     }
 
     try {
-      const response = await fetch(`${API}newsletter`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email }),
-      });
-
-      if (response.ok) {
-        setMessage("Subscribed successfully!");
-        setMessageType("success");
-        setEmail("");
-        setChecked(false);
-      } else {
-        setMessage("Something went wrong.");
-        setMessageType("error");
-      }
-    } catch (error) {
-      setMessage("Server error.");
-      setMessageType("error");
+      setSubmitting(true);
+      await publicApi.subscribeNewsletter({ email: newsletterEmail });
+      toast.success("Subscribed successfully! Thank you for joining KYP5 updates.");
+      setNewsletterEmail("");
+    } catch (err) {
+      toast.error(err.message || "Failed to subscribe. Please try again.");
+    } finally {
+      setSubmitting(false);
     }
   };
 
   return (
-    <>
-      <div className="footer-callto-action-area bg-light-1">
-        {/* Footer Main */}
-        <div className="container">
-          <div className="row ptb--100">
-            <div className="col-lg-12">
-              <div className="footer-one-main-wrapper">
-                {/* Logo & Contact */}
-                <div className="footer-singl-wized left-logo">
-                  <div className="head">
-                    <a href="/">
-                      <img
-                        id="footer-logo"
-                        src={
-                          siteData?.data?.branding?.logoUrl
-                            ? import.meta.env.VITE_BASE_URL.replace(
-                                "/api/public/",
-                                "",
-                              ) + siteData.data.branding.logoUrl
-                            : logo
-                        }
-                        alt="logo"
-                      />
-                    </a>
-                  </div>
+    <footer className="bg-slate-950 text-slate-300 pt-16 pb-8 border-t border-slate-800 print:hidden">
+      <div className="container-page">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 pb-12 border-b border-slate-800/80">
+          
+          {/* Brand Col */}
+          <div className="space-y-4">
+            <Link to="/" className="inline-flex items-center gap-2.5">
+              <span className="p-1 rounded-lg bg-white inline-block">
+                <img
+                  src={logoSrc}
+                  alt="KYP5 Logo"
+                  className="h-8 w-auto object-contain"
+                  onError={(e) => {
+                    e.target.src = "/assets/images/logo/main-logo.png";
+                  }}
+                />
+              </span>
+              <span className="text-xl font-black text-white tracking-tight">
+                KYP<span className="text-indigo-400">5</span>
+              </span>
+            </Link>
 
-                  <div className="body">
-                    <p className="dsic">
-                      {siteData?.data?.footer?.about
-                        ? siteData.data.footer.about
-                        : " We are passionate about education dedicated to providing high-quality resources for learners of all backgrounds."}
-                    </p>
+            <p className="text-slate-400 text-xs leading-relaxed">
+              {aboutText}
+            </p>
 
-                    <ul className="wrapper-list">
-                      <li>
-                        <i className="fa-regular fa-location-dot"></i>
-                        {siteData?.data?.contact?.address
-                          ? siteData.data.contact.address
-                          : "Mohali , Punjab"}
-                      </li>
-
-                      <li>
-                        <i className="fa-regular fa-phone"></i>
-                        <a
-                          href={`tel:${
-                            siteData?.data?.contact?.phone
-                              ? siteData.data.contact.phone
-                              : "+91 83528 03233"
-                          }`}
-                        >
-                          {siteData?.data?.contact?.phone
-                            ? siteData.data.contact.phone
-                            : "+91 83528 03233"}
-                        </a>
-                      </li>
-                      <li>
-                        <i className="fa-light fa-envelope" />
-                        {siteData?.data?.contact?.email
-                          ? siteData.data.contact.email
-                          : "info@kyp5.com"}
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-
-                {/* Quick Links */}
-                <div className="footer-singl-wized">
-                  <div className="head">
-                    <h6 className="title">Quick Links</h6>
-                  </div>
-
-                  <div className="body">
-                    <ul className="menu">
-                      <li>
-                        <a href="/about-us">About Us</a>
-                      </li>
-                    
-
-                      <li>
-                        <a href="/gallery">Gallery</a>
-                      </li>
-                      <li>
-                        <a href="/our-blogs">Our Blogs</a>
-                      </li>
-                      <li>
-                        <a href="/our-team">Our Team</a>
-                      </li>
-                    
-                    </ul>
-                  </div>
-                </div>
-
-                {/* Explore */}
-                <div className="footer-singl-wized">
-                  <div className="head">
-                    <h6 className="title">Explore</h6>
-                  </div>
-
-                  <div className="body">
-                    <ul className="menu">
-                      <li>
-                        <a href="/contact-us">Contact Us</a>
-                      </li>
-                      <li>
-                        <a href="/privacy-policy">Privacy Policy</a>
-                      </li>
-                      <li>
-                        <a href="/terms-conditions">Terms &amp; Conditions</a>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-                <div className="footer-singl-wized input-area">
-                  <div className="head">
-                    <h6 className="title">Newsletter</h6>
-                  </div>
-                  <div className="body">
-                    <p className="disc">
-                      Subscribe to Our Newsletter to get updates on our new
-                      courses
-                    </p>
-
-                    <form onSubmit={handleSubmit}>
-                      <div className="input-area-fill">
-                        <input
-                          type="email"
-                          placeholder="Enter Your Email"
-                          required
-                          value={email}
-                          onChange={(e) => setEmail(e.target.value)}
-                        />
-
-                        <button type="submit">Subscribe</button>
-                      </div>
-
-                      <div className="d-flex align-items-center gap-2 mt-2">
-                        <input
-                          type="checkbox"
-                          id="exampleCheck1"
-                          checked={checked}
-                          onChange={(e) => setChecked(e.target.checked)}
-                        />
-
-                        <label htmlFor="exampleCheck1">
-                          I agree to the terms of use and privacy policy.
-                        </label>
-                      </div>
-
-                      {message && (
-                        <p
-                          className={`mt-2 ${
-                            messageType === "success"
-                              ? "text-success"
-                              : "text-danger"
-                          }`}
-                        >
-                          {message}
-                        </p>
-                      )}
-                    </form>
-                  </div>
-                </div>
-              </div>
+            <div className="pt-2 flex items-center gap-3">
+              {facebookUrl && (
+                <a
+                  href={facebookUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="w-8 h-8 rounded-lg bg-slate-900 border border-slate-800 hover:bg-[#1877f2] hover:border-transparent text-slate-400 hover:text-white flex items-center justify-center transition-colors"
+                  aria-label="Facebook"
+                >
+                  <Facebook className="w-4 h-4 fill-current" />
+                </a>
+              )}
+              {instagramUrl && (
+                <a
+                  href={instagramUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="w-8 h-8 rounded-lg bg-slate-900 border border-slate-800 hover:bg-pink-600 hover:border-transparent text-slate-400 hover:text-white flex items-center justify-center transition-colors"
+                  aria-label="Instagram"
+                >
+                  <Instagram className="w-4 h-4" />
+                </a>
+              )}
+              {linkedinUrl && (
+                <a
+                  href={linkedinUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="w-8 h-8 rounded-lg bg-slate-900 border border-slate-800 hover:bg-[#0a66c2] hover:border-transparent text-slate-400 hover:text-white flex items-center justify-center transition-colors"
+                  aria-label="LinkedIn"
+                >
+                  <Linkedin className="w-4 h-4 fill-current" />
+                </a>
+              )}
+              {twitterUrl && (
+                <a
+                  href={twitterUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="w-8 h-8 rounded-lg bg-slate-900 border border-slate-800 hover:bg-[#1da1f2] hover:border-transparent text-slate-400 hover:text-white flex items-center justify-center transition-colors"
+                  aria-label="Twitter"
+                >
+                  <Twitter className="w-4 h-4 fill-current" />
+                </a>
+              )}
             </div>
           </div>
+
+          {/* Explore Columns */}
+          <div>
+            <h4 className="text-white font-bold text-xs uppercase tracking-wider mb-4">
+              Explore Audiences
+            </h4>
+            <ul className="space-y-2.5 text-xs">
+              <li>
+                <Link to="/for-schools" className="hover:text-indigo-400 transition-colors flex items-center gap-1.5">
+                  <span className="text-slate-500">›</span> For Schools & Institutions
+                </Link>
+              </li>
+              <li>
+                <Link to="/tests" className="hover:text-indigo-400 transition-colors flex items-center gap-1.5">
+                  <span className="text-slate-500">›</span> Individual Psychometric Test
+                </Link>
+              </li>
+              <li>
+                <Link to="/pricing" className="hover:text-indigo-400 transition-colors flex items-center gap-1.5">
+                  <span className="text-slate-500">›</span> Pricing & School Plans
+                </Link>
+              </li>
+              <li>
+                <Link to="/services" className="hover:text-indigo-400 transition-colors flex items-center gap-1.5">
+                  <span className="text-slate-500">›</span> Guidance & Assessment Services
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Quick Links */}
+          <div>
+            <h4 className="text-white font-bold text-xs uppercase tracking-wider mb-4">
+              Quick Links
+            </h4>
+            <ul className="space-y-2.5 text-xs">
+              <li>
+                <Link to="/why-choose-us" className="hover:text-indigo-400 transition-colors">
+                  Why Psychometric Testing?
+                </Link>
+              </li>
+              <li>
+                <Link to="/about-us" className="hover:text-indigo-400 transition-colors">
+                  Trust & Accreditation
+                </Link>
+              </li>
+              <li>
+                <Link to="/our-blogs" className="hover:text-indigo-400 transition-colors">
+                  Career Insights & Blog
+                </Link>
+              </li>
+              <li>
+                <Link to="/our-team" className="hover:text-indigo-400 transition-colors">
+                  Certified Psychologists
+                </Link>
+              </li>
+              <li>
+                <Link to="/help-center" className="hover:text-indigo-400 transition-colors">
+                  Help Center & FAQ
+                </Link>
+              </li>
+              <li>
+                <Link to="/gallery" className="hover:text-indigo-400 transition-colors">
+                  Campus Drives Gallery
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Registered Office & Newsletter */}
+          <div className="space-y-4">
+            <h4 className="text-white font-bold text-xs uppercase tracking-wider">
+              Registered Office
+            </h4>
+            
+            <ul className="space-y-2 text-xs text-slate-400">
+              <li className="flex items-start gap-2">
+                <MapPin className="w-3.5 h-3.5 text-indigo-400 shrink-0 mt-0.5" />
+                <span>{address}</span>
+              </li>
+              <li className="flex items-center gap-2">
+                <Phone className="w-3.5 h-3.5 text-indigo-400 shrink-0" />
+                <span>{phone}</span>
+              </li>
+              <li className="flex items-center gap-2">
+                <Mail className="w-3.5 h-3.5 text-indigo-400 shrink-0" />
+                <span>{email}</span>
+              </li>
+            </ul>
+
+            <div className="pt-2">
+              <p className="text-[11px] text-slate-400 mb-2 font-medium">Subscribe for career guidance updates</p>
+              <form onSubmit={handleNewsletter} className="relative">
+                <input
+                  type="email"
+                  placeholder="Enter email address"
+                  value={newsletterEmail}
+                  onChange={(e) => setNewsletterEmail(e.target.value)}
+                  className="w-full bg-slate-900 border border-slate-700/80 rounded-xl px-3.5 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500"
+                />
+                <button
+                  type="submit"
+                  disabled={submitting}
+                  className="absolute right-1 top-1 bg-indigo-600 hover:bg-indigo-500 text-white px-2.5 py-1 rounded-lg text-xs font-bold transition-colors disabled:opacity-50 cursor-pointer"
+                  aria-label="Subscribe"
+                >
+                  <Send className="w-3 h-3" />
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        {/* Accreditation details line */}
+        <div className="py-4 border-b border-slate-900 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-[11px] text-slate-400">
+          <span className="flex items-center gap-1">
+            <CheckCircle className="w-3 h-3 text-emerald-400" /> MSME Registered Institution
+          </span>
+          <span className="flex items-center gap-1">
+            <CheckCircle className="w-3 h-3 text-emerald-400" /> ISO 9001:2015 Quality Certified
+          </span>
+          <span className="flex items-center gap-1">
+            <CheckCircle className="w-3 h-3 text-emerald-400" /> Holland RIASEC & Gardner MI Model
+          </span>
+          <span className="flex items-center gap-1">
+            <CheckCircle className="w-3 h-3 text-emerald-400" /> Secure 256-bit Encrypted Portal
+          </span>
         </div>
 
         {/* Copyright */}
-        <div className="copyright-area-one-border">
-          <div className="container">
-            <div className="row">
-              <div className="col-lg-12">
-                <div className="copyright-area-one">
-                  <p>
-                    &copy; {new Date().getFullYear()}{" "}
-                    <a href="https://kyp5.com">
-                      {siteData?.data?.branding?.siteName
-                        ? siteData.data.branding.siteName
-                        : "KYP5"}
-                    </a>{" "}
-                    | Developed by{" "}
-                    <a href="https://vibrantick.in/" target="_blank">
-                      {" "}
-                      Vibrantick Infotech Solutions
-                    </a>
-                  </p>
-
-                  <div className="social-copyright">
-                    <ul>
-                      {siteData?.data?.footer?.socialLinks?.facebook && (
-                        <li>
-                          <a
-                            href={siteData.data.footer.socialLinks.facebook}
-                            target="_blank"
-                            rel="noreferrer"
-                          >
-                            <i className="fa-brands fa-facebook-f"></i>
-                          </a>
-                        </li>
-                      )}
-
-                      {siteData?.data?.footer?.socialLinks?.instagram && (
-                        <li>
-                          <a
-                            href={siteData.data.footer.socialLinks.instagram}
-                            target="_blank"
-                            rel="noreferrer"
-                          >
-                            <i className="fa-brands fa-instagram"></i>
-                          </a>
-                        </li>
-                      )}
-
-                      {siteData?.data?.footer?.socialLinks?.linkedin && (
-                        <li>
-                          <a
-                            href={siteData.data.footer.socialLinks.linkedin}
-                            target="_blank"
-                            rel="noreferrer"
-                          >
-                            <i className="fa-brands fa-linkedin-in"></i>
-                          </a>
-                        </li>
-                      )}
-
-                      {siteData?.data?.footer?.socialLinks?.youtube && (
-                        <li>
-                          <a
-                            href={siteData.data.footer.socialLinks.youtube}
-                            target="_blank"
-                            rel="noreferrer"
-                          >
-                            <i className="fa-brands fa-youtube"></i>
-                          </a>
-                        </li>
-                      )}
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            </div>
+        <div className="pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
+          <p>
+            {(() => {
+              const rawCopyright = siteData?.footer?.copyrightText || siteData?.footer?.copyright;
+              if (rawCopyright) {
+                if (rawCopyright.includes("©") || rawCopyright.toLowerCase().includes("all rights reserved")) {
+                  return rawCopyright;
+                }
+                return `© ${new Date().getFullYear()} ${rawCopyright} · All Rights Reserved.`;
+              }
+              const displayBrand =
+                siteData?.branding?.siteName ||
+                siteData?.general?.orgShortName ||
+                (siteData?.general?.orgName && siteData.general.orgName !== "Online Exam Platform"
+                  ? siteData.general.orgName
+                  : "KYP5");
+              return `© ${new Date().getFullYear()} ${displayBrand} · All Rights Reserved.`;
+            })()}
+          </p>
+          <div className="flex items-center gap-6">
+            <Link to="/privacy-policy" className="hover:text-slate-300 transition-colors">
+              Privacy Policy
+            </Link>
+            <Link to="/terms-conditions" className="hover:text-slate-300 transition-colors">
+              Terms & Conditions
+            </Link>
+            <Link to="/contact-us" className="hover:text-slate-300 transition-colors">
+              Contact Support
+            </Link>
           </div>
         </div>
       </div>
-    </>
+    </footer>
   );
 }
-
-export default Footer;

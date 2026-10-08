@@ -29,38 +29,13 @@ export default function Navbar() {
   const navigate = useNavigate();
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [servicesDropdownOpen, setServicesDropdownOpen] = useState(false);
   const [userDropdownOpen, setUserDropdownOpen] = useState(false);
-  const [servicesList, setServicesList] = useState([]);
 
-  const servicesRef = useRef(null);
   const userRef = useRef(null);
-
-  useEffect(() => {
-    let isMounted = true;
-    const loadServices = async () => {
-      try {
-        const res = await publicApi.getServices();
-        if (isMounted && res && res.data) {
-          const list = Array.isArray(res.data) ? res.data : res.data.data || [];
-          setServicesList(list.map(extractItemData));
-        }
-      } catch (err) {
-        // Fallback gracefully
-      }
-    };
-    loadServices();
-    return () => {
-      isMounted = false;
-    };
-  }, []);
 
   // Close dropdowns on outside click
   useEffect(() => {
     const handleClickOutside = (e) => {
-      if (servicesRef.current && !servicesRef.current.contains(e.target)) {
-        setServicesDropdownOpen(false);
-      }
       if (userRef.current && !userRef.current.contains(e.target)) {
         setUserDropdownOpen(false);
       }
@@ -72,7 +47,6 @@ export default function Navbar() {
   // Close mobile menu on route change
   useEffect(() => {
     setMobileMenuOpen(false);
-    setServicesDropdownOpen(false);
     setUserDropdownOpen(false);
   }, [location.pathname]);
 
@@ -185,65 +159,17 @@ export default function Navbar() {
               Pricing
             </Link>
 
-            {/* Services Dropdown */}
-            <div className="relative shrink-0" ref={servicesRef}>
-              <button
-                type="button"
-                onClick={() => setServicesDropdownOpen(!servicesDropdownOpen)}
-                className={
-                  "whitespace-nowrap flex items-center gap-1 px-3 py-2 text-[13px] 2xl:text-sm font-semibold rounded-lg transition-all cursor-pointer " +
-                  (isActive("/services") || isActive("/service-details")
-                    ? "text-indigo-600 bg-indigo-50/80 font-bold shadow-xs"
-                    : "text-slate-700 hover:text-indigo-600 hover:bg-slate-50")
-                }
-              >
-                <span>Services</span>
-                <ChevronDown
-                  className={
-                    "w-3.5 h-3.5 transition-transform duration-200 " +
-                    (servicesDropdownOpen ? "rotate-180 text-indigo-600" : "text-slate-400")
-                  }
-                />
-              </button>
-
-              {servicesDropdownOpen && (
-                <div className="absolute left-0 top-full mt-2 w-64 bg-white rounded-2xl shadow-xl border border-slate-100 py-2 z-50 animate-in fade-in zoom-in-95 duration-150">
-                  <Link
-                    to="/services"
-                    className="block px-4 py-2.5 text-xs font-bold text-indigo-600 hover:bg-indigo-50 transition-colors border-b border-slate-100"
-                  >
-                    View All Services &rarr;
-                  </Link>
-
-                  {servicesList.length > 0 ? (
-                    servicesList.map((srv) => (
-                      <Link
-                        key={srv.id || srv.slug}
-                        to={"/service-details/" + encodeURIComponent(srv.title || srv.slug || srv.id)}
-                        className="block px-4 py-2 text-xs font-semibold text-slate-700 hover:bg-indigo-50 hover:text-indigo-600 transition-colors truncate"
-                      >
-                        {srv.title}
-                      </Link>
-                    ))
-                  ) : (
-                    <>
-                      <Link
-                        to="/services"
-                        className="block px-4 py-2 text-xs font-semibold text-slate-700 hover:bg-indigo-50 hover:text-indigo-600"
-                      >
-                        Multiple Intelligence Career Profiling
-                      </Link>
-                      <Link
-                        to="/services"
-                        className="block px-4 py-2 text-xs font-semibold text-slate-700 hover:bg-indigo-50 hover:text-indigo-600"
-                      >
-                        School Stream Selection Drive
-                      </Link>
-                    </>
-                  )}
-                </div>
-              )}
-            </div>
+            <Link
+              to="/services"
+              className={
+                "whitespace-nowrap px-3 py-2 text-[13px] 2xl:text-sm font-semibold rounded-lg transition-all " +
+                (isActive("/services") || isActive("/service-details")
+                  ? "text-indigo-600 bg-indigo-50/80 font-bold shadow-xs"
+                  : "text-slate-700 hover:text-indigo-600 hover:bg-slate-50")
+              }
+            >
+              Services
+            </Link>
 
             <Link
               to="/about-us"

@@ -5,6 +5,149 @@ import publicApi from "../api/publicApi";
 import { extractItemData } from "../utils/dataHelper";
 import RichTextContent from "../components/common/RichTextContent";
 
+const PRESET_SERVICES = {
+  "multiple intelligence career profiling": {
+    title: "Multiple Intelligence Career Profiling",
+    price: "Expert Mentorship",
+    briefIntro:
+      "Scientific evaluation of linguistic, logical-mathematical, spatial, bodily-kinesthetic, musical, interpersonal, and intrapersonal intelligences to align student strengths with optimal career trajectories.",
+    aboutTitle: "About Multiple Intelligence Profiling",
+    aboutDescription:
+      "<p>Based on Howard Gardner's theory of Multiple Intelligences, our comprehensive assessment identifies a student's unique cognitive profile beyond traditional academic grades.</p><p>We map these multidimensional intelligence scores against modern industry domains, helping students choose streams and careers where their innate talents thrive.</p>",
+    workProcessTitle: "How the Profiling Process Works",
+    workProcessSteps: [
+      {
+        title: "Stage 1: Psychometric Assessment",
+        desc: "Interactive psychometric evaluation assessing 8 distinct intelligence dimensions and cognitive preferences.",
+      },
+      {
+        title: "Stage 2: Multidimensional Synthesis",
+        desc: "Algorithmic scoring compares responses against validated occupational profiles and intelligence radar charts.",
+      },
+      {
+        title: "Stage 3: 1-on-1 Expert Guidance",
+        desc: "Detailed debrief with certified career counselors to finalize subject streams and long-term career roadmaps.",
+      },
+    ],
+    benefitsMainTitle: "Key Advantages",
+    benefitsCards: [
+      {
+        title: "Discovers Hidden Talents",
+        desc: "Uncovers underlying cognitive strengths beyond conventional classroom test scores.",
+      },
+      {
+        title: "Tailored Stream Selection",
+        desc: "Directly links student intelligence profiles to suitable academic streams and university majors.",
+      },
+    ],
+  },
+  "school stream selection drive": {
+    title: "School Stream Selection Drive",
+    price: "Campus Package",
+    briefIntro:
+      "Comprehensive institutional testing and counseling program for Class 8th to 10th students to help them confidently choose Science, Commerce, or Humanities/Arts.",
+    aboutTitle: "About School Stream Selection Drive",
+    aboutDescription:
+      "<p>Selecting the right academic stream after Class 10 is one of the most critical decisions in a student's academic journey. Our Stream Selection Drive combines aptitude, personality traits, and career interests into an objective recommendation engine.</p><p>We work directly with schools to conduct institution-wide diagnostic testing, individual student reports, and parent counseling workshops.</p>",
+    workProcessTitle: "How the Drive Works",
+    workProcessSteps: [
+      {
+        title: "Phase 1: Institutional Assessment",
+        desc: "Standardized psychometric battery administered to student cohorts under structured school supervision.",
+      },
+      {
+        title: "Phase 2: Individualized Reporting",
+        desc: "Comprehensive diagnostic reports highlighting top recommended stream combinations for each student.",
+      },
+      {
+        title: "Phase 3: Parent-Student Alignment",
+        desc: "Interactive counseling sessions and workshops to align student aspirations with parental expectations.",
+      },
+    ],
+    benefitsMainTitle: "Key Advantages",
+    benefitsCards: [
+      {
+        title: "Eliminates Subjectivity",
+        desc: "Provides objective data-driven recommendations based on validated psychometric metrics.",
+      },
+      {
+        title: "School-Wide Analytics",
+        desc: "Equips school leadership with aggregate insights into student cohort capabilities.",
+      },
+    ],
+  },
+  "college major & vocational mapping": {
+    title: "College Major & Vocational Mapping",
+    price: "Higher Education",
+    briefIntro:
+      "Advanced vocational guidance matching higher education degrees and emerging global college programs to student aptitude.",
+    aboutTitle: "About College & Vocational Mapping",
+    aboutDescription:
+      "<p>Navigating university applications and degree selection requires strategic foresight. Our vocational mapping service analyzes global job market trends alongside student psychometrics to pinpoint high-demand career pathways.</p><p>Whether preparing for Indian entrance exams or foreign university admissions, we provide actionable guidance step-by-step.</p>",
+    workProcessTitle: "How the Process Works",
+    workProcessSteps: [
+      {
+        title: "Step 1: Vocational Profiling",
+        desc: "In-depth mapping of vocational interests, career motivators, and skill readiness.",
+      },
+      {
+        title: "Step 2: University & Major Matching",
+        desc: "Identification of optimal college programs, target entrance exams, and global degree paths.",
+      },
+      {
+        title: "Step 3: Strategic Roadmap",
+        desc: "Actionable preparation roadmap including timeline, portfolio building, and application strategies.",
+      },
+    ],
+    benefitsMainTitle: "Key Advantages",
+    benefitsCards: [
+      {
+        title: "Future-Proof Guidance",
+        desc: "Focuses on emerging high-growth industries and future-ready career choices.",
+      },
+      {
+        title: "Global Compatibility",
+        desc: "Provides clarity for both Indian university systems and international education.",
+      },
+    ],
+  },
+};
+
+function getPresetServiceDetails(titleParam) {
+  const decoded = decodeURIComponent(titleParam || "").toLowerCase().trim();
+  if (PRESET_SERVICES[decoded]) {
+    return PRESET_SERVICES[decoded];
+  }
+  if (decoded.includes("intelligence") || decoded.includes("profiling")) {
+    return PRESET_SERVICES["multiple intelligence career profiling"];
+  }
+  if (decoded.includes("stream") || decoded.includes("school")) {
+    return PRESET_SERVICES["school stream selection drive"];
+  }
+  if (decoded.includes("college") || decoded.includes("vocational") || decoded.includes("mapping")) {
+    return PRESET_SERVICES["college major & vocational mapping"];
+  }
+  const cleanTitle = decodeURIComponent(titleParam || "Career Guidance Solution");
+  return {
+    title: cleanTitle,
+    price: "Custom Package",
+    briefIntro: "Comprehensive psychometric evaluation and career counseling designed for students and institutions.",
+    aboutTitle: "About " + cleanTitle,
+    aboutDescription: "<p>Our team of clinical psychologists and career specialists conduct structured assessment batteries and one-on-one strategy sessions to ensure absolute clarity.</p><p>Students receive actionable guidance on entrance exams, vocational matches, and higher education degree mappings.</p>",
+    workProcessTitle: "How the Process Works",
+    workProcessSteps: [
+      { title: "Stage 1: Psychometric Battery", desc: "Student completes online assessment measuring RIASEC traits and cognitive aptitude." },
+      { title: "Stage 2: Algorithmic Synthesis", desc: "Automated scoring compares responses against validated occupational models." },
+      { title: "Stage 3: 1-on-1 Guidance", desc: "Detailed discussion with certified counselor to finalize stream & target universities." },
+    ],
+    benefitsMainTitle: "Key Advantages",
+    benefitsCards: [
+      { title: "Eliminates Guesswork", desc: "Data-driven clarity based on psychological research rather than subjective bias." },
+      { title: "Parent-Student Alignment", desc: "Brings families together with concrete reports and career prospect data." },
+    ],
+  };
+}
+
 export default function ServiceDetail() {
   const { title } = useParams();
   const [service, setService] = useState(null);
@@ -16,47 +159,13 @@ export default function ServiceDetail() {
         setLoading(true);
         const res = await publicApi.getServiceBySlug(title);
         const data = extractItemData(res);
-        if (data && (data.title || data.id)) {
+        if (data && (data.title || data.id) && data.aboutDescription) {
           setService(data);
         } else {
-          setService({
-            title: decodeURIComponent(title || "Career Guidance Solution"),
-            price: "Custom Package",
-            briefIntro: "Comprehensive psychometric evaluation and career counseling designed for students and institutions.",
-            aboutTitle: "About This Specialized Program",
-            aboutDescription: "<p>Our team of clinical psychologists and career specialists conduct structured assessment batteries and one-on-one strategy sessions to ensure absolute clarity.</p><p>Students receive actionable guidance on entrance exams, vocational matches, and higher education degree mappings.</p>",
-            workProcessTitle: "How the Process Works",
-            workProcessSteps: [
-              { title: "Stage 1: Psychometric Battery", desc: "Student completes online assessment measuring RIASEC traits and cognitive aptitude." },
-              { title: "Stage 2: Algorithmic Synthesis", desc: "Automated scoring compares responses against validated occupational models." },
-              { title: "Stage 3: 1-on-1 Guidance", desc: "Detailed discussion with certified counselor to finalize stream & target universities." },
-            ],
-            benefitsMainTitle: "Key Advantages",
-            benefitsCards: [
-              { title: "Eliminates Guesswork", desc: "Data-driven clarity based on psychological research rather than subjective bias." },
-              { title: "Parent-Student Alignment", desc: "Brings families together with concrete reports and career prospect data." },
-            ],
-          });
+          setService(getPresetServiceDetails(title));
         }
       } catch (e) {
-        setService({
-          title: decodeURIComponent(title || "Career Guidance Solution"),
-          price: "Custom Package",
-          briefIntro: "Comprehensive psychometric evaluation and career counseling designed for students and institutions.",
-          aboutTitle: "About This Specialized Program",
-          aboutDescription: "<p>Our team of clinical psychologists and career specialists conduct structured assessment batteries and one-on-one strategy sessions to ensure absolute clarity.</p><p>Students receive actionable guidance on entrance exams, vocational matches, and higher education degree mappings.</p>",
-          workProcessTitle: "How the Process Works",
-          workProcessSteps: [
-            { title: "Stage 1: Psychometric Battery", desc: "Student completes online assessment measuring RIASEC traits and cognitive aptitude." },
-            { title: "Stage 2: Algorithmic Synthesis", desc: "Automated scoring compares responses against validated occupational models." },
-            { title: "Stage 3: 1-on-1 Guidance", desc: "Detailed discussion with certified counselor to finalize stream & target universities." },
-          ],
-          benefitsMainTitle: "Key Advantages",
-          benefitsCards: [
-            { title: "Eliminates Guesswork", desc: "Data-driven clarity based on psychological research rather than subjective bias." },
-            { title: "Parent-Student Alignment", desc: "Brings families together with concrete reports and career prospect data." },
-          ],
-        });
+        setService(getPresetServiceDetails(title));
       } finally {
         setLoading(false);
       }

@@ -63,6 +63,7 @@ export default function App() {
               <Route path="/why-choose-us" element={<WhyChooseUs />} />
               <Route path="/why-psychometric" element={<WhyChooseUs />} />
               <Route path="/services" element={<Services />} />
+              <Route path="/services/:title" element={<ServiceDetail />} />
               <Route path="/service-details/:title" element={<ServiceDetail />} />
               <Route path="/our-blogs" element={<Blogs />} />
               <Route path="/blog" element={<Blogs />} />

@@ -187,6 +187,11 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
+                <Link to="/tests" className="hover:text-indigo-400 transition-colors">
+                  Take Psychometric Assessment
+                </Link>
+              </li>
+              <li>
                 <Link to="/our-blogs" className="hover:text-indigo-400 transition-colors">
                   Career Insights & Blog
                 </Link>

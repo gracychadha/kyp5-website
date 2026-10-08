@@ -1,7 +1,6 @@
 import React from "react";
 import HeroSection from "../components/home/HeroSection";
 import AudiencesSection from "../components/home/AudiencesSection";
-import StatCounters from "../components/common/StatCounters";
 import TrustSection from "../components/home/TrustSection";
 import TestCategoriesSection from "../components/home/TestCategoriesSection";
 import MethodologySection from "../components/home/MethodologySection";

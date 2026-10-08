@@ -21,17 +21,17 @@ export default function Services() {
           setServices([
             {
               id: "1",
-              title: "One-on-One Career Counseling",
+              title: "Multiple Intelligence Career Profiling",
               price: "Expert Mentorship",
               briefIntro:
-                "Dedicated sessions with registered psychometricians to interpret your report and finalize subject streams.",
+                "Scientific evaluation of linguistic, logical-mathematical, spatial, and interpersonal strengths to align student talent with optimal career trajectories.",
             },
             {
               id: "2",
-              title: "Institutional School Assessment Drives",
+              title: "School Stream Selection Drive",
               price: "Campus Package",
               briefIntro:
-                "End-to-end on-campus psychometric assessments for batches from Class 8 to 12 with counselor support.",
+                "End-to-end on-campus psychometric assessments and stream recommendation drives for batches from Class 8 to 12.",
             },
             {
               id: "3",
@@ -90,7 +90,7 @@ export default function Services() {
 
               <div className="pt-6 border-t border-slate-100 mt-6 flex items-center justify-between">
                 <Link
-                  to={`/services/${service.id}`}
+                  to={`/service-details/${encodeURIComponent(service.title || service.slug || service.id)}`}
                   className="inline-flex items-center gap-1.5 text-xs font-extrabold text-indigo-600 hover:text-indigo-800 transition-colors group-hover:translate-x-0.5 transform duration-150"
                 >
                   <span>Learn More</span>

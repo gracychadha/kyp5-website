@@ -129,6 +129,13 @@ export default function StudentDashboard() {
                         <HelpCircle className="w-3.5 h-3.5" />
                         {t.questionCount ?? t.totalQuestions ?? t._count?.questions ?? 0} Questions
                       </span>
+                      <span className="font-bold bg-slate-100 px-2 py-0.5 rounded-md">
+                        {t.isFree || (t.price || 0) === 0 ? (
+                          <span className="text-emerald-600">FREE</span>
+                        ) : (
+                          <span className="text-indigo-600">₹{t.price}</span>
+                        )}
+                      </span>
                     </div>
                   </div>
 
@@ -136,7 +143,11 @@ export default function StudentDashboard() {
                     to={`/test/${t.id}/instructions`}
                     className="btn-primary text-xs px-4 py-2 shrink-0"
                   >
-                    <span>Start Test</span>
+                    <span>
+                      {t.isFree || (t.price || 0) === 0 || t.studentStatus?.hasAccess
+                        ? "Take Test"
+                        : `Unlock for ₹${t.price}`}
+                    </span>
                     <ArrowRight className="w-3.5 h-3.5" />
                   </Link>
                 </div>

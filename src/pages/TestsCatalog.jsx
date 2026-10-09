@@ -1,20 +1,32 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Clock, HelpCircle, Search, ArrowRight, Sparkles, CheckCircle } from "lucide-react";
+import { Clock, HelpCircle, Search, ArrowRight, Sparkles, CheckCircle, Tag } from "lucide-react";
 import SectionHeading from "../components/common/SectionHeading";
 import publicApi from "../api/publicApi";
+import studentApi from "../api/studentApi";
+import { useAuth } from "../context/AuthContext";
 import { extractListData, resolveImageUrl } from "../utils/dataHelper";
 
 export default function TestsCatalog() {
   const [tests, setTests] = useState([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
+  const { isAuthenticated } = useAuth();
 
   useEffect(() => {
     const fetchTests = async () => {
       try {
         setLoading(true);
-        const res = await publicApi.getTests(search ? { search } : {});
+        let res;
+        if (isAuthenticated) {
+          try {
+            res = await studentApi.getAvailableTests(search ? { search } : {});
+          } catch (e) {
+            res = await publicApi.getTests(search ? { search } : {});
+          }
+        } else {
+          res = await publicApi.getTests(search ? { search } : {});
+        }
         const list = extractListData(res);
         if (list && list.length > 0) {
           setTests(list);
@@ -25,6 +37,8 @@ export default function TestsCatalog() {
               title: "Stream Identifier & Career Profiler",
               duration: 45,
               questionCount: 4,
+              price: 0,
+              isFree: true,
               image: null,
               description: "Scientifically identifies student aptitude and strengths for Science (PCM/PCB), Commerce, and Humanities streams.",
             },
@@ -33,6 +47,8 @@ export default function TestsCatalog() {
               title: "Howard Gardner Multiple Intelligence Test",
               duration: 35,
               questionCount: 60,
+              price: 299,
+              isFree: false,
               image: null,
               description: "Evaluates 8 distinct cognitive intelligences and aligns with ideal degree specializations.",
             },
@@ -41,6 +57,8 @@ export default function TestsCatalog() {
               title: "Vocational & Cognitive Aptitude Battery",
               duration: 50,
               questionCount: 80,
+              price: 499,
+              isFree: false,
               image: null,
               description: "Evaluates verbal reasoning, abstract logic, and vocational personality compatibility for college degrees.",
             },
@@ -50,32 +68,6 @@ export default function TestsCatalog() {
         }
       } catch (err) {
         console.warn("Error fetching tests:", err);
-        setTests([
-          {
-            id: "test-stream-finder-1",
-            title: "Stream Identifier & Career Profiler",
-            duration: 45,
-            questionCount: 4,
-            image: null,
-            description: "Scientifically identifies student aptitude and strengths for Science (PCM/PCB), Commerce, and Humanities streams.",
-          },
-          {
-            id: "test-multiple-intelligence",
-            title: "Howard Gardner Multiple Intelligence Test",
-            duration: 35,
-            questionCount: 60,
-            image: null,
-            description: "Evaluates 8 distinct cognitive intelligences and aligns with ideal degree specializations.",
-          },
-          {
-            id: "test-vocational-aptitude",
-            title: "Vocational & Cognitive Aptitude Battery",
-            duration: 50,
-            questionCount: 80,
-            image: null,
-            description: "Evaluates verbal reasoning, abstract logic, and vocational personality compatibility for college degrees.",
-          },
-        ]);
       } finally {
         setLoading(false);
       }
@@ -83,7 +75,7 @@ export default function TestsCatalog() {
 
     const timer = setTimeout(fetchTests, 250);
     return () => clearTimeout(timer);
-  }, [search]);
+  }, [search, isAuthenticated]);
 
   return (
     <div className="py-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
@@ -147,6 +139,15 @@ export default function TestsCatalog() {
                     <div className="absolute top-3 left-3 bg-white/95 px-3 py-1 rounded-full text-[11px] font-extrabold text-indigo-700 shadow-xs ring-1 ring-slate-100">
                       Certified Battery
                     </div>
+                    {test.isFree || (test.price || 0) === 0 ? (
+                      <div className="absolute top-3 right-3 bg-emerald-600 text-white px-3 py-1 rounded-full text-[11px] font-black uppercase tracking-wider shadow-sm">
+                        Free Test
+                      </div>
+                    ) : (
+                      <div className="absolute top-3 right-3 bg-indigo-600 text-white px-3 py-1 rounded-full text-[11px] font-black uppercase tracking-wider shadow-sm flex items-center gap-1">
+                        <span>₹{test.price}</span>
+                      </div>
+                    )}
                   </div>
 
                   <div className="p-6 space-y-3">
@@ -173,16 +174,26 @@ export default function TestsCatalog() {
                 </div>
 
                 <div className="p-6 pt-0 border-t border-slate-100 mt-2 flex items-center justify-between">
-                  <span className="text-xs font-bold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-lg flex items-center gap-1">
-                    <CheckCircle className="w-3.5 h-3.5" />
-                    Instant Result
-                  </span>
+                  <div className="flex flex-col">
+                    <span className="text-[10px] uppercase font-bold text-slate-400">Price</span>
+                    <span className="text-sm font-extrabold text-slate-900">
+                      {test.isFree || (test.price || 0) === 0 ? (
+                        <span className="text-emerald-600">FREE</span>
+                      ) : (
+                        <span className="text-indigo-600">₹{test.price}</span>
+                      )}
+                    </span>
+                  </div>
 
                   <Link
                     to={`/test/${test.id}/instructions`}
                     className="btn-primary text-xs px-3.5 py-2"
                   >
-                    <span>Take Test</span>
+                    <span>
+                      {test.isFree || (test.price || 0) === 0 || test.studentStatus?.hasAccess
+                        ? "Take Test"
+                        : `Unlock for ₹${test.price}`}
+                    </span>
                     <ArrowRight className="w-3.5 h-3.5" />
                   </Link>
                 </div>

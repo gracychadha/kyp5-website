@@ -21,6 +21,10 @@ export const studentApi = {
   startAttempt: (testId, languageCode = "en") =>
     apiClient.post(`student/attempts/${testId}/start`, { languageCode }),
   
+  // Checkout & Payment for Test
+  checkoutTest: (testId) => apiClient.post(`student/tests/${testId}/checkout`),
+  verifyTestPayment: (testId, payload) => apiClient.post(`student/tests/${testId}/verify-payment`, payload),
+  
   getQuestions: (attemptId) =>
     apiClient.get(`student/attempts/${attemptId}/questions`),
 

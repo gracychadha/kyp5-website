@@ -9,7 +9,12 @@ import {
   ArrowRight,
   BookOpen,
   Sparkles,
-  AlertCircle
+  AlertCircle,
+  CreditCard,
+  CheckCircle,
+  Lock,
+  Loader2,
+  Tag
 } from "lucide-react";
 import publicApi from "../api/publicApi";
 import studentApi from "../api/studentApi";
@@ -18,16 +23,31 @@ import { extractItemData } from "../utils/dataHelper";
 import RichTextContent from "../components/common/RichTextContent";
 import toast from "react-hot-toast";
 
+const loadRazorpayScript = () => {
+  return new Promise((resolve) => {
+    if (window.Razorpay) {
+      resolve(true);
+      return;
+    }
+    const script = document.createElement("script");
+    script.src = "https://checkout.razorpay.com/v1/checkout.js";
+    script.onload = () => resolve(true);
+    script.onerror = () => resolve(false);
+    document.body.appendChild(script);
+  });
+};
+
 export default function TestInstruction() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, user } = useAuth();
 
   const [test, setTest] = useState(null);
   const [loading, setLoading] = useState(true);
   const [selectedLanguage, setSelectedLanguage] = useState("en");
   const [agreed, setAgreed] = useState(false);
   const [starting, setStarting] = useState(false);
+  const [purchasing, setPurchasing] = useState(false);
 
   useEffect(() => {
     const fetchTestDetails = async () => {
@@ -46,6 +66,7 @@ export default function TestInstruction() {
                 0;
               setTest({
                 ...data.test,
+                studentStatus: data.studentStatus,
                 questionCount: qCount,
                 totalQuestions: qCount,
               });
@@ -81,6 +102,94 @@ export default function TestInstruction() {
     fetchTestDetails();
   }, [id, isAuthenticated, selectedLanguage, navigate]);
 
+  const isFreeTest = Boolean(test?.isFree || (test?.price || 0) === 0);
+  const hasAccess = isFreeTest || Boolean(test?.studentStatus?.hasAccess);
+
+  const handlePaymentOrUnlock = async () => {
+    if (!isAuthenticated) {
+      toast.error("Please login to purchase or unlock this assessment.");
+      navigate("/login", { state: { returnUrl: `/test/${id}/instructions` } });
+      return;
+    }
+
+    try {
+      setPurchasing(true);
+      const res = await studentApi.checkoutTest(id);
+      const data = extractItemData(res);
+
+      if (data?.isFree || data?.alreadyPaid) {
+        toast.success(data.message || "Test unlocked successfully!");
+        setTest((prev) => ({
+          ...prev,
+          studentStatus: {
+            ...(prev?.studentStatus || {}),
+            hasAccess: true,
+            canAttempt: true,
+          },
+        }));
+        return;
+      }
+
+      // Load Razorpay Checkout Script
+      const isLoaded = await loadRazorpayScript();
+      if (!isLoaded) {
+        toast.error("Failed to load Razorpay payment gateway script. Check internet connection.");
+        return;
+      }
+
+      const options = {
+        key: data.key,
+        amount: data.amount,
+        currency: data.currency || "INR",
+        name: "KYP5 Psychometric Assessment",
+        description: `Access to ${data.testTitle || test?.title || "Assessment"}`,
+        order_id: data.orderId,
+        handler: async function (response) {
+          try {
+            toast.loading("Verifying payment...", { id: "verify-test-pay" });
+            const verifyRes = await studentApi.verifyTestPayment(id, {
+              razorpay_order_id: response.razorpay_order_id,
+              razorpay_payment_id: response.razorpay_payment_id,
+              razorpay_signature: response.razorpay_signature,
+              orderId: data.orderId,
+            });
+            const verifyData = extractItemData(verifyRes);
+            toast.success(verifyData?.message || "Payment verified! Test unlocked.", {
+              id: "verify-test-pay",
+            });
+            setTest((prev) => ({
+              ...prev,
+              studentStatus: {
+                ...(prev?.studentStatus || {}),
+                hasAccess: true,
+                canAttempt: true,
+              },
+            }));
+          } catch (err) {
+            toast.error(err.message || "Payment verification failed", {
+              id: "verify-test-pay",
+            });
+          }
+        },
+        prefill: {
+          name: user?.name || "",
+          email: user?.email || "",
+          contact: user?.phone || "",
+        },
+        theme: {
+          color: "#4f46e5",
+        },
+      };
+
+      const rzp = new window.Razorpay(options);
+      rzp.open();
+    } catch (err) {
+      toast.error(err.message || "Checkout initialization failed");
+    } finally {
+      setPurchasing(false);
+    }
+  };
+
   const handleStartTest = async () => {
     if (!agreed) {
       toast.error("Please agree to the examination instructions.");
@@ -90,6 +199,11 @@ export default function TestInstruction() {
     if (!isAuthenticated) {
       toast.error("Please login or create an account to start the assessment.");
       navigate("/login", { state: { returnUrl: `/test/${id}/instructions` } });
+      return;
+    }
+
+    if (!hasAccess) {
+      toast.error("Payment required before starting this assessment. Please unlock test.");
       return;
     }
 
@@ -172,15 +286,64 @@ export default function TestInstruction() {
             </div>
           </div>
           <div className="bg-slate-50 p-3.5 rounded-2xl border border-slate-100">
-            <div className="text-[11px] text-slate-500 font-bold uppercase">Attempts</div>
-            <div className="text-base font-extrabold text-slate-800 mt-0.5">{test?.allowedAttempts || 1} Allowed</div>
+            <div className="text-[11px] text-slate-500 font-bold uppercase">Pricing</div>
+            <div className="text-base font-extrabold mt-0.5">
+              {isFreeTest ? (
+                <span className="text-emerald-600">FREE</span>
+              ) : (
+                <span className="text-indigo-600">₹{test?.price || 499}</span>
+              )}
+            </div>
           </div>
           <div className="bg-slate-50 p-3.5 rounded-2xl border border-slate-100">
-            <div className="text-[11px] text-slate-500 font-bold uppercase">Auto-Submit</div>
-            <div className="text-base font-extrabold text-emerald-600 mt-0.5">Enabled</div>
+            <div className="text-[11px] text-slate-500 font-bold uppercase">Access Status</div>
+            <div className="text-base font-extrabold mt-0.5">
+              {hasAccess ? (
+                <span className="text-emerald-600 flex items-center gap-1">
+                  <CheckCircle className="w-4 h-4 inline" /> Unlocked
+                </span>
+              ) : (
+                <span className="text-amber-600 flex items-center gap-1">
+                  <Lock className="w-4 h-4 inline" /> Payment Needed
+                </span>
+              )}
+            </div>
           </div>
         </div>
       </div>
+
+      {/* Payment / Access Callout Box */}
+      {!hasAccess && (
+        <div className="bg-gradient-to-r from-indigo-900 to-indigo-800 rounded-3xl p-6 text-white shadow-lg flex flex-col sm:flex-row items-center justify-between gap-6">
+          <div className="space-y-1 text-center sm:text-left">
+            <div className="inline-flex items-center gap-1.5 bg-amber-400/20 text-amber-300 text-xs font-bold px-3 py-1 rounded-full">
+              <Lock className="w-3.5 h-3.5" /> Premium Assessment
+            </div>
+            <h3 className="text-xl font-extrabold">Unlock Full Assessment for ₹{test?.price || 499}</h3>
+            <p className="text-xs text-indigo-200">
+              One-time payment powered securely by Razorpay. Gives full access to attempt the exam and get instant psychometric analytics.
+            </p>
+          </div>
+
+          <button
+            onClick={handlePaymentOrUnlock}
+            disabled={purchasing}
+            className="bg-amber-400 hover:bg-amber-300 text-slate-950 font-black text-sm px-6 py-3.5 rounded-2xl shadow-md transition-all shrink-0 cursor-pointer flex items-center gap-2 disabled:opacity-60"
+          >
+            {purchasing ? (
+              <>
+                <Loader2 className="w-4 h-4 animate-spin" />
+                <span>Initializing Razorpay...</span>
+              </>
+            ) : (
+              <>
+                <CreditCard className="w-4 h-4" />
+                <span>Pay & Unlock (₹{test?.price || 499})</span>
+              </>
+            )}
+          </button>
+        </div>
+      )}
 
       {/* Rules & Instructions Body */}
       <div className="bg-white rounded-3xl p-8 border border-slate-200 shadow-sm space-y-6">
@@ -254,14 +417,25 @@ export default function TestInstruction() {
             ← Back to Tests
           </Link>
 
-          <button
-            onClick={handleStartTest}
-            disabled={!agreed || starting}
-            className="btn-primary w-full sm:w-auto text-sm px-8 py-3.5 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
-          >
-            <span>{starting ? "Initializing Assessment..." : "Begin Assessment Now"}</span>
-            <ArrowRight className="w-4 h-4" />
-          </button>
+          {!hasAccess ? (
+            <button
+              onClick={handlePaymentOrUnlock}
+              disabled={purchasing}
+              className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm px-8 py-3.5 rounded-2xl shadow-md transition-all cursor-pointer flex items-center gap-2"
+            >
+              <CreditCard className="w-4 h-4" />
+              <span>Unlock Assessment for ₹{test?.price || 499}</span>
+            </button>
+          ) : (
+            <button
+              onClick={handleStartTest}
+              disabled={!agreed || starting}
+              className="btn-primary w-full sm:w-auto text-sm px-8 py-3.5 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+            >
+              <span>{starting ? "Initializing Assessment..." : "Begin Assessment Now"}</span>
+              <ArrowRight className="w-4 h-4" />
+            </button>
+          )}
         </div>
       </div>
     </div>
